@@ -1,6 +1,7 @@
 package org.iplantc.de.server;
 
 import java.io.IOException;
+import java.net.HttpURLConnection;
 
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
@@ -10,11 +11,14 @@ import org.apache.http.entity.mime.content.StringBody;
  * 
  * @author Dennis Roberts
  */
+@SuppressWarnings("nls")
 public class DataApiServiceDispatcher extends BaseDEServiceDispatcher {
     /**
      * The version number used to identify serialized instances of this version of this class.
      */
     private static final long serialVersionUID = 1L;
+
+    private boolean forceJsonContentType = false;
 
     /**
      * Initializes the new service dispatcher.
@@ -24,10 +28,35 @@ public class DataApiServiceDispatcher extends BaseDEServiceDispatcher {
     }
 
     /**
+     * Sets an optional flag that will force the HttpURLConnection returned by getUrlConnection to set
+     * its "Content-Type" header to "application/json", even if the request object given in setRequest
+     * has a multipart Content-Type header.
+     * 
+     * @param forceJson
+     */
+    public void setForceJsonContentType(boolean forceJson) {
+        forceJsonContentType = forceJson;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     protected void addAdditionalParts(MultipartEntity entity) throws IOException {
         entity.addPart("user", new StringBody(getUsername()));
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected HttpURLConnection getUrlConnection(String address) throws IOException {
+        HttpURLConnection connection = super.getUrlConnection(address);
+
+        if (forceJsonContentType && connection != null) {
+            connection.setRequestProperty("Content-Type", "application/json");
+        }
+
+        return connection;
     }
 }
