@@ -25,6 +25,7 @@ import org.iplantc.de.shared.services.ServiceCallWrapper;
  * @author sriram
  * 
  */
+@SuppressWarnings("nls")
 public class UploadServlet extends UploadAction {
     private static final long serialVersionUID = 1L;
 
@@ -177,7 +178,7 @@ public class UploadServlet extends UploadAction {
     private String extractUploadedUrl(String json) {
         JSONObject jsonObj = JSONObject.fromObject(json);
         if (jsonObj != null) {
-            return jsonObj.getString("id"); //$NON-NLS-1$
+            return jsonObj.getString("path");
         } else {
             return null;
         }
@@ -194,21 +195,22 @@ public class UploadServlet extends UploadAction {
     private MultiPartServiceWrapper createServiceWrapper(String path, String filename, long fileLength,
             String mimeType, InputStream fileContents) {
         // address key that is resolved by the service dispatcher
-        String addressKey = "org.iplantc.services.zoidberg.fileupload"; //$NON-NLS-1$
+        String addressKey = "org.iplantc.services.scruffian.fileupload";
 
         MultiPartServiceWrapper wrapper = new MultiPartServiceWrapper(MultiPartServiceWrapper.Type.POST,
                 addressKey);
 
         wrapper.addPart(new FileHTTPPart(fileContents, "file", filename, mimeType, fileLength)); //$NON-NLS-1$
-        wrapper.addPart(path + "/" + filename, "dest"); //$NON-NLS-1$ //$NON-NLS-2$
+        wrapper.addPart(path, "dest");
 
         return wrapper;
     }
 
     private String getUserHomeDir(HttpServletRequest request) {
         ServiceCallWrapper wrapper = new ServiceCallWrapper(
-                "org.iplantc.services.zoidberg.getuserhomedir"); //$NON-NLS-1$
+                "org.iplantc.services.nibblonian.getuserhomedir");
         String homeDir = null;
+
         try {
             DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher();
             dispatcher.init(getServletConfig());
