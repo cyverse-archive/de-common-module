@@ -334,8 +334,16 @@ public interface CommonDisplayStrings extends Messages {
     String categorySelect();
 
     /**
+     * Localized text for a Wiki URL label.
+     * 
+     * @param url the actual URL to the wiki page this label will use in a link
+     * @return string representing the text
+     */
+    String wikiUrlLabel(String url);
+
+    /**
      * Localized text for an "attach sample input files" label.
-     *
+     * 
      * @return string representing the text
      */
     String attachSampleInput();
