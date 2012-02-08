@@ -19,4 +19,12 @@ public interface ConfluenceServiceAsync {
      */
     void addPage(String toolName, String description, AsyncCallback<String> callback);
 
+    /**
+     * Adds a user comment to a tool description page.
+     * 
+     * @param toolName the name of the tool which is also the page title
+     * @param comment a comment
+     * @param callback called after the service call finishes
+     */
+    void addComment(String toolName, String comment, AsyncCallback<String> callback);
 }
