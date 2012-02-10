@@ -278,10 +278,11 @@ public interface CommonDisplayStrings extends Messages {
 
     /**
      * A message telling the user that "make public" was successful
-     *
+     * 
+     * @param url The URL of the documentation page
      * @return
      */
-    String makePublicSucess();
+    String makePublicSucess(String url);
 
     /**
      * A message telling the user that "make public" was unsuccessful
@@ -334,7 +335,7 @@ public interface CommonDisplayStrings extends Messages {
 
     /**
      * Localized text for a Wiki URL label.
-     *
+     * 
      * @param url the actual URL to the wiki page this label will use in a link
      * @return string representing the text
      */
@@ -342,7 +343,7 @@ public interface CommonDisplayStrings extends Messages {
 
     /**
      * Localized text for an "attach sample input files" label.
-     *
+     * 
      * @return string representing the text
      */
     String attachSampleInput();
