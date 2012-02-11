@@ -25,6 +25,7 @@ import org.iplantc.de.shared.services.ServiceCallWrapper;
  * @author sriram
  * 
  */
+@SuppressWarnings("nls")
 public class UploadServlet extends UploadAction {
     private static final long serialVersionUID = 1L;
 
@@ -54,7 +55,7 @@ public class UploadServlet extends UploadAction {
         jsonErrors = new JSONObject();
         jsonInfo = new JSONObject();
         InputStream bodyFile = null;
-        LOG.debug("Upload Action started."); //$NON-NLS-1$
+        LOG.debug("Upload Action started.");
         long fileLength = 0l;
         String mimeType = null;
 
@@ -71,26 +72,28 @@ public class UploadServlet extends UploadAction {
                     fileLength = item.getSize();
                     mimeType = item.getContentType();
                     bodyFile = item.getInputStream();
+
                     jsonInfo.put(fileFieldName,
                             invokeService(request, item.getName(), bodyFile, fileLength, mimeType));
                 } catch (IOException e) {
-                    LOG.error("FileUploadServlet::executeAction - Exception while getting file input stream:" //$NON-NLS-1$
-                            + e.getMessage());
+                    LOG.error("executeAction - Exception while getting file input stream.", e);
                     e.printStackTrace();
-                    jsonErrors.put("error", e.getMessage()); //$NON-NLS-1$
-                    return jsonErrors.toString();
+                    jsonErrors.put("error", e.getMessage());
 
+                    return jsonErrors.toString();
                 } catch (IRODSConfigurationException e) {
-                    LOG.error("FileUploadServlet::executeAction - Exception while getting users IRODS home directory:" //$NON-NLS-1$
-                            + e.getMessage());
+                    LOG.error("executeAction - Exception while getting users IRODS home directory.", e);
                     e.printStackTrace();
-                    jsonErrors.put("error", e.getMessage()); //$NON-NLS-1$
+                    jsonErrors.put("error", e.getMessage());
+
                     return jsonErrors.toString();
                 } catch (UploadActionException e) {
-                    LOG.error("FileUploadServlet::executeAction - Exception while getting uploading files to users home directory:" //$NON-NLS-1$
-                            + e.getMessage());
+                    LOG.error(
+                            "executeAction - Exception while getting uploading files to users home directory.",
+                            e);
                     e.printStackTrace();
-                    jsonErrors.put("error", e.getMessage()); //$NON-NLS-1$
+                    jsonErrors.put("error", e.getMessage());
+
                     return jsonErrors.toString();
                 }
 
@@ -103,7 +106,7 @@ public class UploadServlet extends UploadAction {
         // remove files from session. this avoids duplicate submissions
         removeSessionFileItems(request, false);
 
-        LOG.debug("UploadServlet::executeAction - JSON returned: " + jsonErrors); //$NON-NLS-1$
+        LOG.debug("executeAction - JSON returned: " + jsonErrors);
         return jsonErrors.toString();
     }
 
@@ -166,7 +169,7 @@ public class UploadServlet extends UploadAction {
             dispatcher.init(getServletConfig());
             dispatcher.setRequest(request);
             fileUrl = extractUploadedUrl(dispatcher.getServiceData(wrapper));
-            LOG.debug("UploadServlet::invokeService - Making service call."); //$NON-NLS-1$
+            LOG.debug("invokeService - Making service call.");
         } catch (Exception e) {
             LOG.error("unable to upload file", e); //$NON-NLS-1$
             throw new UploadActionException(e.getMessage());
@@ -177,7 +180,7 @@ public class UploadServlet extends UploadAction {
     private String extractUploadedUrl(String json) {
         JSONObject jsonObj = JSONObject.fromObject(json);
         if (jsonObj != null) {
-            return jsonObj.getString("id"); //$NON-NLS-1$
+            return jsonObj.getString("path");
         } else {
             return null;
         }
@@ -194,29 +197,30 @@ public class UploadServlet extends UploadAction {
     private MultiPartServiceWrapper createServiceWrapper(String path, String filename, long fileLength,
             String mimeType, InputStream fileContents) {
         // address key that is resolved by the service dispatcher
-        String addressKey = "org.iplantc.services.zoidberg.fileupload"; //$NON-NLS-1$
+        String addressKey = "org.iplantc.services.scruffian.fileupload";
 
         MultiPartServiceWrapper wrapper = new MultiPartServiceWrapper(MultiPartServiceWrapper.Type.POST,
                 addressKey);
 
         wrapper.addPart(new FileHTTPPart(fileContents, "file", filename, mimeType, fileLength)); //$NON-NLS-1$
-        wrapper.addPart(path + "/" + filename, "dest"); //$NON-NLS-1$ //$NON-NLS-2$
+        wrapper.addPart(path, "dest");
 
         return wrapper;
     }
 
     private String getUserHomeDir(HttpServletRequest request) {
         ServiceCallWrapper wrapper = new ServiceCallWrapper(
-                "org.iplantc.services.zoidberg.getuserhomedir"); //$NON-NLS-1$
+                "org.iplantc.services.nibblonian.getuserhomedir");
         String homeDir = null;
+
         try {
             DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher();
             dispatcher.init(getServletConfig());
             dispatcher.setRequest(request);
             homeDir = dispatcher.getServiceData(wrapper);
-            LOG.debug("UploadServlet::getUserHomeDir - Making service call."); //$NON-NLS-1$
+            LOG.debug("getUserHomeDir - Making service call.");
         } catch (Exception e) {
-            LOG.error("unable get users home dir", e); //$NON-NLS-1$
+            LOG.error("getUserHomeDir - unable get users home dir", e);
         }
         return homeDir;
     }

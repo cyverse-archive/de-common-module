@@ -7,8 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Properties;
 import java.util.Map.Entry;
+import java.util.Properties;
 
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
@@ -157,7 +157,7 @@ public class TestDefaultServiceCallResolver {
 
         expected = "http://emma.iplantcollaborative.org/nibblonian/home?user=ndy";
         actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.zoidberg.getuserhomedir?user=ndy"));
+                .resolveAddress(wrapper("org.iplantc.services.nibblonian.getuserhomedir?user=ndy"));
         assertEquals(expected, actual);
 
         expected = "http://emma.iplantcollaborative.org/in-progress?user=ndy";
@@ -233,6 +233,8 @@ public class TestDefaultServiceCallResolver {
 
         expectedProps.put("prefix", "org.iplantc.services");
         expectedProps.put("zoidberg.hostname", "emma.iplantcollaborative.org");
+        expectedProps.put("nibblonian.host", "emma.iplantcollaborative.org/nibblonian");
+        expectedProps.put("scruffian.host", "emma.iplantcollaborative.org/scruffian");
         expectedProps.put("org.iplantc.services.zoidberg.components",
                 "http://emma.iplantcollaborative.org/components");
         expectedProps.put("org.iplantc.services.zoidberg.formats",
@@ -247,10 +249,10 @@ public class TestDefaultServiceCallResolver {
                 "http://emma.iplantcollaborative.org/info-types");
         expectedProps.put("org.iplantc.services.zoidberg.inprogress",
                 "http://emma.iplantcollaborative.org/in-progress");
-        expectedProps.put("org.iplantc.services.zoidberg.getuserhomedir",
+        expectedProps.put("org.iplantc.services.nibblonian.getuserhomedir",
                 "http://emma.iplantcollaborative.org/nibblonian/home");
-        expectedProps.put("org.iplantc.services.zoidberg.fileupload",
-                "http://emma.iplantcollaborative.org/nibblonian/file/upload");
+        expectedProps.put("org.iplantc.services.scruffian.fileupload",
+                "http://emma.iplantcollaborative.org/scruffian/upload");
         return expectedProps;
     }
 
@@ -259,6 +261,8 @@ public class TestDefaultServiceCallResolver {
 
         propsConfig.addProperty("prefix", "org.iplantc.services");
         propsConfig.addProperty("zoidberg.hostname", "emma.iplantcollaborative.org");
+        propsConfig.addProperty("nibblonian.host", "emma.iplantcollaborative.org/nibblonian");
+        propsConfig.addProperty("scruffian.host", "emma.iplantcollaborative.org/scruffian");
         propsConfig.addProperty("org.iplantc.services.zoidberg.components",
                 "http://${zoidberg.hostname}/components");
         propsConfig.addProperty("org.iplantc.services.zoidberg.formats",
@@ -273,10 +277,10 @@ public class TestDefaultServiceCallResolver {
                 "http://${zoidberg.hostname}/info-types");
         propsConfig.addProperty("org.iplantc.services.zoidberg.inprogress",
                 "http://${zoidberg.hostname}/in-progress");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.getuserhomedir",
-                "http://${zoidberg.hostname}/nibblonian/home");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.fileupload",
-                "http://${zoidberg.hostname}/nibblonian/file/upload");
+        propsConfig.addProperty("org.iplantc.services.nibblonian.getuserhomedir",
+                "http://${nibblonian.host}/home");
+        propsConfig.addProperty("org.iplantc.services.scruffian.fileupload",
+                "http://${scruffian.host}/upload");
         return propsConfig;
     }
 
