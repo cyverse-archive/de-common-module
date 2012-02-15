@@ -36,4 +36,14 @@ public interface ConfluenceServiceAsync {
      * @param callback called after the service call finishes
      */
     void removeComment(String toolName, Long commentId, AsyncCallback<String> callback);
+
+    /**
+     * Changes an existing user comment on a tool description page.
+     * 
+     * @param toolName the name of the tool which is also the page title
+     * @param commentId the comment ID in Confluence
+     * @param newComment the new comment text
+     * @param callback called after the service call finishes
+     */
+    void editComment(String toolName, Long commentId, String newComment, AsyncCallback<String> callback);
 }

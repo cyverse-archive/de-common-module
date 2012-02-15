@@ -35,4 +35,13 @@ public interface ConfluenceService extends RemoteService {
      * @param commentId the comment ID in Confluence
      */
     void removeComment(String toolName, Long commentId);
+
+    /**
+     * Changes an existing user comment on a tool description page.
+     * 
+     * @param toolName the name of the tool which is also the page title
+     * @param commentId the comment ID in Confluence
+     * @param newComment the new comment text
+     */
+    void editComment(String toolName, Long commentId, String newComment);
 }
