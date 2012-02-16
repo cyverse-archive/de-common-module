@@ -20,6 +20,15 @@ public interface ConfluenceServiceAsync {
     void addPage(String toolName, String description, AsyncCallback<String> callback);
 
     /**
+     * Updates a documentation page with an average app rating.
+     * 
+     * @param toolName the name of the tool which is used as the page title
+     * @param avgRating the new average rating score
+     * @param callback called after the service call finishes
+     */
+    void updatePage(String toolName, int avgRating, AsyncCallback<String> callback);
+
+    /**
      * Adds a user comment to a tool description page.
      * 
      * @param toolName the name of the tool which is also the page title

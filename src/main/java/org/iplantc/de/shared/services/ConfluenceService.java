@@ -20,6 +20,15 @@ public interface ConfluenceService extends RemoteService {
     String addPage(String toolName, String description);
 
     /**
+     * Updates a documentation page with an average app rating.
+     * 
+     * @param toolName the name of the tool which is used as the page title
+     * @param avgRating the new average rating score
+     * @param callback called after the service call finishes
+     */
+    void updatePage(String toolName, int avgRating);
+
+    /**
      * Adds a user comment to a tool description page.
      * 
      * @param toolName the name of the tool which is also the page title
