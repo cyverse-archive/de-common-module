@@ -168,22 +168,34 @@ public class UploadServlet extends UploadAction {
             DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher();
             dispatcher.init(getServletConfig());
             dispatcher.setRequest(request);
-            fileUrl = extractUploadedUrl(dispatcher.getServiceData(wrapper));
+
             LOG.debug("invokeService - Making service call.");
+            String response = dispatcher.getServiceData(wrapper);
+            LOG.debug(response);
+
+            fileUrl = extractUploadedUrl(response);
         } catch (Exception e) {
             LOG.error("unable to upload file", e); //$NON-NLS-1$
-            throw new UploadActionException(e.getMessage());
+
+            UploadActionException uploadException = new UploadActionException(e.getMessage());
+            uploadException.initCause(e);
+
+            throw uploadException;
         }
+
         return fileUrl;
     }
 
     private String extractUploadedUrl(String json) {
         JSONObject jsonObj = JSONObject.fromObject(json);
         if (jsonObj != null) {
-            return jsonObj.getString("path");
-        } else {
-            return null;
+            JSONObject file = jsonObj.getJSONObject("file");
+            if (file != null) {
+                return file.getString("id");
+            }
         }
+
+        return null;
     }
 
     /**
