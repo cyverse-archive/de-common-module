@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 
 /**
@@ -18,6 +19,11 @@ import org.jasig.cas.client.authentication.AttributePrincipal;
  * @author Dennis Roberts
  */
 public class CasSessionInitializationServlet extends HttpServlet {
+
+    /**
+     * Used to log debugging information.
+     */
+    private static final Logger LOG = Logger.getLogger(CasSessionInitializationServlet.class);
 
     /**
      * The parameter name used to refer to the initial page.
@@ -31,7 +37,7 @@ public class CasSessionInitializationServlet extends HttpServlet {
 
     /**
      * The domain name to use for the EPPN.
-     * 
+     *
      * TODO: this will have to go away when we federate.
      */
     private static final String EPPN_DOMAIN_NAME = "@iplantcollaborative.org";
@@ -39,7 +45,7 @@ public class CasSessionInitializationServlet extends HttpServlet {
     /**
      * The names of the HTTP session attribute used to store the remote username.
      */
-    private static final String[] CAS_USERNAME_ATTR = {"username", DESecurityConstants.LOCAL_SHIB_UID};
+    private static final String[] CAS_USERNAME_ATTRS = {"username", DESecurityConstants.LOCAL_SHIB_UID};
 
     /**
      * A map that translates CAS user attribute names to the names used by the DE.
@@ -75,19 +81,45 @@ public class CasSessionInitializationServlet extends HttpServlet {
      */
     private void copyCasAttributes(HttpServletRequest req) {
         HttpSession session = req.getSession();
+        storeUsername(session, req.getRemoteUser());
         AttributePrincipal principal = (AttributePrincipal) req.getUserPrincipal();
         Map<String, Object> attrs = principal.getAttributes();
-        session.setAttribute(CAS_PRINCIPAL_ATTR, req.getRemoteUser());
-        session.setAttribute(DESecurityConstants.LOCAL_SHIB_EPPN, req.getRemoteUser() + EPPN_DOMAIN_NAME);
-        session.setAttribute(CAS_PRINCIPAL_ATTR, principal);
         for (String name : attrs.keySet()) {
             Object value = attrs.get(name);
-            session.setAttribute(name, value);
+            setAttr(session, name, value);
             String alternateName = ATTR_NAME_MAP.get(name);
             if (alternateName != null) {
-                session.setAttribute(alternateName, value);
+                setAttr(session, alternateName, value);
             }
         }
+    }
+
+    /**
+     * Stores the username in all of the session attributes that expect the username.
+     *
+     * @param session the HTTP session.
+     * @param remoteUser the username.
+     */
+    private void storeUsername(HttpSession session, String remoteUser) {
+        setAttr(session, CAS_PRINCIPAL_ATTR, remoteUser);
+        setAttr(session, DESecurityConstants.LOCAL_SHIB_EPPN, remoteUser + EPPN_DOMAIN_NAME);
+        for (String name : CAS_USERNAME_ATTRS) {
+            setAttr(session, name, remoteUser);
+        }
+    }
+
+    /**
+     * Sets an attribute in an HTTP session, logging the attribute value if debugging is enabled.
+     *
+     * @param session the HTTP session.
+     * @param name the name of the attribute.
+     * @param value the value of the attribute.
+     */
+    private void setAttr(HttpSession session, String name, Object value) {
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Saving user attribute: " + name + " = " + value);
+        }
+        session.setAttribute(name, value);
     }
 
     /**
