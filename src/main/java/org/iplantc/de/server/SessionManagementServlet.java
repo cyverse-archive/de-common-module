@@ -45,7 +45,12 @@ public class SessionManagementServlet extends RemoteServiceServlet implements Se
      */
     @Override
     public String getAttribute(String key) throws SerializationException {
-        return getSession().getAttribute(key).toString();
+        Object attr = getSession().getAttribute(key);
+        if (attr == null) {
+            return null;
+        } else {
+            return attr.toString();
+        }
     }
 
     /**
