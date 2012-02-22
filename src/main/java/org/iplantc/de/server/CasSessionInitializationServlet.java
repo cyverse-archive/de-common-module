@@ -13,6 +13,8 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 
+import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
+
 /**
  * A servlet used to initialize HTTP sessions for CAS-secured web applications.
  *
@@ -66,6 +68,7 @@ public class CasSessionInitializationServlet extends HttpServlet {
             redirectUser(req, resp);
         }
         catch (Exception e) {
+            LOG.error("unable to initialize the user's session", e);
             resp.setContentType("text/plain");
             resp.getWriter().println(e.getMessage());
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
@@ -82,7 +85,7 @@ public class CasSessionInitializationServlet extends HttpServlet {
     private void copyCasAttributes(HttpServletRequest req) {
         HttpSession session = req.getSession();
         storeUsername(session, req.getRemoteUser());
-        AttributePrincipal principal = (AttributePrincipal) req.getUserPrincipal();
+        AttributePrincipal principal = attributePrincipalFromServletRequest(req);
         Map<String, Object> attrs = principal.getAttributes();
         for (String name : attrs.keySet()) {
             Object value = attrs.get(name);

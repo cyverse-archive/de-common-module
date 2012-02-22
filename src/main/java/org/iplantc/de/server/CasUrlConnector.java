@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 
+import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
+
 /**
  * Used to establish connections to a services that are secured by CAS.  The service must be configured to accept
  * proxy tickets from this server.  The proxy tickets will be sent to the service in the query string parameter,
@@ -59,28 +61,12 @@ public class CasUrlConnector implements UrlConnector {
 	 * @throws IOException if the proxy ticket can't be obtained.
 	 */
 	private String getProxyTicket(HttpServletRequest request, URL url) throws IOException {
-		AttributePrincipal principal = getPrincipal(request);
+		AttributePrincipal principal = attributePrincipalFromServletRequest(request);
 		String ticket = principal.getProxyTicketFor(extractServiceName(url));
 		if (ticket == null) {
 			throw new IOException("unable to obtain a proxy ticket; please check the security settings");
 		}
 		return ticket;
-	}
-
-	/**
-	 * Obtains the principal from the incoming servlet request.
-	 * 
-	 * @param request the servlet request.
-	 * @return the principal.
-	 * @throws IOException if the user is not authenticated.
-	 * @throws ClassCastException if the user is not authenticated via CAS.
-	 */
-	private AttributePrincipal getPrincipal(HttpServletRequest request) throws IOException {
-		AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
-		if (principal == null) {
-			throw new IOException("user is not authenticated");
-		}
-		return principal;
 	}
 
 	/**
