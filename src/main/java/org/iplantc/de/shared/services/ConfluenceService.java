@@ -53,4 +53,12 @@ public interface ConfluenceService extends RemoteService {
      * @param newComment the new comment text
      */
     void editComment(String toolName, Long commentId, String newComment);
+
+    /**
+     * Retrieves a user comment from a tool description page.
+     * 
+     * @param commentId the comment ID in Confluence
+     * @return the comment text
+     */
+    String getComment(long commentId);
 }

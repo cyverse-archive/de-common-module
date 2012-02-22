@@ -55,4 +55,12 @@ public interface ConfluenceServiceAsync {
      * @param callback called after the service call finishes
      */
     void editComment(String toolName, Long commentId, String newComment, AsyncCallback<String> callback);
+
+    /**
+     * Retrieves a user comment from a tool description page.
+     * 
+     * @param commentId the comment ID in Confluence
+     * @param callback called after the service call finishes
+     */
+    void getComment(long commentId, AsyncCallback<String> callback);
 }
