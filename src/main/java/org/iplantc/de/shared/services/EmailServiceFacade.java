@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 
 /**
- * A service for sending simple emails (service façade).
+ * A service for sending simple emails (service facade).
  * 
  * @author hariolf
  * 
