@@ -28,18 +28,28 @@ public class CasUtils {
      * either directly via the Java CAS client or indirectly via the Java CAS client and Spring Security.
      * 
      * @param req the HTTP servlet request.
-     * @return the attribute principal.
+     * @return the attribute principal or null if the user isn't authenticated.
      */
     public static AttributePrincipal attributePrincipalFromServletRequest(HttpServletRequest req) {
-        Object authToken = req.getUserPrincipal();
-        if (authToken instanceof AttributePrincipal) {
-            LOG.debug("returning the user principal from the request...");
-            return (AttributePrincipal) authToken;
+        return attributePrincipalFromUserPrincipal(req.getUserPrincipal());
+    }
+
+    /**
+     * Obtains an AttributePrincipal object from a general user principal object.  The user must have been authenticated
+     * either directly via the Java CAS client or indirectly via the Java CAS client and Spring Security.
+     * 
+     * @param userPrincipal the user principal object.
+     * @return the attribute principal or null if the user isn't authenticated.
+     */
+    public static AttributePrincipal attributePrincipalFromUserPrincipal(Object userPrincipal) {
+        if (userPrincipal instanceof AttributePrincipal) {
+            LOG.debug("returning the top-level user principal");
+            return (AttributePrincipal) userPrincipal;
         }
-        else if (authToken instanceof CasAuthenticationToken) {
-            LOG.debug("returning the user principal from the CAS assertion...");
-            return (AttributePrincipal) ((CasAuthenticationToken) authToken).getAssertion().getPrincipal();
+        else if (userPrincipal instanceof CasAuthenticationToken) {
+            LOG.debug("returning the user principal from within the CAS assertion");
+            return (AttributePrincipal) ((CasAuthenticationToken) userPrincipal).getAssertion().getPrincipal();
         }
-        throw new IllegalStateException("the user doesn't seem to have been authenticated via CAS.");
+        return null;
     }
 }

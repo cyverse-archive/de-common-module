@@ -132,8 +132,8 @@ public class CasRoleFilter implements Filter {
      * @return true if the user is authorized to access the resource.
      */
     private boolean isUserAuthorized(HttpServletRequest request) {
-        if (request.getUserPrincipal() instanceof AttributePrincipal) {
-            AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
+        AttributePrincipal principal = CasUtils.attributePrincipalFromServletRequest(request);
+        if (principal != null) {
             for (String role : getUserRoles(principal)) {
                 for (String authorizedRole : authorizedRoles) {
                     if (role.equals(authorizedRole)) {
