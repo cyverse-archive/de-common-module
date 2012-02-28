@@ -51,7 +51,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     private ServletContext context = null;
 
     /**
-     * The servlet request to use when building the SAML assertion.
+     * The current servlet request.
      */
     private HttpServletRequest request = null;
 
@@ -79,7 +79,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     }
 
     /**
-     * Sets the servlet request to use when building the SAML assertion.
+     * Sets the current servlet request.
      * 
      * @param request the request to use.
      */
@@ -88,7 +88,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     }
 
     /**
-     * Gets the servlet request to use when building the SAML assertion.
+     * Gets the current servlet request.
      * 
      * @return the request to use.
      */

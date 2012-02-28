@@ -86,11 +86,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.iplantc.core</groupId>
-			<artifactId>saml</artifactId>
-			<version>dev-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.iplantc.core</groupId>
 			<artifactId>jsonutil</artifactId>
 			<version>dev-SNAPSHOT</version>
 		</dependency>
