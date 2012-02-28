@@ -3,6 +3,7 @@ package org.iplantc.de.server;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,13 +20,13 @@ import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 
 /**
- * An authentication filter that verifies that the user has thee role that is permitted to access a resource.  The
- * list of roles that are assigned to the user must be stored as a comma-delimited string with optional whitespace
- * in the format @{code [value1, value2, ..., valuen]}.  This filter requires two initialization parameters:
- * @{code authorizedRole} and @{code roleAttributeName}.  The @{code authorizedRole} parameter contains the name of the
- * role that is authorized to access the resource.  The @{code roleAttributeName} parameter contains the name of the
- * attribute that is used to transfer the list of roles that the user fills.
- * 
+ * An authentication filter that verifies that the user has thee role that is permitted to access a resource. The list
+ * of roles that are assigned to the user must be stored as a comma-delimited string with optional whitespace in the
+ * format @{code [value1, value2, ..., valuen]}. This filter requires two initialization parameters: @{code
+ * authorizedRoles} and @{code roleAttributeName}. The @{code authorizedRoles} parameter contains the names of the roles
+ * that are authorized to access the resource in the format of a comma-delimited string. The @{code roleAttributeName}
+ * parameter contains the name of the attribute that is used to transfer the list of roles that the user fills.
+ *
  * @author Dennis Roberts
  */
 public class CasRoleFilter implements Filter {
@@ -48,10 +49,10 @@ public class CasRoleFilter implements Filter {
     /**
      * The role that is authorized to access a resource.
      */
-    private String authorizedRole;
+    private List<String> authorizedRoles;
 
     /**
-     * The name of the attribute containing the roles.  This attribute must contain a string array.
+     * The name of the attribute containing the roles. This attribute must contain a string array.
      */
     private String roleAttributeName;
 
@@ -60,14 +61,28 @@ public class CasRoleFilter implements Filter {
      */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        authorizedRole = getRequiredInitParameter(filterConfig, "authorizedRole");
+        authorizedRoles = getRequiredInitParameterAsList(filterConfig, "authorizedRoles");
         roleAttributeName = getRequiredInitParameter(filterConfig, "roleAttributeName");
     }
 
     /**
-     * Gets a required initialization parameter from the filter configuration, throwing an exception if the parameter
-     * is undefined or empty.
-     * 
+     * Gets a required initialization parameter from the filter configuration, throwing an exception of the parameter is
+     * undefined or empty. The initialization parameter is expected to contain a comma-delimited string that represents
+     * a list of values.
+     *
+     * @param filterConfig the filter configuration.
+     * @param name the initialization parameter name.
+     * @return the initialization parameter value as a list of strings.
+     * @throws IllegalArgumentException if the parameter is undefined or empty.
+     */
+    private List<String> getRequiredInitParameterAsList(FilterConfig filterConfig, String name) {
+        return Arrays.asList(getRequiredInitParameter(filterConfig, name).split(",", 0));
+    }
+
+    /**
+     * Gets a required initialization parameter from the filter configuration, throwing an exception if the parameter is
+     * undefined or empty.
+     *
      * @param filterConfig the filter configuration.
      * @param name the initialization parameter name.
      * @return the initialization parameter value.
@@ -98,7 +113,7 @@ public class CasRoleFilter implements Filter {
 
     /**
      * Determines if the user is authorized to access the resource.
-     * 
+     *
      * @param request the servlet request.
      * @return true if the user is authorized to access the resource.
      */
@@ -106,8 +121,10 @@ public class CasRoleFilter implements Filter {
         if (request.getUserPrincipal() instanceof AttributePrincipal) {
             AttributePrincipal principal = (AttributePrincipal) request.getUserPrincipal();
             for (String role : getUserRoles(principal)) {
-                if (role.equals(authorizedRole)) {
-                    return true;
+                for (String authorizedRole : authorizedRoles) {
+                    if (role.equals(authorizedRole)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -116,7 +133,7 @@ public class CasRoleFilter implements Filter {
 
     /**
      * Extracts the roles that the user fills from an {@link AttributePrincipal}.
-     * 
+     *
      * @param principal the principal.
      * @return the list of roles that the user fills.
      */
@@ -139,9 +156,9 @@ public class CasRoleFilter implements Filter {
 
     /**
      * Extracts the list contents string from a string representation of a list.
-     * 
+     *
      * @param listString the string representation of the list.
-     * @return the list contents or null 
+     * @return the list contents or null
      */
     public String extractListContents(String listString) {
         String result = null;
