@@ -277,12 +277,19 @@ public interface CommonDisplayStrings extends Messages {
     String makePublic();
 
     /**
+     * Title of a dialog that tells the user the app has been made public.
+     * 
+     * @return
+     */
+    String makePublicSuccessTitle();
+
+    /**
      * A message telling the user that "make public" was successful
      * 
      * @param url The URL of the documentation page
      * @return
      */
-    String makePublicSucess(String url);
+    String makePublicSuccessMessage(String url);
 
     /**
      * A message telling the user that "make public" was unsuccessful
