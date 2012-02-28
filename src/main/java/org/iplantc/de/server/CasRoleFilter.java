@@ -57,6 +57,20 @@ public class CasRoleFilter implements Filter {
     private String roleAttributeName;
 
     /**
+     * @param authorizedRoles the list of roles that are permitted to access the resource.
+     */
+    public void setAuthorizedRoles(String authorizedRoles) {
+        this.authorizedRoles = Arrays.asList(authorizedRoles.split(",", 0));
+    }
+
+    /**
+     * @param roleAttributeName the name of the CAS attribute containing the user's roles.
+     */
+    public void setRoleAttributeName(String roleAttributeName) {
+        this.roleAttributeName = roleAttributeName;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
