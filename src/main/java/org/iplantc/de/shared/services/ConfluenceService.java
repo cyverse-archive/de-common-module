@@ -18,8 +18,9 @@ public interface ConfluenceService extends RemoteService {
      * @param toolName the name of the tool which is used as the page title
      * @param description a tool description
      * @return a URL pointing to the new page
+     * @throws ConfluenceException
      */
-    String addPage(String toolName, String description);
+    String addPage(String toolName, String description) throws ConfluenceException;
 
     /**
      * Updates a documentation page with an average app rating.
