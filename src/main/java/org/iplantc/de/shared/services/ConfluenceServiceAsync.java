@@ -32,10 +32,13 @@ public interface ConfluenceServiceAsync {
      * Adds a user comment to a tool description page.
      * 
      * @param toolName the name of the tool which is also the page title
+     * @param score the user's rating of the tool
+     * @param username the DE user who rated the tool
      * @param comment a comment
      * @param callback called after the service call finishes
      */
-    void addComment(String toolName, String comment, AsyncCallback<String> callback);
+    void addComment(String toolName, int score, String username, String comment,
+            AsyncCallback<String> callback);
 
     /**
      * Removes a user comment from a tool description page.
@@ -50,11 +53,14 @@ public interface ConfluenceServiceAsync {
      * Changes an existing user comment on a tool description page.
      * 
      * @param toolName the name of the tool which is also the page title
+     * @param score the user's rating of the tool
+     * @param username the DE user who rated the tool
      * @param commentId the comment ID in Confluence
      * @param newComment the new comment text
      * @param callback called after the service call finishes
      */
-    void editComment(String toolName, Long commentId, String newComment, AsyncCallback<String> callback);
+    void editComment(String toolName, int score, String username, Long commentId, String newComment,
+            AsyncCallback<String> callback);
 
     /**
      * Retrieves a user comment from a tool description page.
