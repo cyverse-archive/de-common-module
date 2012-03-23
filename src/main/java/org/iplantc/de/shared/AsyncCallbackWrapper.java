@@ -6,9 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.StatusCodeException;
 
 /**
- * Detects when the user is not logged in to the application and redirects the user to the login page.
- * The authentication filter always responds with a 403 status code, but we have also have to check for a
- * status code of zero because that seems to be what StatusCodeException.getStatusCode() always returns.
+ * Detects when the user is not logged in to the application and redirects the user to the login page.  Under normal
+ * circumstances, we'll receive a 302 status code if the user is not authenticated, but we also have to check for a
+ * status code of 0 because GWT doesn't currently return the correct status code.
  * 
  * @author Dennis Roberts
  * 
@@ -33,8 +33,9 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
 
     /**
      * Called whenever a call to the server fails. If the call failed because of an HTTP status code and
-     * that status code is either 403 or wasn't recorded then we assume that the user isn't logged in and
-     * redirect the user to the login page. The callback that we're wrapping deals with all other errors.
+     * that status code represents a redirect request or wasn't recorded then we assume that the user isn't
+     * logged in and redirect the user to the login page. The callback that we're wrapping deals with all
+     * other errors.
      * 
      * @param error the exception or error that indicates why the call failed.
      */
@@ -42,7 +43,7 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
     public void onFailure(Throwable error) {
         if (error instanceof StatusCodeException) {
             int statusCode = ((StatusCodeException)error).getStatusCode();
-            if (statusCode == 401 || statusCode == 403 || statusCode == 0) {
+            if (statusCode == 302 || statusCode == 0) {
                 String contextPath = Window.Location.getPath();
                 Window.Location.replace(contextPath + GWT.getModuleName() + LANDING_PAGE);
                 return;
