@@ -1,6 +1,6 @@
 package org.iplantc.de.client.util;
 
-import org.iplantc.de.client.I18N;
+import org.iplantc.de.client.DeCommonI18N;
 
 import com.extjs.gxt.ui.client.Style.HorizontalAlignment;
 import com.extjs.gxt.ui.client.event.ButtonEvent;
@@ -73,9 +73,9 @@ public class WindowUtil {
     public static void showDialogOnPopUpBlock(final String url, final String window_name,
             final String options) {
         final Window win = new Window();
-        win.setHeading(I18N.DISPLAY.popUpWarning());
+        win.setHeading(DeCommonI18N.DISPLAY.popUpWarning());
         win.setSize(370, 100);
-        win.addText(I18N.DISPLAY.popWarningMsg());
+        win.addText(DeCommonI18N.DISPLAY.popWarningMsg());
         win.setClosable(false);
         ButtonBar bar = new ButtonBar();
         bar.setAlignment(HorizontalAlignment.CENTER);

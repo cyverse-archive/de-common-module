@@ -1,10 +1,7 @@
 package org.iplantc.de.server;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Properties;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -14,6 +11,10 @@ import org.iplantc.de.shared.services.PropertyService;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import java.util.Iterator;
+import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class PropertyServlet extends RemoteServiceServlet implements PropertyService{
     /**
@@ -23,6 +24,7 @@ public class PropertyServlet extends RemoteServiceServlet implements PropertySer
     private static final String APP_PROPERTY_FILE = "appPropertyFile";
     private String propertyFile ;
     
+    @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         ServletContext context = config.getServletContext();
@@ -34,30 +36,27 @@ public class PropertyServlet extends RemoteServiceServlet implements PropertySer
      */
     @Override
     public Map<String, String> getProperties() throws SerializationException {
-        Properties properties = loadProperties();
+        Configuration config = loadConfiguration();
         HashMap<String, String> propertyMap = new HashMap<String, String>();
-        for (Object key : properties.keySet()) {
-            propertyMap.put(key.toString(), properties.get(key).toString());
+        for (Iterator i = config.getKeys(); i.hasNext(); ) {
+            String key = (String) i.next();
+            propertyMap.put(key, config.getString(key));
         }
         return propertyMap;
     }
 
     /**
-     * Loads the properties from discoveryenvironment.properties.
+     * Loads the configuration from the application property file.
      * 
-     * @return the properties.
-     * @throws SerializationException if the properties can't be loaded.
+     * @return the configuration.
+     * @throws SerializationException if the configuration can't be loaded.
      */
-    private Properties loadProperties() throws SerializationException {
-        Properties properties = null;
-        InputStream in = null;
+    private Configuration loadConfiguration() throws SerializationException {
         try {
-            in = getClass().getClassLoader().getResourceAsStream(propertyFile); //$NON-NLS-1$
-            properties = new Properties();
-            properties.load(in);
-        } catch (IOException e) {
+            return new PropertiesConfiguration(propertyFile);
+        }
+        catch (ConfigurationException e) {
             throw new SerializationException(e);
         }
-        return properties;
     }
 }
