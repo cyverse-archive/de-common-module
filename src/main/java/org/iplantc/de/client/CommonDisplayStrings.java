@@ -42,8 +42,6 @@ public interface CommonDisplayStrings extends Messages {
 
     String applyOperation();
 
-    String performAnaylsis();
-
     String manageData();
 
     String viewResults();
@@ -306,13 +304,6 @@ public interface CommonDisplayStrings extends Messages {
     String publicSubmissionForm();
 
     /**
-     * Localized text for the name of an analysis.
-     *
-     * @return string representing the text
-     */
-    String analysisName();
-
-    /**
      * Localized label for a tool integrator's name.
      *
      * @return string representing the text
@@ -327,11 +318,11 @@ public interface CommonDisplayStrings extends Messages {
     String integratorEmail();
 
     /**
-     * Localized text for a analysis description field.
-     *
+     * Localized text for an app description field.
+     * 
      * @return string representing the text
      */
-    String analysisDesc();
+    String appDesc();
 
     /**
      * Localized text for a category selection label.
@@ -361,13 +352,6 @@ public interface CommonDisplayStrings extends Messages {
      * @return string representing the text
      */
     String attachSampleOutput();
-
-    /**
-     * Localized text for a "describe analysis settings" label.
-     *
-     * @return string representing the text
-     */
-    String describeAnalysisSettings();
 
     /**
      * Localized text for a references field label.
