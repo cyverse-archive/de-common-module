@@ -88,8 +88,6 @@ public interface CommonDisplayStrings extends Messages {
      */
     String saveAs();
 
-    String saving();
-
     String progress();
 
     /**
@@ -231,6 +229,13 @@ public interface CommonDisplayStrings extends Messages {
      * @return string representing the text
      */
     String loadingMask();
+
+    /**
+     * Localized text for async service call saving masks.
+     * 
+     * @return string representing the text
+     */
+    String savingMask();
 
     /**
      * Localized display text for preview.
