@@ -1,6 +1,6 @@
 package org.iplantc.de.shared;
 
-import org.iplantc.de.client.I18N;
+import org.iplantc.de.client.DeCommonI18N;
 import org.iplantc.de.shared.services.ConfluenceService;
 
 /**
@@ -26,6 +26,6 @@ public class ConfluenceException extends Exception {
      */
     public ConfluenceException(Throwable cause) {
         // don't include comment id etc to keep the exception message user-friendly
-        super(I18N.ERROR.confluenceError(), cause);
+        super(DeCommonI18N.ERROR.confluenceError(), cause);
     }
 }
