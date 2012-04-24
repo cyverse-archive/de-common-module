@@ -8,6 +8,6 @@ import com.google.gwt.core.client.GWT;
  * @author lenards
  * 
  */
-public class Constants {
+public class DeCommonConstants {
     public static final CommonConstants CLIENT = (CommonConstants)GWT.create(CommonConstants.class);
 }

@@ -8,7 +8,7 @@ import com.google.gwt.core.client.GWT;
  * @author lenards
  * 
  */
-public class I18N {
+public class DeCommonI18N {
     /** Strings displayed in the UI */
     public static final CommonDisplayStrings DISPLAY = (CommonDisplayStrings)GWT.create(CommonDisplayStrings.class);
     /** Error messages */
