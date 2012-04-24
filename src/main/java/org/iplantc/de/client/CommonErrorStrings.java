@@ -21,4 +21,11 @@ public interface CommonErrorStrings extends Messages {
      * @return string representing the text
      */
     String analysisGroupsLoadFailure();
+
+    /**
+     * Localized error message to show when something goes wrong with confluence
+     * 
+     * @return
+     */
+    String confluenceError();
 }
