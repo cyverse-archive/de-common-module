@@ -323,11 +323,11 @@ public interface CommonDisplayStrings extends Messages {
     String integratorEmail();
 
     /**
-     * Localized text for an app description field.
-     * 
+     * Localized text for a analysis description field.
+     *
      * @return string representing the text
      */
-    String appDesc();
+    String analysisDesc();
 
     /**
      * Localized text for a category selection label.

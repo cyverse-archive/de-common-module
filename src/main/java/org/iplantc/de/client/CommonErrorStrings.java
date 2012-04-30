@@ -16,10 +16,9 @@ public interface CommonErrorStrings extends Messages {
     String error();
 
     /**
-     * Localized error message to show when app groups couldn't be loaded.
+     * Localized error message to show when analysis groups couldn't be loaded.
      * 
      * @return string representing the text
      */
-    String appGroupsLoadFailure();
-   
+    String analysisGroupsLoadFailure();
 }
