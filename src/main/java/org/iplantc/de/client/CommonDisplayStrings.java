@@ -403,4 +403,11 @@ public interface CommonDisplayStrings extends Messages {
       * @return a string representing the localized text.
       */
      String valueParenS();
+
+    /**
+     * Localized string for host
+     * 
+     * @return a string representing the localized text.
+     */
+    String host();
 }
