@@ -75,4 +75,17 @@ public interface ConfluenceService extends RemoteService {
      * @throws ConfluenceException
      */
     String getComment(long commentId) throws ConfluenceException;
+
+    /**
+     * 
+     * Move the wiki doc page for an app to new location under list of application with new title
+     * 
+     * @param oldAppName
+     * @param newAppName
+     * @return
+     * @throws ConfluenceException
+     */
+    String movePage(String oldAppName, String newAppName) throws ConfluenceException;
+        
+    
 }

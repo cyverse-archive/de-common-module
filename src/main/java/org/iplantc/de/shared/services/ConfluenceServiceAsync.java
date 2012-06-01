@@ -69,4 +69,14 @@ public interface ConfluenceServiceAsync {
      * @param callback called after the service call finishes
      */
     void getComment(long commentId, AsyncCallback<String> callback);
+
+    /**
+     * 
+     * Move the wiki doc page for an app to new location under list of application with new title
+     * 
+     * @param oldAppName
+     * @param newAppName
+     * @param callback called after the service call finishes
+     */
+    void movePage(String oldAppName, String newAppName, AsyncCallback<String> callback);
 }
