@@ -58,6 +58,11 @@
 			<classifier>jdk15</classifier>
 		</dependency>
 		<dependency>
+			<groupId>org.antlr</groupId>
+			<artifactId>stringtemplate</artifactId>
+			<version>4.0.2</version>
+		</dependency>
+		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.14</version>
@@ -190,7 +195,8 @@
 					<include>**/shared/**</include>
 					<!-- only include the GWT Module definition -->
 					<include>**/DiscoveryEnvironmentCommon.gwt.xml</include>
-                                        <include>email.properties</include>
+					<include>email.properties</include>
+					<include>logout-alert-template.html</include>
 				</includes>
 			</resource>
 		</resources>
