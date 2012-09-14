@@ -1,6 +1,7 @@
 package org.iplantc.de.server;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Properties;
 import java.util.regex.Pattern;
 import javax.servlet.ServletException;
@@ -10,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.stringtemplate.v4.ST;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
 
 /**
  * A shared servlet for handling CAS logout.
@@ -18,18 +18,6 @@ import org.apache.log4j.Logger;
  * @author Dennis Roberts
  */
 public class CasLogoutServlet extends HttpServlet {
-
-    private static final Logger LOG = Logger.getLogger(CasLogoutServlet.class);
-
-    /**
-     * The name of the initialization parameter containing the name of the application property file.
-     */
-    private static final String PROP_FILE_INIT_PARAM = "appPropertyFile";
-
-    /**
-     * The name of the initialization parameter containing the property name prefix.
-     */
-    private static final String PROP_PREFIX_INIT_PARAM = "appPropertyPrefix";
 
     /**
      * The name of the property containing the relative URL to redirect the user to when the user chooses to log out of
@@ -103,34 +91,32 @@ public class CasLogoutServlet extends HttpServlet {
     private String templateText;
 
     /**
-     * {@inheritDoc}
+     * @param props the properties containing the app configuration settings.
+     * @param propPrefix the prefix to use when determining property names.
      */
-    @Override
-    public void init() throws ServletException {
-        super.init();
-        try {
-            Properties props = loadAppProperties();
-            String propPrefix = getRequiredInitParameter(PROP_PREFIX_INIT_PARAM);
-            logoutUrl = getRequiredProp(props, propPrefix + LOGOUT_URL_PROPERTY);
-            appName = getRequiredProp(props, propPrefix + APP_NAME_PROPERTY);
-            loginUrl = getRequiredProp(props, propPrefix + LOGIN_URL_PROPERTY);
-            noLogoutUrl = getRequiredProp(props, propPrefix + NO_LOGOUT_URL_PROPERTY);
-            appList = getRequiredProp(props, propPrefix + APP_LIST_PROPERTY);
-            templateText = loadTemplate();
-        }
-        catch (IOException e) {
-            throw new ServletException(e);
-        }
+    public CasLogoutServlet(Properties props, String propPrefix) {
+        logoutUrl = getRequiredProp(props, propPrefix + LOGOUT_URL_PROPERTY);
+        appName = getRequiredProp(props, propPrefix + APP_NAME_PROPERTY);
+        loginUrl = getRequiredProp(props, propPrefix + LOGIN_URL_PROPERTY);
+        noLogoutUrl = getRequiredProp(props, propPrefix + NO_LOGOUT_URL_PROPERTY);
+        appList = getRequiredProp(props, propPrefix + APP_LIST_PROPERTY);
+        templateText = loadTemplate();
     }
 
     /**
      * Loads the template for the logout alert page.
      *
      * @return the template text.
-     * @throws IOException if the template doesn't exist or can't be loaded.
+     * @throws RuntimeException if the template doesn't exist or can't be loaded.
      */
-    private String loadTemplate() throws IOException {
-        return IOUtils.toString(Thread.currentThread().getContextClassLoader().getResourceAsStream(TEMPLATE_FILENAME));
+    private String loadTemplate() {
+        try {
+            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(TEMPLATE_FILENAME);
+            return IOUtils.toString(in);
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -145,35 +131,6 @@ public class CasLogoutServlet extends HttpServlet {
         String value = props.getProperty(name);
         if (StringUtils.isBlank(value)) {
             String msg = "configuration property, " + name + ", is missing or empty";
-            throw new IllegalStateException(msg);
-        }
-        return value;
-    }
-
-    /**
-     * Loads configuration properties from the application properties file, which must be on the classpath.
-     *
-     * @return the application properties.
-     * @throws IOException if an I/O error occurs.
-     */
-    private Properties loadAppProperties() throws IOException {
-        Properties props = new Properties();
-        String filename = getRequiredInitParameter(PROP_FILE_INIT_PARAM);
-        props.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(filename));
-        return props;
-    }
-
-    /**
-     * Gets a required initialization parameter.
-     *
-     * @param name the name of the initialization parameter.
-     * @return the value of the initialization parameter.
-     * @throws IllegalStateException if the initialization parameter is missing or empty.
-     */
-    private String getRequiredInitParameter(String name) {
-        String value = getServletContext().getInitParameter(name);
-        if (StringUtils.isBlank(value)) {
-            String msg = "initialization parameter, " + name + ", is missing or empty";
             throw new IllegalStateException(msg);
         }
         return value;
