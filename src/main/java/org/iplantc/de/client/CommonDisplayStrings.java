@@ -410,4 +410,11 @@ public interface CommonDisplayStrings extends Messages {
      * @return a string representing the localized text.
      */
     String host();
+    
+    /**
+     * Localized string for create
+     * 
+     * @return a string representing the localized text.
+     */
+    String create();
 }
