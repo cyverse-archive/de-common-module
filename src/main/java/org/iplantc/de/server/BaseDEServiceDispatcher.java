@@ -36,15 +36,6 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     private ServiceCallResolver serviceResolver;
 
-    private static final String APP_PROPERTY_FILE = "appPropertyFile";
-
-    @Override
-    public void init(ServletConfig config) throws ServletException {
-        super.init(config);
-        ServletContext context = config.getServletContext();
-        serviceResolver = new DefaultServiceCallResolver(context.getInitParameter(APP_PROPERTY_FILE));
-    }
-
     /**
      * The servlet context to use when looking up the keystore path.
      */
@@ -59,6 +50,13 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
      * Used to establish URL connections.
      */
     private UrlConnector urlConnector;
+
+    /**
+     * @param serviceResolver resolves aliased URLs.
+     */
+    public BaseDEServiceDispatcher(ServiceCallResolver serviceResolver) {
+        this.serviceResolver = serviceResolver;
+    }
 
     /**
      * Sets the servlet context to use when looking up the keystore path.

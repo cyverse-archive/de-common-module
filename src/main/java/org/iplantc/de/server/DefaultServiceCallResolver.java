@@ -1,9 +1,8 @@
 package org.iplantc.de.server;
 
 import java.io.InputStream;
-import java.util.Properties;
 import java.util.Map.Entry;
-
+import java.util.Properties;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.StringUtils;
@@ -16,13 +15,6 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
 
     private PropertiesConfiguration appProperties;
     private String prefix;
-
-    public DefaultServiceCallResolver(String propertyFile) {
-        loadProperties(propertyFile);
-        setPrefix();
-        validatePrefix();
-
-    }
 
     public DefaultServiceCallResolver(PropertiesConfiguration propsConfig) {
         appProperties = propsConfig;
@@ -39,7 +31,7 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
         validatePrefix();
     }
 
-    public void validatePrefix() {
+    private void validatePrefix() {
         if (StringUtils.isEmpty(prefix)) {
             throw new IllegalArgumentException("Properties argument must contain a property defining "
                     + "the prefix for service keys: " + PREFIX_KEY);

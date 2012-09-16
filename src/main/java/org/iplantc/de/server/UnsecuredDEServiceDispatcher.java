@@ -8,9 +8,10 @@ public class UnsecuredDEServiceDispatcher extends BaseDEServiceDispatcher {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Initializes the new service dispatcher.
+     * @param serviceResolver resolves aliased URLs.
      */
-    public UnsecuredDEServiceDispatcher() {
+    public UnsecuredDEServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new UnauthenticatedUrlConnector());
     }
 }

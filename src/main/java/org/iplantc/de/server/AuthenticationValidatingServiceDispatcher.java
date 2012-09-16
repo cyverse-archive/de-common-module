@@ -12,9 +12,10 @@ public class AuthenticationValidatingServiceDispatcher extends BaseDEServiceDisp
     private static final long serialVersionUID = 1L;
 
     /**
-     * Initializes the new service dispatcher.
+     * @param serviceResolver resolves aliased URLs.
      */
-    public AuthenticationValidatingServiceDispatcher() {
+    public AuthenticationValidatingServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new AuthenticationValidatingUrlConnector());
     }
 }

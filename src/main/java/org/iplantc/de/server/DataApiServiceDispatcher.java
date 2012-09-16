@@ -2,7 +2,6 @@ package org.iplantc.de.server;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.StringBody;
 
@@ -21,9 +20,10 @@ public class DataApiServiceDispatcher extends BaseDEServiceDispatcher {
     private boolean forceJsonContentType = false;
 
     /**
-     * Initializes the new service dispatcher.
+     * @param serviceResolver resolves aliased URLs.
      */
-    public DataApiServiceDispatcher() {
+    public DataApiServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new DataApiUrlConnector());
     }
 

@@ -10,9 +10,10 @@ package org.iplantc.de.server;
 public class CasServiceDispatcher extends BaseDEServiceDispatcher {
 
     /**
-     * Initializes the new service dispatcher.
+     * @param serviceResolver resolves aliased URLs.
      */
-    public CasServiceDispatcher() {
+    public CasServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new CasUrlConnector());
     }
 }

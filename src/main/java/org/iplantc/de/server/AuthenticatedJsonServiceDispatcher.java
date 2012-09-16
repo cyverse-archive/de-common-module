@@ -22,9 +22,10 @@ public class AuthenticatedJsonServiceDispatcher extends BaseDEServiceDispatcher 
     private static final Logger LOG = Logger.getLogger(AuthenticatedJsonServiceDispatcher.class);
 
     /**
-     * Initializes the new service dispatcher.
+     * @param serviceResolver resolves aliased URLs.
      */
-    public AuthenticatedJsonServiceDispatcher() {
+    public AuthenticatedJsonServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new UnauthenticatedUrlConnector());
     }
 

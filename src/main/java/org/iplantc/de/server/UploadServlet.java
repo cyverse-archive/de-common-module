@@ -2,15 +2,11 @@ package org.iplantc.de.server;
 
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import net.sf.json.JSONObject;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.iplantc.de.shared.services.MultiPartServiceWrapper;
@@ -34,13 +30,25 @@ public class UploadServlet extends UploadAction {
      */
     private static Logger LOG = Logger.getLogger(UploadServlet.class);
 
-    public static final String USER_ID = "user"; //$NON-NLS-1$
-    public static final String EMAIL = "email"; //$NON-NLS-1$
+    public static final String USER_ID = "user";
+    public static final String EMAIL = "email";
 
     protected String user;
     protected String email;
     protected JSONObject jsonErrors;
     protected JSONObject jsonInfo;
+
+    /**
+     * Used to resolve aliased service calls.
+     */
+    private ServiceCallResolver serviceResolver;
+
+    /**
+     * @param serviceResolver used to resolve aliased service calls.
+     */
+    public UploadServlet(ServiceCallResolver serviceResolver) {
+        this.serviceResolver = serviceResolver;
+    }
 
     /**
      * Performs the necessary operations for an upload action.
@@ -54,10 +62,10 @@ public class UploadServlet extends UploadAction {
     public String executeAction(HttpServletRequest request, List<FileItem> fileItems) {
         jsonErrors = new JSONObject();
         jsonInfo = new JSONObject();
-        InputStream bodyFile = null;
+        InputStream bodyFile;
         LOG.debug("Upload Action started.");
-        long fileLength = 0l;
-        String mimeType = null;
+        long fileLength;
+        String mimeType;
 
         user = getUserName(fileItems);
         email = getUserEmail(fileItems);
@@ -77,13 +85,11 @@ public class UploadServlet extends UploadAction {
                             invokeService(request, item.getName(), bodyFile, fileLength, mimeType));
                 } catch (IOException e) {
                     LOG.error("executeAction - Exception while getting file input stream.", e);
-                    e.printStackTrace();
                     jsonErrors.put("error", e.getMessage());
 
                     return jsonErrors.toString();
                 } catch (IRODSConfigurationException e) {
                     LOG.error("executeAction - Exception while getting users IRODS home directory.", e);
-                    e.printStackTrace();
                     jsonErrors.put("error", e.getMessage());
 
                     return jsonErrors.toString();
@@ -91,7 +97,6 @@ public class UploadServlet extends UploadAction {
                     LOG.error(
                             "executeAction - Exception while getting uploading files to users home directory.",
                             e);
-                    e.printStackTrace();
                     jsonErrors.put("error", e.getMessage());
 
                     return jsonErrors.toString();
@@ -111,33 +116,33 @@ public class UploadServlet extends UploadAction {
     }
 
     private String getUserName(List<FileItem> fileItems) {
-        String user = null;
+        String username = null;
         for (FileItem item : fileItems) {
             if (item.isFormField()) {
                 String fieldName = item.getFieldName();
                 byte[] contents = item.get();
 
                 if (fieldName.equals(USER_ID)) {
-                    user = new String(contents);
+                    username = new String(contents);
                     break;
                 }
             }
         }
-        return user;
+        return username;
     }
 
     private String getUserEmail(List<FileItem> fileItems) {
-        String email = ""; //$NON-NLS-1$
+        String emailAddress = "";
         for (FileItem item : fileItems) {
             if (item.isFormField()) {
                 String fieldName = item.getFieldName();
                 if (fieldName.equals(EMAIL)) {
-                    email = item.getString();
+                    emailAddress = item.getString();
                     break;
                 }
             }
         }
-        return email;
+        return emailAddress;
     }
 
     /**
@@ -165,7 +170,7 @@ public class UploadServlet extends UploadAction {
                 fileContents);
 
         try { // call the RESTful service and get the results.
-            DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher();
+            DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher(serviceResolver);
             dispatcher.init(getServletConfig());
             dispatcher.setRequest(request);
 
@@ -226,7 +231,7 @@ public class UploadServlet extends UploadAction {
         String homeDir = null;
 
         try {
-            DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher();
+            DataApiServiceDispatcher dispatcher = new DataApiServiceDispatcher(serviceResolver);
             dispatcher.init(getServletConfig());
             dispatcher.setRequest(request);
             homeDir = dispatcher.getServiceData(wrapper);
