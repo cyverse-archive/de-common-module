@@ -197,7 +197,6 @@
 					<include>**/shared/**</include>
 					<!-- only include the GWT Module definition -->
 					<include>**/DiscoveryEnvironmentCommon.gwt.xml</include>
-					<include>email.properties</include>
 					<include>logout-alert-template.html</include>
 				</includes>
 			</resource>
