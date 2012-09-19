@@ -1,10 +1,7 @@
 package org.iplantc.de.server;
 
-import java.io.InputStream;
-import java.util.Map.Entry;
 import java.util.Properties;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
@@ -13,20 +10,11 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
     private static final Logger LOG = Logger.getLogger(DefaultServiceCallResolver.class);
     private static final String PREFIX_KEY = "prefix";
 
-    private PropertiesConfiguration appProperties;
+    private Properties appProperties;
     private String prefix;
 
-    public DefaultServiceCallResolver(PropertiesConfiguration propsConfig) {
-        appProperties = propsConfig;
-        setPrefix();
-        validatePrefix();
-    }
-
     public DefaultServiceCallResolver(Properties prop) {
-        appProperties = new PropertiesConfiguration();
-        for (Entry<Object, Object> propPair : prop.entrySet()) {
-            appProperties.addProperty((String)propPair.getKey(), propPair.getValue());
-        }
+        appProperties = prop;
         setPrefix();
         validatePrefix();
     }
@@ -39,28 +27,16 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
     }
 
     private void setPrefix() {
-        prefix = appProperties.getString(PREFIX_KEY);
-    }
-
-    private void loadProperties(String propertyFile) {
-        appProperties = new PropertiesConfiguration();
-        try {
-            InputStream is = Thread.currentThread().getContextClassLoader()
-                    .getResourceAsStream(propertyFile);
-            appProperties.load(is);
-        } catch (ConfigurationException e) {
-            LOG.error(e.toString(), e);
-            e.printStackTrace();
-        }
+        prefix = appProperties.getProperty(PREFIX_KEY);
     }
 
     /**
      * Resolves a service call to a valid service address.
-     * 
+     *
      * This implementation determines if the wrapper contains a "service key" instead of the actual
      * service address. If so, the service key is resolved with the properties. Otherwise, the wrapper's
      * address is passed through without change.
-     * 
+     *
      * @param wrapper service call wrapper containing metadata for a call.
      * @return a string representing a valid URL.
      */
@@ -70,8 +46,14 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
         if (address.startsWith(prefix)) {
             String[] components = address.split("\\?", 2);
             String serviceName = components[0];
-            components[0] = appProperties.getString(serviceName);
+            components[0] = appProperties.getProperty(serviceName);
             if (components[0] == null) {
+                LOG.error("unknown service name: " + serviceName);
+                if (LOG.isDebugEnabled()) {
+                    for (String prop : new TreeSet<String>(appProperties.stringPropertyNames())) {
+                        LOG.debug("configuration setting: " + prop + " = " + appProperties.getProperty(prop));
+                    }
+                }
                 throw new RuntimeException("unknown service name: " + serviceName);
             }
             address = StringUtils.join(components, "?");

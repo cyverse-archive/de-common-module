@@ -7,10 +7,8 @@ import static org.junit.Assert.fail;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Map.Entry;
 import java.util.Properties;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
 import org.junit.After;
@@ -131,61 +129,6 @@ public class TestDefaultServiceCallResolver {
         verifyURLParses(actual, true);
     }
 
-    @Test
-    public void testBasicVariableInterpolationWithinPropertiesFile() {
-        Properties expected = createExpectedPropertiesForInterpolationTest();
-        PropertiesConfiguration actual = createPropertiesConfigurationForInterpolationTest();
-        for (Entry<Object, Object> expectedPair : expected.entrySet()) {
-            String key = (String)expectedPair.getKey();
-            assertEquals(expectedPair.getValue(), actual.getString(key));
-        }
-    }
-
-    @Test
-    public void testVariableInterpolationResolution() {
-        String expected;
-        String actual;
-
-        PropertiesConfiguration propConfig = createPropertiesConfigurationForInterpolationTest();
-        propConfig.addProperty("org.iplantc.services.zoidberg.components.foo",
-                "http://emma.iplantcollaborative.org:10000/components");
-        propConfig.addProperty("zoidberg.port", ":10000");
-        propConfig.addProperty("org.iplantc.services.zoidberg.components.port",
-                "http://${zoidberg.hostname}${zoidberg.port}/components");
-
-        DefaultServiceCallResolver interpolRes = new DefaultServiceCallResolver(propConfig);
-
-        expected = "http://emma.iplantcollaborative.org/nibblonian/home?user=ndy";
-        actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.nibblonian.getuserhomedir?user=ndy"));
-        assertEquals(expected, actual);
-
-        expected = "http://emma.iplantcollaborative.org/in-progress?user=ndy";
-        actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.zoidberg.inprogress?user=ndy"));
-        assertEquals(expected, actual);
-
-        expected = "http://emma.iplantcollaborative.org/in-progress?user=ndy&summary=true";
-        actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.zoidberg.inprogress?user=ndy&summary=true"));
-        assertEquals(expected, actual);
-
-        expected = "http://emma.iplantcollaborative.org/in-progress?tito=650650n";
-        actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.zoidberg.inprogress?tito=650650n"));
-        assertEquals(expected, actual);
-
-        expected = "http://emma.iplantcollaborative.org:10000/components?user=ndy&bar=quux";
-        actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.zoidberg.components.foo?user=ndy&bar=quux"));
-        assertEquals(expected, actual);
-
-        expected = "http://emma.iplantcollaborative.org:10000/components?user=ndy&bar=quux";
-        actual = interpolRes
-                .resolveAddress(wrapper("org.iplantc.services.zoidberg.components.port?user=ndy&bar=quux"));
-        assertEquals(expected, actual);
-    }
-
     @Test(expected = IllegalArgumentException.class)
     public void testResolverFailsWithoutPrefix() {
         testProps.remove("prefix");
@@ -254,34 +197,6 @@ public class TestDefaultServiceCallResolver {
         expectedProps.put("org.iplantc.services.scruffian.fileupload",
                 "http://emma.iplantcollaborative.org/scruffian/upload");
         return expectedProps;
-    }
-
-    private PropertiesConfiguration createPropertiesConfigurationForInterpolationTest() {
-        PropertiesConfiguration propsConfig = new PropertiesConfiguration();
-
-        propsConfig.addProperty("prefix", "org.iplantc.services");
-        propsConfig.addProperty("zoidberg.hostname", "emma.iplantcollaborative.org");
-        propsConfig.addProperty("nibblonian.host", "emma.iplantcollaborative.org/nibblonian");
-        propsConfig.addProperty("scruffian.host", "emma.iplantcollaborative.org/scruffian");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.components",
-                "http://${zoidberg.hostname}/components");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.formats",
-                "http://${zoidberg.hostname}/formats");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.propertytypes",
-                "http://${zoidberg.hostname}/property-types");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.ruletypes",
-                "http://${zoidberg.hostname}/rule-types");
-        propsConfig
-                .addProperty("org.iplantc.services.zoidberg.uuid", "http://${zoidberg.hostname}/uuid");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.infotypes",
-                "http://${zoidberg.hostname}/info-types");
-        propsConfig.addProperty("org.iplantc.services.zoidberg.inprogress",
-                "http://${zoidberg.hostname}/in-progress");
-        propsConfig.addProperty("org.iplantc.services.nibblonian.getuserhomedir",
-                "http://${nibblonian.host}/home");
-        propsConfig.addProperty("org.iplantc.services.scruffian.fileupload",
-                "http://${scruffian.host}/upload");
-        return propsConfig;
     }
 
     private Properties createFromExpected() {
