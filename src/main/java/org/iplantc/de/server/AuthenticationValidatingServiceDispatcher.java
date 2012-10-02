@@ -2,7 +2,7 @@ package org.iplantc.de.server;
 
 /**
  * A service dispatcher that can be used for internal services that need prior authentication.
- * 
+ *
  * @author Dennis Roberts
  */
 public class AuthenticationValidatingServiceDispatcher extends BaseDEServiceDispatcher {
@@ -12,9 +12,18 @@ public class AuthenticationValidatingServiceDispatcher extends BaseDEServiceDisp
     private static final long serialVersionUID = 1L;
 
     /**
-     * Initializes the new service dispatcher.
+     * The default constructor.
      */
     public AuthenticationValidatingServiceDispatcher() {
+        super();
+        setUrlConnector(new AuthenticationValidatingUrlConnector());
+    }
+
+    /**
+     * @param serviceResolver resolves aliased URLs.
+     */
+    public AuthenticationValidatingServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new AuthenticationValidatingUrlConnector());
     }
 }

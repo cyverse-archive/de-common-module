@@ -7,10 +7,16 @@ package org.iplantc.de.server;
 public class UnsecuredDEServiceDispatcher extends BaseDEServiceDispatcher {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * Initializes the new service dispatcher.
-     */
     public UnsecuredDEServiceDispatcher() {
+        super();
+        setUrlConnector(new UnauthenticatedUrlConnector());
+    }
+
+    /**
+     * @param serviceResolver resolves aliased URLs.
+     */
+    public UnsecuredDEServiceDispatcher(ServiceCallResolver serviceResolver) {
+        super(serviceResolver);
         setUrlConnector(new UnauthenticatedUrlConnector());
     }
 }

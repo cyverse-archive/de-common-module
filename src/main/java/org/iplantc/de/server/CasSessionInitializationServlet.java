@@ -3,7 +3,6 @@ package org.iplantc.de.server;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +25,6 @@ public class CasSessionInitializationServlet extends HttpServlet {
      * Used to log debugging information.
      */
     private static final Logger LOG = Logger.getLogger(CasSessionInitializationServlet.class);
-
-    /**
-     * The parameter name used to refer to the initial page.
-     */
-    private static final String INITIAL_PAGE_PARAMETER_NAME = "org.iplantc.initial-page";
 
     /**
      * The name of the HTTP session attribute used to store the CAS principal.
@@ -56,6 +50,39 @@ public class CasSessionInitializationServlet extends HttpServlet {
 
     static {
         ATTR_NAME_MAP.put("email", DESecurityConstants.LOCAL_SHIB_MAIL);
+    }
+
+    /**
+     * The page to redirect the user to after initializing the session.
+     */
+    private String initialPage;
+
+    /**
+     * The default constructor.
+     */
+    public CasSessionInitializationServlet() {}
+
+    /**
+     * @param initialPage the page to redirect the user to after initializing the session.
+     */
+    public CasSessionInitializationServlet(String initialPage) {
+        this.initialPage = initialPage;
+    }
+
+    /**
+     * Initializes the servlet.
+     *
+     * @throws ServletException  if the {@code initialPage} initialization parameter is not defined.
+     */
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        if (initialPage == null) {
+            initialPage = getServletConfig().getInitParameter("initialPage");
+            if (initialPage == null) {
+                throw new ServletException("initialPage initialization parameter required");
+            }
+        }
     }
 
     /**
@@ -133,11 +160,10 @@ public class CasSessionInitializationServlet extends HttpServlet {
      * @throws IOException if the redirect can't be sent to the client.
      */
     private void redirectUser(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        ServletContext application = getServletConfig().getServletContext();
         StringBuffer urlBuffer = req.getRequestURL();
         int pos = StringUtils.lastOrdinalIndexOf(urlBuffer.toString(), "/", 2);
         urlBuffer.delete(pos + 1, urlBuffer.length());
-        urlBuffer.append(application.getInitParameter(INITIAL_PAGE_PARAMETER_NAME));
+        urlBuffer.append(initialPage);
         resp.sendRedirect(urlBuffer.toString());
     }
 }

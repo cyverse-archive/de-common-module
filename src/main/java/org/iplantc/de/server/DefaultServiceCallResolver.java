@@ -1,45 +1,32 @@
 package org.iplantc.de.server;
 
-import java.io.InputStream;
 import java.util.Properties;
-import java.util.Map.Entry;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
+import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.iplantc.clavin.spring.ConfigAliasResolver;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
 
-public class DefaultServiceCallResolver implements ServiceCallResolver {
+public class DefaultServiceCallResolver extends ServiceCallResolver {
     private static final Logger LOG = Logger.getLogger(DefaultServiceCallResolver.class);
     private static final String PREFIX_KEY = "prefix";
 
-    private PropertiesConfiguration appProperties;
+    private Properties appProperties;
     private String prefix;
 
-    public DefaultServiceCallResolver(String propertyFile) {
-        loadProperties(propertyFile);
-        setPrefix();
-        validatePrefix();
-
-    }
-
-    public DefaultServiceCallResolver(PropertiesConfiguration propsConfig) {
-        appProperties = propsConfig;
+    public DefaultServiceCallResolver(ConfigAliasResolver configResolver) {
+        appProperties = configResolver.getRequiredAliasedConfig("webapp");
         setPrefix();
         validatePrefix();
     }
 
     public DefaultServiceCallResolver(Properties prop) {
-        appProperties = new PropertiesConfiguration();
-        for (Entry<Object, Object> propPair : prop.entrySet()) {
-            appProperties.addProperty((String)propPair.getKey(), propPair.getValue());
-        }
+        appProperties = prop;
         setPrefix();
         validatePrefix();
     }
 
-    public void validatePrefix() {
+    private void validatePrefix() {
         if (StringUtils.isEmpty(prefix)) {
             throw new IllegalArgumentException("Properties argument must contain a property defining "
                     + "the prefix for service keys: " + PREFIX_KEY);
@@ -47,28 +34,16 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
     }
 
     private void setPrefix() {
-        prefix = appProperties.getString(PREFIX_KEY);
-    }
-
-    private void loadProperties(String propertyFile) {
-        appProperties = new PropertiesConfiguration();
-        try {
-            InputStream is = Thread.currentThread().getContextClassLoader()
-                    .getResourceAsStream(propertyFile);
-            appProperties.load(is);
-        } catch (ConfigurationException e) {
-            LOG.error(e.toString(), e);
-            e.printStackTrace();
-        }
+        prefix = appProperties.getProperty(PREFIX_KEY);
     }
 
     /**
      * Resolves a service call to a valid service address.
-     * 
+     *
      * This implementation determines if the wrapper contains a "service key" instead of the actual
      * service address. If so, the service key is resolved with the properties. Otherwise, the wrapper's
      * address is passed through without change.
-     * 
+     *
      * @param wrapper service call wrapper containing metadata for a call.
      * @return a string representing a valid URL.
      */
@@ -78,8 +53,14 @@ public class DefaultServiceCallResolver implements ServiceCallResolver {
         if (address.startsWith(prefix)) {
             String[] components = address.split("\\?", 2);
             String serviceName = components[0];
-            components[0] = appProperties.getString(serviceName);
+            components[0] = appProperties.getProperty(serviceName);
             if (components[0] == null) {
+                LOG.error("unknown service name: " + serviceName);
+                if (LOG.isDebugEnabled()) {
+                    for (String prop : new TreeSet<String>(appProperties.stringPropertyNames())) {
+                        LOG.debug("configuration setting: " + prop + " = " + appProperties.getProperty(prop));
+                    }
+                }
                 throw new RuntimeException("unknown service name: " + serviceName);
             }
             address = StringUtils.join(components, "?");
