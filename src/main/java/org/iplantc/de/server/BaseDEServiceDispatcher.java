@@ -6,9 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URLConnection;
 import java.util.List;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.IOUtils;
@@ -26,6 +24,7 @@ import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import javax.servlet.ServletException;
 
 /**
  * Dispatches HTTP requests to other services.
@@ -52,6 +51,11 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     private UrlConnector urlConnector;
 
     /**
+     * The default constructor.
+     */
+    public BaseDEServiceDispatcher() {}
+
+    /**
      * @param serviceResolver resolves aliased URLs.
      */
     public BaseDEServiceDispatcher(ServiceCallResolver serviceResolver) {
@@ -59,8 +63,21 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     }
 
     /**
+     * Initializes the servlet.
+     *
+     * @throws ServletException if the servlet can't be initialized.
+     * @throws IllegalStateException if the service call resolver can't be found.
+     */
+    @Override
+    public void init() throws ServletException {
+        if (serviceResolver == null) {
+            serviceResolver = ServiceCallResolver.getServiceCallResolver(getServletContext());
+        }
+    }
+
+    /**
      * Sets the servlet context to use when looking up the keystore path.
-     * 
+     *
      * @param context the context.
      */
     public void setContext(ServletContext context) {
@@ -69,7 +86,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Gets the servlet context to use when looking up the keystore path.
-     * 
+     *
      * @return an object representing a context for a servlet.
      */
     public ServletContext getContext() {
@@ -78,7 +95,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Sets the current servlet request.
-     * 
+     *
      * @param request the request to use.
      */
     public void setRequest(HttpServletRequest request) {
@@ -87,7 +104,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Gets the current servlet request.
-     * 
+     *
      * @return the request to use.
      */
     public HttpServletRequest getRequest() {
@@ -97,7 +114,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     /**
      * Sets the URL connector for this service dispatcher. This connector should be set once when the
      * object is created.
-     * 
+     *
      * @param urlConnector the new URL connector.
      */
     protected void setUrlConnector(UrlConnector urlConnector) {
@@ -106,7 +123,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Retrieves the result from a URL connection.
-     * 
+     *
      * @param urlc the URL connection.
      * @return the URL result as a string.
      * @throws IOException if an I/O error occurs.
@@ -117,7 +134,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Obtains a URL connection.
-     * 
+     *
      * @param address the address to connect to.
      * @return the URL connection.
      * @throws IOException if the connection can't be established.
@@ -131,7 +148,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Sends an HTTP GET request to another service.
-     * 
+     *
      * @param address the address to connect to.
      * @return the URL connection used to send the request.
      * @throws IOException if an error occurs.
@@ -152,7 +169,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Sends an HTTP UPDATE request to another service.
-     * 
+     *
      * @param address the address to connect to.
      * @param body the request body.
      * @param requestMethod the request method.
@@ -188,7 +205,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Sends a multipart HTTP update request to another service.
-     * 
+     *
      * @param address the address to send the request to.
      * @param parts the components of the multipart request.
      * @param requestMethod the request method.
@@ -234,7 +251,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     /**
      * This method allows concrete subclasses to add additional parts to multipart form requests if
      * necessary. By default, no additional parts are added.
-     * 
+     *
      * @param entity the entity to add the part to.
      * @throws IOException if an I/O error occurs.
      */
@@ -244,7 +261,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Sends an HTTP DELETE request to another service.
-     * 
+     *
      * @param address the address to send the request to.
      * @return the URL connection used to send the request.
      * @throws IOException if an I/O error occurs.
@@ -263,7 +280,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Verifies that a string is not null or empty.
-     * 
+     *
      * @param in the string to validate.
      * @return true if the string is not null or empty.
      */
@@ -274,7 +291,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     /**
      * Validates a service call wrapper. The address must be a non-empty string for all HTTP requests.
      * The message body must be a non-empty string for PUT and POST requests.
-     * 
+     *
      * @param wrapper the service call wrapper being validated.
      * @return true if the service call wrapper is valid.
      */
@@ -308,7 +325,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
     /**
      * Validates a multi-part service call wrapper. The address must not be null or empty and the message
      * body must have at least one part.
-     * 
+     *
      * @param wrapper the wrapper to validate.
      * @return true if the service call wrapper is valid.
      */
@@ -336,7 +353,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Retrieve the service address for the wrapper.
-     * 
+     *
      * @param service call wrapper containing metadata for a call.
      * @return a string representing a valid URL.
      */
@@ -351,7 +368,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Allows concrete service dispatchers to update the request body.
-     * 
+     *
      * @param body the request body.
      * @return the updated request body.
      */
@@ -361,7 +378,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Gets the name of the authenticated user.
-     * 
+     *
      * @return the username as a string.
      * @throws IOException if the username can't be obtained.
      */
@@ -375,7 +392,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Implements entry point for service dispatcher.
-     * 
+     *
      * @param wrapper the service call wrapper.
      * @return the response from the service call.
      * @throws SerializationException if an error occurs.
@@ -441,7 +458,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Implements entry point for service dispatcher for streaming data back to client.
-     * 
+     *
      * @param wrapper the service call wrapper.
      * @return an input stream that can be used to retrieve the response from the service call.
      * @throws IOException if an I/O error occurs.
@@ -492,7 +509,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
 
     /**
      * Sends a multi-part HTTP PUT or POST request to another service and returns the response.
-     * 
+     *
      * @param wrapper the service call wrapper.
      * @return the response to the HTTP request.
      * @throws SerializationException if an error occurs.

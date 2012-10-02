@@ -2,11 +2,16 @@ package org.iplantc.de.server.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+import javax.servlet.ServletContext;
 import net.sf.json.JSONObject;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.iplantc.clavin.spring.ConfigAliasResolver;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
  * A client for the iPlant e-mail service.
@@ -22,15 +27,50 @@ public class IplantEmailClient {
     private static final Logger LOG = Logger.getLogger(IplantEmailClient.class);
 
     /**
+     * The name of the property used to store the base URL for the iPlant e-mail service.
+     */
+    private static final String EMAIL_BASE_PROPERTY = "org.iplantc.services.email-base";
+
+    /**
      * The base URL to use when connecting to the e-mail service.
      */
     private final String baseUrl;
+
+    /**
+     * @param resolver the configuration alias resolver used to retrieve the web application properties.
+     */
+    public IplantEmailClient(ConfigAliasResolver resolver) {
+        Properties props = resolver.getRequiredAliasedConfig("webapp");
+        if (props == null) {
+            throw new IllegalStateException("web application configuration settings not found");
+        }
+        baseUrl = props.getProperty(EMAIL_BASE_PROPERTY);
+        if (baseUrl == null) {
+            throw new IllegalStateException("configuration setting, " + EMAIL_BASE_PROPERTY + ", not found");
+        }
+    }
 
     /**
      * @param baseUrl the base URL to use when connecting to the e-mail service.
      */
     public IplantEmailClient(String baseUrl) {
         this.baseUrl = baseUrl;
+    }
+
+    /**
+     * Gets the iPlant e-mail client for the given servlet context.
+     *
+     * @param context the servlet context.
+     * @return the e-mail client.
+     * @throws IllegalStateException if the iPlant e-mail client isn't defined.
+     */
+    public static IplantEmailClient getClient(ServletContext context) {
+        WebApplicationContext appContext = WebApplicationContextUtils.getRequiredWebApplicationContext(context);
+        IplantEmailClient result = appContext.getBean(IplantEmailClient.class);
+        if (result == null) {
+            throw new IllegalStateException("email client bean not defined");
+        }
+        return result;
     }
 
     /**

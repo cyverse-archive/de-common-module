@@ -5,6 +5,7 @@ import gwtupload.server.exceptions.UploadActionException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import net.sf.json.JSONObject;
 import org.apache.commons.fileupload.FileItem;
@@ -14,12 +15,12 @@ import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 /**
  * A class to accept files from the client.
- * 
+ *
  * This class extends the UploadAction class provided by the GWT Upload library. The executeAction method
  * must be overridden for custom behavior.
- * 
+ *
  * @author sriram
- * 
+ *
  */
 @SuppressWarnings("nls")
 public class UploadServlet extends UploadAction {
@@ -44,6 +45,11 @@ public class UploadServlet extends UploadAction {
     private ServiceCallResolver serviceResolver;
 
     /**
+     * The default constructor.
+     */
+    public UploadServlet() {}
+
+    /**
      * @param serviceResolver used to resolve aliased service calls.
      */
     public UploadServlet(ServiceCallResolver serviceResolver) {
@@ -51,8 +57,22 @@ public class UploadServlet extends UploadAction {
     }
 
     /**
+     * Initializes the servlet.
+     *
+     * @throws ServletException if the servlet can't be initialized.
+     * @throws IllegalStateException if the service call resolver can't be found.
+     */
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        if (serviceResolver == null) {
+            serviceResolver = ServiceCallResolver.getServiceCallResolver(getServletContext());
+        }
+    }
+
+    /**
      * Performs the necessary operations for an upload action.
-     * 
+     *
      * @param request the HTTP request associated with the action.
      * @param fileItems the file associated with the action.
      * @return a string representing data in JSON format.
@@ -147,7 +167,7 @@ public class UploadServlet extends UploadAction {
 
     /**
      * Handles the invocation of the file upload service.
-     * 
+     *
      * @param request current HTTP request
      * @param type the file type. It can be AUTO or CSVNAMELIST
      * @param filename the name of the file being uploaded
@@ -205,7 +225,7 @@ public class UploadServlet extends UploadAction {
 
     /**
      * Constructs and configures a multi-part service wrapper.
-     * 
+     *
      * @param path the folder identifier for where the file will be created
      * @param filename the name of the file being uploaded
      * @param fileContents the content of the file

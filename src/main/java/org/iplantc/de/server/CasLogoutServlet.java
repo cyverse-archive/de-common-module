@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.stringtemplate.v4.ST;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
+import org.iplantc.clavin.spring.ConfigAliasResolver;
 
 /**
  * A shared servlet for handling CAS logout.
@@ -91,16 +92,64 @@ public class CasLogoutServlet extends HttpServlet {
     private String templateText;
 
     /**
+     * True if the servlet has been initialized.
+     */
+    private boolean initialized;
+
+    /**
+     * The default constructor.
+     */
+    public CasLogoutServlet() {}
+
+    /**
      * @param props the properties containing the app configuration settings.
      * @param propPrefix the prefix to use when determining property names.
      */
     public CasLogoutServlet(Properties props, String propPrefix) {
+        loadConfig(props, propPrefix);
+    }
+
+    /**
+     * Initializes the servlet.
+     *
+     * @throws ServletException if the servlet can't be initialized.
+     * @throws IllegalStateException if a required configuration parameter is missing.
+     */
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        if (!initialized) {
+            Properties config = ConfigAliasResolver.getRequiredAliasedConfigFrom(getServletContext(), "webapp");
+            loadConfig(config, getPropertyPrefix());
+        }
+    }
+
+    /**
+     * Gets the property name prefix from a servlet initialization parameter.
+     *
+     * @return the property name prefix.
+     * @throws ServletException if the property name prefix isn't defined.
+     */
+    private String getPropertyPrefix() throws ServletException {
+        String prefix = getServletConfig().getInitParameter("propertyNamePrefix");
+        if (prefix == null) {
+            throw new ServletException("init parameter, propertyNamePrefix, is required");
+        }
+        return prefix;
+    }
+
+    /**
+     * @param props the properties to extract the desired configuration settings from.
+     * @param propPrefix the property name prefix.
+     */
+    private void loadConfig(Properties props, String propPrefix) {
         logoutUrl = getRequiredProp(props, propPrefix + LOGOUT_URL_PROPERTY);
         appName = getRequiredProp(props, propPrefix + APP_NAME_PROPERTY);
         loginUrl = getRequiredProp(props, propPrefix + LOGIN_URL_PROPERTY);
         noLogoutUrl = getRequiredProp(props, propPrefix + NO_LOGOUT_URL_PROPERTY);
         appList = getRequiredProp(props, propPrefix + APP_LIST_PROPERTY);
         templateText = loadTemplate();
+        initialized = true;
     }
 
     /**

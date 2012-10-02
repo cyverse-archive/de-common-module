@@ -4,14 +4,21 @@ import java.util.Properties;
 import java.util.TreeSet;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
+import org.iplantc.clavin.spring.ConfigAliasResolver;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
 
-public class DefaultServiceCallResolver implements ServiceCallResolver {
+public class DefaultServiceCallResolver extends ServiceCallResolver {
     private static final Logger LOG = Logger.getLogger(DefaultServiceCallResolver.class);
     private static final String PREFIX_KEY = "prefix";
 
     private Properties appProperties;
     private String prefix;
+
+    public DefaultServiceCallResolver(ConfigAliasResolver configResolver) {
+        appProperties = configResolver.getRequiredAliasedConfig("webapp");
+        setPrefix();
+        validatePrefix();
+    }
 
     public DefaultServiceCallResolver(Properties prop) {
         appProperties = prop;

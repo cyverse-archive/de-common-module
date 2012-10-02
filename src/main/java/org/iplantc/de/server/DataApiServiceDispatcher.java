@@ -7,7 +7,7 @@ import org.apache.http.entity.mime.content.StringBody;
 
 /**
  * A dispatch service servlet that is used to dispatch requests to the data API.
- * 
+ *
  * @author Dennis Roberts
  */
 @SuppressWarnings("nls")
@@ -18,6 +18,14 @@ public class DataApiServiceDispatcher extends BaseDEServiceDispatcher {
     private static final long serialVersionUID = 1L;
 
     private boolean forceJsonContentType = false;
+
+    /**
+     * The default constructor.
+     */
+    public DataApiServiceDispatcher() {
+        super();
+        setUrlConnector(new DataApiUrlConnector());
+    }
 
     /**
      * @param serviceResolver resolves aliased URLs.
@@ -31,7 +39,7 @@ public class DataApiServiceDispatcher extends BaseDEServiceDispatcher {
      * Sets an optional flag that will force the HttpURLConnection returned by getUrlConnection to set
      * its "Content-Type" header to "application/json", even if the request object given in setRequest
      * has a multipart Content-Type header.
-     * 
+     *
      * @param forceJson
      */
     public void setForceJsonContentType(boolean forceJson) {
