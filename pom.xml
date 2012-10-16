@@ -13,7 +13,7 @@
 		<!-- Target Java Version -->
 		<jdk.version>1.6</jdk.version>
 		<!-- Current GWT Version -->
-		<gwt.version>2.5.0-rc1</gwt.version>
+		<gwt.version>2.5.0-rc2</gwt.version>
 		<!-- Define OS/Platform Independent Character Encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -153,12 +153,11 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>2.5.0-rc1</version>
+				<version>${gwt.version}</version>
 				<executions>
 					<execution>
 						<goals>
 							<goal>compile</goal>
-							<goal>test</goal>
 						</goals>
 						<configuration>
 							<module>org.iplantc.de.DiscoveryEnvironmentCommon</module>
@@ -228,10 +227,6 @@
 		</plugins>
 	</reporting>
 	<repositories>
-		<repository>
-			<id>gwt-maven</id>
-			<url>http://gwt-maven.googlecode.com/svn/trunk/mavenrepo/</url>
-		</repository>
 		<repository>
 			<id>iplantCollaborative</id>
 			<name>The iPlant Collaborative local repository</name>
