@@ -46,25 +46,39 @@ public class DefaultServiceCallResolver extends ServiceCallResolver {
      *
      * @param wrapper service call wrapper containing metadata for a call.
      * @return a string representing a valid URL.
+     * @throws UnresolvableServiceNameException if a service name that couldn't be resolved is passed to the resolver.
      */
     @Override
     public String resolveAddress(BaseServiceCallWrapper wrapper) {
         String address = wrapper.getAddress();
         if (address.startsWith(prefix)) {
             String[] components = address.split("\\?", 2);
-            String serviceName = components[0];
-            components[0] = appProperties.getProperty(serviceName);
-            if (components[0] == null) {
-                LOG.error("unknown service name: " + serviceName);
-                if (LOG.isDebugEnabled()) {
-                    for (String prop : new TreeSet<String>(appProperties.stringPropertyNames())) {
-                        LOG.debug("configuration setting: " + prop + " = " + appProperties.getProperty(prop));
-                    }
-                }
-                throw new RuntimeException("unknown service name: " + serviceName);
-            }
+            components[0] = resolveAddress(components[0]);
             address = StringUtils.join(components, "?");
         }
         return address;
+    }
+
+    /**
+     * Resolves a call to a named service.
+     *
+     * @param serviceName the name of the service.
+     * @return a string representing a valid URL.
+     * @throws UnresolvableServiceNameException if the service name can't be resolved.
+     */
+    @Override
+    public String resolveAddress(String serviceName) {
+        String result = appProperties.getProperty(serviceName);
+        if (result == null) {
+            LOG.error("unknown service name: " + serviceName);
+            if (LOG.isDebugEnabled()) {
+                for (String prop : new TreeSet<String>(appProperties.stringPropertyNames())) {
+                    LOG.debug("configuration setting: " + prop + " = " + appProperties.getProperty(prop));
+                }
+
+            }
+            throw new UnresolvableServiceNameException(serviceName);
+        }
+        return result;
     }
 }
