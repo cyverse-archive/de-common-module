@@ -12,8 +12,16 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpHead;
+import org.apache.http.client.methods.HttpOptions;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
+import org.apache.http.client.methods.HttpTrace;
+import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.iplantc.de.server.ServiceCallResolver;
 import org.iplantc.de.server.UnresolvableServiceNameException;
@@ -33,7 +41,8 @@ public class CasProxyServlet extends HttpServlet {
     /**
      * The default constructor.
      */
-    public CasProxyServlet() {}
+    public CasProxyServlet() {
+    }
 
     /**
      * @param serviceResolver used to resolve aliased service calls.
@@ -56,6 +65,23 @@ public class CasProxyServlet extends HttpServlet {
     }
 
     /**
+     * Forwards an HTTP DELETE request to a named service.
+     *
+     * @param req the HTTP servlet request.
+     * @param res the HTTP servlet response.
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doDelete(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        new ServiceCallResolutionWrapper(req, res) {
+            @Override
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpDelete(uri));
+            }
+        }.call();
+    }
+
+    /**
      * Forwards an HTTP GET request to a named service.
      *
      * @param req the HTTP servlet request.
@@ -64,62 +90,97 @@ public class CasProxyServlet extends HttpServlet {
      */
     @Override
     protected void doGet(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
-        new ServiceCallResolutionWrapper() {
+        new ServiceCallResolutionWrapper(req, res) {
             @Override
-            protected void forwardRequest(HttpClient client, String uri) throws IOException {
-                HttpGet get = new HttpGet(uri);
-                try {
-                    copyHeaders(req, get);
-                    copyResponse(client.execute(get), res);
-                }
-                finally {
-                    get.releaseConnection();
-                }
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpGet(uri));
             }
-        }.call(req, res);
+        }.call();
     }
 
     /**
-     * Copies an incoming response to an outgoing servlet response.
+     * Forwards an HTTP HEAD request to a named service.
      *
-     * @param source the incoming response.
-     * @param dest the outgoing response.
+     * @param req the HTTP servlet request.
+     * @param res the HTTP servlet response.
      * @throws IOException if an I/O error occurs.
      */
-    private void copyResponse(HttpResponse source, HttpServletResponse dest) throws IOException {
-        dest.setStatus(source.getStatusLine().getStatusCode());
-        copyHeaders(source, dest);
-        IOUtils.copy(source.getEntity().getContent(), dest.getOutputStream());
-    }
-
-    /**
-     * Copies all response headers from an incoming response to an outgoing servlet response.
-     *
-     * @param source the incoming response.
-     * @param dest the outgoing response.
-     */
-    private void copyHeaders(HttpResponse source, HttpServletResponse dest) {
-        for (Header header : source.getAllHeaders()) {
-            dest.addHeader(header.getName(), header.getValue());
-        }
-    }
-
-    /**
-     * Copies all request headers from an incoming servlet request to an outgoing request.
-     *
-     * @param source the incoming request.
-     * @param dest the outgoing request.
-     */
-    private void copyHeaders(HttpServletRequest source, HttpRequestBase dest) {
-        Enumeration<String> names = source.getHeaderNames();
-        while (names.hasMoreElements()) {
-            String name = names.nextElement();
-            Enumeration<String> values = source.getHeaders(name);
-            while (values.hasMoreElements()) {
-                String value = values.nextElement();
-                dest.addHeader(name, value);
+    @Override
+    protected void doHead(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        new ServiceCallResolutionWrapper(req, res) {
+            @Override
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpHead(uri));
             }
-        }
+        }.call();
+    }
+
+    /**
+     * Forwards an HTTP OPTIONS request to a named service.
+     *
+     * @param req the HTTP servlet request.
+     * @param res the HTTP servlet response.
+     * @throws IOException if an I/O error occurs.
+     */
+    @Override
+    protected void doOptions(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        new ServiceCallResolutionWrapper(req, res) {
+            @Override
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpOptions(uri));
+            }
+        }.call();
+    }
+
+    /**
+     * Forwards an HTTP POST request to a named service.
+     *
+     * @param req the HTTP servlet request.
+     * @param res the HTTP servlet response.
+     * @throws IOException if an I/O error occurs.
+     */
+    @Override
+    protected void doPost(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        new ServiceCallResolutionWrapper(req, res) {
+            @Override
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpPost(uri));
+            }
+        }.call();
+    }
+
+    /**
+     * Forwards an HTTP PUT request to a named service.
+     *
+     * @param req the HTTP servlet request.
+     * @param res the HTTP servlet response.
+     * @throws IOException if an I/O error occurs.
+     */
+    @Override
+    protected void doPut(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        new ServiceCallResolutionWrapper(req, res) {
+            @Override
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpPut(uri));
+            }
+        }.call();
+    }
+
+    /**
+     * Forwards an HTTP TRACE request to a named service.
+     *
+     * @param req the HTTP servlet request.
+     * @param res the HTTP servlet response.
+     * @throws IOException if an I/O error occurs.
+     */
+    @Override
+    protected void doTrace(final HttpServletRequest req, final HttpServletResponse res) throws IOException {
+        new ServiceCallResolutionWrapper(req, res) {
+            @Override
+            protected void forwardRequest(String uri) throws IOException {
+                forwardRequest(new HttpTrace(uri));
+            }
+        }.call();
     }
 
     /**
@@ -144,13 +205,30 @@ public class CasProxyServlet extends HttpServlet {
     private abstract class ServiceCallResolutionWrapper {
 
         /**
-         * Calls the service call resolution wrapper.
-         *
+         * The incoming HTTP servlet request.
+         */
+        private final HttpServletRequest req;
+
+        /**
+         * The outgoing HTTP servlet response.
+         */
+        private final HttpServletResponse res;
+
+        /**
          * @param req the incoming HTTP servlet request.
          * @param res the outgoing HTTP servlet response.
+         */
+        public ServiceCallResolutionWrapper(HttpServletRequest req, HttpServletResponse res) {
+            this.req = req;
+            this.res = res;
+        }
+
+        /**
+         * Calls the service call resolution wrapper.
+         *
          * @throws IOException if an I/O error occurs.
          */
-        public void call(HttpServletRequest req, HttpServletResponse res) throws IOException {
+        public void call() throws IOException {
             String uri;
             try {
                 uri = resolveServiceCall(req);
@@ -167,17 +245,94 @@ public class CasProxyServlet extends HttpServlet {
                 sendErrorResponse(res, e.getMessage());
                 return;
             }
-            forwardRequest(new DefaultHttpClient(), uri);
+            forwardRequest(uri);
         }
 
         /**
          * Forwards the request to the named service.
          *
-         * @param client the HTTP client to use for the request.
          * @param uri the URI to use to connect to the named service.
          * @throws IOException if an I/O error occurs.
          */
-        protected abstract void forwardRequest(HttpClient client, String uri) throws IOException;
+        protected abstract void forwardRequest(String uri) throws IOException;
+
+        /**
+         * Forwards a request that cannot contain a request body (for example, a GET or DELETE request).
+         *
+         * @param out the outgoing request.
+         * @throws IOException if an I/O error occurs.
+         */
+        protected void forwardRequest(HttpRequestBase out) throws IOException {
+            HttpClient client = new DefaultHttpClient();
+            try {
+                copyHeaders(req, out);
+                copyResponse(client.execute(out), res);
+            }
+            finally {
+                out.releaseConnection();
+            }
+        }
+
+        /**
+         * Forwards a request that can contain a request bod (for example, a POST or PUT request).
+         *
+         * @param out the outgoing request.
+         * @throws IOException if an I/O exception occurs.
+         */
+        protected void forwardRequest(HttpEntityEnclosingRequestBase out) throws IOException {
+            HttpClient client = new DefaultHttpClient();
+            try {
+                copyHeaders(req, out);
+                out.setEntity(new InputStreamEntity(req.getInputStream(), req.getContentLength()));
+                copyResponse(client.execute(out), res);
+            }
+            finally {
+                out.releaseConnection();
+            }
+        }
+
+        /**
+         * Copies an incoming response to an outgoing servlet response.
+         *
+         * @param source the incoming response.
+         * @param dest the outgoing response.
+         * @throws IOException if an I/O error occurs.
+         */
+        private void copyResponse(HttpResponse source, HttpServletResponse dest) throws IOException {
+            dest.setStatus(source.getStatusLine().getStatusCode());
+            copyHeaders(source, dest);
+            IOUtils.copy(source.getEntity().getContent(), dest.getOutputStream());
+        }
+
+        /**
+         * Copies all response headers from an incoming response to an outgoing servlet response.
+         *
+         * @param source the incoming response.
+         * @param dest the outgoing response.
+         */
+        private void copyHeaders(HttpResponse source, HttpServletResponse dest) {
+            for (Header header : source.getAllHeaders()) {
+                dest.addHeader(header.getName(), header.getValue());
+            }
+        }
+
+        /**
+         * Copies all request headers from an incoming servlet request to an outgoing request.
+         *
+         * @param source the incoming request.
+         * @param dest the outgoing request.
+         */
+        private void copyHeaders(HttpServletRequest source, HttpRequestBase dest) {
+            Enumeration<String> names = source.getHeaderNames();
+            while (names.hasMoreElements()) {
+                String name = names.nextElement();
+                Enumeration<String> values = source.getHeaders(name);
+                while (values.hasMoreElements()) {
+                    String value = values.nextElement();
+                    dest.addHeader(name, value);
+                }
+            }
+        }
 
         /**
          * Sends a response indicating that a service call resolution error has occurred.
@@ -200,8 +355,7 @@ public class CasProxyServlet extends HttpServlet {
         }
 
         /**
-         * Builds a string representation of a JSON object indicating that a service call resolution error has
-         * occurred.
+         * Builds a string representation of a JSON object indicating that a service call resolution error has occurred.
          *
          * @param msg the error detail message.
          * @return the string representation of the JSON object.
