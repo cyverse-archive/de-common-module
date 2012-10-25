@@ -31,7 +31,7 @@ import org.iplantc.de.server.UnresolvableServiceNameException;
  *
  * @author Dennis Roberts
  */
-public class CasProxyServlet extends HttpServlet {
+public class ProxyServlet extends HttpServlet {
 
     /**
      * Used to resolve aliased service calls.
@@ -41,13 +41,13 @@ public class CasProxyServlet extends HttpServlet {
     /**
      * The default constructor.
      */
-    public CasProxyServlet() {
+    public ProxyServlet() {
     }
 
     /**
      * @param serviceResolver used to resolve aliased service calls.
      */
-    public CasProxyServlet(ServiceCallResolver serviceResolver) {
+    public ProxyServlet(ServiceCallResolver serviceResolver) {
         this.serviceResolver = serviceResolver;
     }
 
