@@ -2,7 +2,10 @@ package org.iplantc.de.server.service;
 
 import java.io.IOException;
 import java.io.PrintStream;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +35,11 @@ import org.iplantc.de.server.UnresolvableServiceNameException;
  * @author Dennis Roberts
  */
 public class ProxyServlet extends HttpServlet {
+
+    /**
+     * The set of headers that should be skipped when copying headers.
+     */
+    private static final Set<String> HEADERS_TO_SKIP = new HashSet<String>(Arrays.asList("content-length"));
 
     /**
      * Used to resolve aliased service calls.
@@ -312,7 +320,9 @@ public class ProxyServlet extends HttpServlet {
          */
         private void copyHeaders(HttpResponse source, HttpServletResponse dest) {
             for (Header header : source.getAllHeaders()) {
-                dest.addHeader(header.getName(), header.getValue());
+                if (!HEADERS_TO_SKIP.contains(header.getName().toLowerCase())) {
+                    dest.addHeader(header.getName(), header.getValue());
+                }
             }
         }
 
@@ -326,10 +336,12 @@ public class ProxyServlet extends HttpServlet {
             Enumeration<String> names = source.getHeaderNames();
             while (names.hasMoreElements()) {
                 String name = names.nextElement();
-                Enumeration<String> values = source.getHeaders(name);
-                while (values.hasMoreElements()) {
-                    String value = values.nextElement();
-                    dest.addHeader(name, value);
+                if (!HEADERS_TO_SKIP.contains(name.toLowerCase())) {
+                    Enumeration<String> values = source.getHeaders(name);
+                    while (values.hasMoreElements()) {
+                        String value = values.nextElement();
+                        dest.addHeader(name, value);
+                    }
                 }
             }
         }
