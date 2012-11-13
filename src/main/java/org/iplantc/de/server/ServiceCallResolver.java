@@ -16,8 +16,18 @@ public abstract class ServiceCallResolver {
      *
      * @param wrapper service call wrapper containing metadata for a call.
      * @return a string representing a valid URL.
+     * @throws UnresolvableServiceNameException if a service name that couldn't be resolved is passed to the resolver.
      */
     public abstract String resolveAddress(BaseServiceCallWrapper wrapper);
+
+    /**
+     * Resolves a service call for a specific service name.
+     *
+     * @param serviceName the service name.
+     * @return a string representing a valid URL.
+     * @throws UnresolvableServiceNameException if the service name can't be resolved.
+     */
+    public abstract String resolveAddress(String serviceName);
 
     /**
      * Gets the service call resolver for a servlet context.
