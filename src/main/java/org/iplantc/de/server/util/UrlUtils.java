@@ -2,16 +2,17 @@ package org.iplantc.de.server.util;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.regex.Pattern;
 
 import org.iplantc.de.server.DESecurityConstants;
 
 /**
  * A simple utility class for dealing with URLs.
- * 
+ *
  * @author Dennis Roberts
  */
 public class UrlUtils {
-	
+
 	/**
 	 * Prevent instantiation.
 	 */
@@ -19,8 +20,13 @@ public class UrlUtils {
 	}
 
     /**
+     * We assume that URLs are absolute URLs if they contain "://".
+     */
+    private static final Pattern ABSOLUTE_URL_PATTERN = Pattern.compile("://");
+
+    /**
      * Adds query string parameters to a URL.
-     * 
+     *
      * @param url the URL.
      * @param parms the query string parameters to add.
      * @return the updated URL.
@@ -38,7 +44,7 @@ public class UrlUtils {
 
     /**
      * Adds parameters to a query string.
-     * 
+     *
      * @param queryString the original query string.
      * @param parms the parameters to add to the query string.
      * @return the updated query string.
@@ -54,7 +60,7 @@ public class UrlUtils {
 
 	/**
      * Builds a new URL based on the given URL, but with a different host.
-     * 
+     *
      * @param url the URL to modify.
      * @param newHost the new host name or IP address to put in the URL.
      * @return the URL with the new host name.
@@ -72,7 +78,7 @@ public class UrlUtils {
 
     /**
      * Extracts the query from the given URL.
-     * 
+     *
      * @param originalUrl the URL that was provided to us by Shibboleth.
      * @return the query or the empty string if there was no query in the original URL.
      */
@@ -83,7 +89,7 @@ public class UrlUtils {
 
     /**
      * Extracts the path from the given URL.
-     * 
+     *
      * @param originalUrl the URL that was provided to us by Shibboleth.
      * @return the path or the empty string if there was no path in the original URL.
      */
@@ -94,7 +100,7 @@ public class UrlUtils {
 
     /**
      * Extracts the port from the given URL.
-     * 
+     *
      * @param originalUrl the URL that was provided to us by Shibboleth.
      * @return the port or the empty string if there was no port in the original URL.
      */
@@ -105,11 +111,27 @@ public class UrlUtils {
 
     /**
      * Extracts the protocol from the given URL.
-     * 
+     *
      * @param originalUrl the URL that was provided to us by Shibboleth.
      * @return the protocol string, including the colon and slashes.
      */
     private static Object extractProtocol(URL originalUrl) {
         return originalUrl.getProtocol() + "://";
+    }
+
+    /**
+     * Converts a relative URL to an absolute URL. If the URL is already an absolute URL then this method does nothing.
+     *
+     * @param contextPath the path to the current location.
+     * @param originalUrl the original URL.
+     * @return
+     */
+    public static String convertRelativeUrl(String contextPath, String originalUrl) {
+        if (ABSOLUTE_URL_PATTERN.matcher(originalUrl).find()) {
+            return originalUrl;
+        }
+        else {
+            return contextPath.replaceAll("/$", "") + "/" + originalUrl.replaceAll("^/", "");
+        }
     }
 }
