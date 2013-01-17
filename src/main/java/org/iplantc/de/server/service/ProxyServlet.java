@@ -6,11 +6,14 @@ import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.json.JSONObject;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
@@ -35,6 +38,7 @@ import org.iplantc.de.server.UnresolvableServiceNameException;
  * @author Dennis Roberts
  */
 public class ProxyServlet extends HttpServlet {
+    private static final long serialVersionUID = -8343592394048255113L;
 
     /**
      * The set of headers that should be skipped when copying headers.

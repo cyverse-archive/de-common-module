@@ -6,6 +6,7 @@ package org.iplantc.de.server.service;
  * @author Dennis Roberts
  */
 public class ServiceCallFailedException extends RuntimeException {
+    private static final long serialVersionUID = 8933998477241299961L;
 
     /**
      * The default constructor.

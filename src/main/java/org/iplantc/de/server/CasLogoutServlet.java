@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 import java.util.regex.Pattern;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.stringtemplate.v4.ST;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.iplantc.clavin.spring.ConfigAliasResolver;
+import org.stringtemplate.v4.ST;
 
 /**
  * A shared servlet for handling CAS logout.
@@ -19,6 +21,8 @@ import org.iplantc.clavin.spring.ConfigAliasResolver;
  * @author Dennis Roberts
  */
 public class CasLogoutServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 4844593776560973333L;
 
     /**
      * The name of the property containing the relative URL to redirect the user to when the user chooses to log out of

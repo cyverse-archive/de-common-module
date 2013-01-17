@@ -6,7 +6,7 @@ package org.iplantc.de.server;
  * @author Dennis Roberts
  */
 public class UnresolvableServiceNameException extends RuntimeException {
-
+    private static final long serialVersionUID = -4682556048970360074L;
     /**
      * The service name that couldn't be resolved.
      */
