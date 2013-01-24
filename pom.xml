@@ -198,6 +198,7 @@
 					<!-- only include the GWT Module definition -->
 					<include>**/DiscoveryEnvironmentCommon.gwt.xml</include>
 					<include>logout-alert-template.html</include>
+                    <include>logged-out-template.html</include>
                     <include>access-denied-template.html</include>
 				</includes>
 			</resource>
