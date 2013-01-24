@@ -93,7 +93,7 @@ public class CasLogoutSuccessHandler implements LogoutSuccessHandler {
     public void onLogoutSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth)
             throws IOException, ServletException {
         String fullLogoutUrl = buildFullLogoutUrl(req, determineRedirectUrl(req));
-        LOG.warn("fullLogoutUrl =" + fullLogoutUrl);
+        LOG.debug("fullLogoutUrl =" + fullLogoutUrl);
         redirectStrategy.sendRedirect(req, res, fullLogoutUrl);
     }
 
