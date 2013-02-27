@@ -30,7 +30,7 @@ public interface ConfluenceService extends RemoteService {
      * @param callback called after the service call finishes
      * @throws ConfluenceException
      */
-    void updatePage(String toolName, int avgRating) throws ConfluenceException;
+    String updatePage(String toolName, int avgRating) throws ConfluenceException;
 
     /**
      * Adds a user comment to a tool description page.
@@ -52,7 +52,7 @@ public interface ConfluenceService extends RemoteService {
      * @param commentId the comment ID in Confluence
      * @throws ConfluenceException
      */
-    void removeComment(String toolName, Long commentId) throws ConfluenceException;
+    String removeComment(String toolName, Long commentId) throws ConfluenceException;
 
     /**
      * Changes an existing user comment on a tool description page.
@@ -64,7 +64,7 @@ public interface ConfluenceService extends RemoteService {
      * @param newComment the new comment text
      * @throws ConfluenceException
      */
-    void editComment(String toolName, int score, String username, Long commentId, String newComment)
+    String editComment(String toolName, int score, String username, Long commentId, String newComment)
             throws ConfluenceException;
 
     /**
