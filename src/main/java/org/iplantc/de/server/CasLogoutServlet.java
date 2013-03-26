@@ -1,17 +1,18 @@
 package org.iplantc.de.server;
 
+import static org.iplantc.de.server.util.ServletUtils.getPropertyPrefix;
+import static org.iplantc.de.server.util.ServletUtils.getRequiredProp;
+import static org.iplantc.de.server.util.ServletUtils.loadResource;
+import static org.iplantc.de.server.util.UrlUtils.convertRelativeUrl;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 import org.iplantc.clavin.spring.ConfigAliasResolver;
 import org.stringtemplate.v4.ST;
 
@@ -57,11 +58,6 @@ public class CasLogoutServlet extends HttpServlet {
      * The name of the file containing the template for the logout alert page.
      */
     private static final String TEMPLATE_FILENAME = "logout-alert-template.html";
-
-    /**
-     * We assume that URLs are absolute URLs if they contain "://".
-     */
-    private static final Pattern ABSOLUTE_URL_PATTERN = Pattern.compile("://");
 
     /**
      * The URL to redirect the user to when the user chooses to log out of all applications.
@@ -124,22 +120,8 @@ public class CasLogoutServlet extends HttpServlet {
         super.init();
         if (!initialized) {
             Properties config = ConfigAliasResolver.getRequiredAliasedConfigFrom(getServletContext(), "webapp");
-            loadConfig(config, getPropertyPrefix());
+            loadConfig(config, getPropertyPrefix(getServletConfig()));
         }
-    }
-
-    /**
-     * Gets the property name prefix from a servlet initialization parameter.
-     *
-     * @return the property name prefix.
-     * @throws ServletException if the property name prefix isn't defined.
-     */
-    private String getPropertyPrefix() throws ServletException {
-        String prefix = getServletConfig().getInitParameter("propertyNamePrefix");
-        if (prefix == null) {
-            throw new ServletException("init parameter, propertyNamePrefix, is required");
-        }
-        return prefix;
     }
 
     /**
@@ -152,57 +134,8 @@ public class CasLogoutServlet extends HttpServlet {
         loginUrl = getRequiredProp(props, propPrefix + LOGIN_URL_PROPERTY);
         noLogoutUrl = getRequiredProp(props, propPrefix + NO_LOGOUT_URL_PROPERTY);
         appList = getRequiredProp(props, propPrefix + APP_LIST_PROPERTY);
-        templateText = loadTemplate();
+        templateText = loadResource(TEMPLATE_FILENAME);
         initialized = true;
-    }
-
-    /**
-     * Loads the template for the logout alert page.
-     *
-     * @return the template text.
-     * @throws RuntimeException if the template doesn't exist or can't be loaded.
-     */
-    private String loadTemplate() {
-        try {
-            InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(TEMPLATE_FILENAME);
-            return IOUtils.toString(in);
-        }
-        catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Gets a required property from a set of properties.
-     *
-     * @param props the properties.
-     * @param name the name of the required property.
-     * @return the value of the required property.
-     * @throws IllegalStateException if the required property is missing or empty.
-     */
-    private String getRequiredProp(Properties props, String name) {
-        String value = props.getProperty(name);
-        if (StringUtils.isBlank(value)) {
-            String msg = "configuration property, " + name + ", is missing or empty";
-            throw new IllegalStateException(msg);
-        }
-        return value;
-    }
-
-    /**
-     * Converts a relative URL to an absolute URL. If the URL is already an absolute URL then this method does nothing.
-     *
-     * @param req the object representing the HTTP request.
-     * @param originalUrl the original URL.
-     * @return
-     */
-    private String convertRelativeUrl(HttpServletRequest req, String originalUrl) {
-        if (ABSOLUTE_URL_PATTERN.matcher(originalUrl).find()) {
-            return originalUrl;
-        }
-        else {
-            return req.getContextPath().replaceAll("/$", "") + "/" + originalUrl.replaceAll("^/", "");
-        }
     }
 
     /**
@@ -213,10 +146,10 @@ public class CasLogoutServlet extends HttpServlet {
      */
     private String generatePageText(HttpServletRequest req) throws ServletException {
         ST st = new ST(templateText, '$', '$');
-        st.add("logout_url", convertRelativeUrl(req, logoutUrl));
+        st.add("logout_url", convertRelativeUrl(req.getContextPath(), logoutUrl));
         st.add("app_name", appName);
-        st.add("login_url", convertRelativeUrl(req, loginUrl));
-        st.add("no_logout_url", convertRelativeUrl(req, noLogoutUrl));
+        st.add("login_url", convertRelativeUrl(req.getContextPath(), loginUrl));
+        st.add("no_logout_url", convertRelativeUrl(req.getContextPath(), noLogoutUrl));
         st.add("app_list", appList);
         return st.render();
     }

@@ -102,7 +102,7 @@
         <dependency>
             <groupId>org.iplantc.core</groupId>
             <artifactId>clavin-java</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>dev-SNAPSHOT</version>
         </dependency>
         <dependency>
 			<groupId>commons-io</groupId>
@@ -202,6 +202,8 @@
 					<!-- only include the GWT Module definition -->
 					<include>**/DiscoveryEnvironmentCommon.gwt.xml</include>
 					<include>logout-alert-template.html</include>
+                    <include>logged-out-template.html</include>
+                    <include>access-denied-template.html</include>
 				</includes>
 			</resource>
 		</resources>
