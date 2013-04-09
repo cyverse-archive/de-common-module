@@ -5,7 +5,7 @@
 	<groupId>org.iplantc.de</groupId>
 	<artifactId>de-common</artifactId>
 	<packaging>jar</packaging>
-	<version>dev-SNAPSHOT</version>
+	<version>1.6.2-SNAPSHOT</version>
 	<name>Discovery Environment Common Service Facade</name>
 	<url>http://iplantcollaborative.org</url>
 	<!-- convenience to define GWT version in one place -->
@@ -92,12 +92,12 @@
 		<dependency>
 			<groupId>org.iplantc.core</groupId>
 			<artifactId>jsonutil</artifactId>
-			<version>dev-SNAPSHOT</version>
+			<version>1.6.2-SNAPSHOT</version>
 		</dependency>
         <dependency>
             <groupId>org.iplantc.core</groupId>
             <artifactId>clavin-java</artifactId>
-            <version>dev-SNAPSHOT</version>
+            <version>1.6.2-SNAPSHOT</version>
         </dependency>
         <dependency>
 			<groupId>commons-io</groupId>
