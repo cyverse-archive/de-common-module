@@ -1,17 +1,20 @@
 package org.iplantc.de.server;
 
-import java.io.IOException;
-import java.util.Properties;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import org.stringtemplate.v4.ST;
-import org.iplantc.clavin.spring.ConfigAliasResolver;
 import static org.iplantc.de.server.util.ServletUtils.getPropertyPrefix;
 import static org.iplantc.de.server.util.ServletUtils.getRequiredProp;
 import static org.iplantc.de.server.util.ServletUtils.loadResource;
 import static org.iplantc.de.server.util.UrlUtils.convertRelativeUrl;
+
+import java.io.IOException;
+import java.util.Properties;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.iplantc.clavin.spring.ConfigAliasResolver;
+import org.stringtemplate.v4.ST;
 
 /**
  * A shared servlet for handling CAS logout.
@@ -19,6 +22,8 @@ import static org.iplantc.de.server.util.UrlUtils.convertRelativeUrl;
  * @author Dennis Roberts
  */
 public class CasLogoutServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 4844593776560973333L;
 
     /**
      * The name of the property containing the relative URL to redirect the user to when the user chooses to log out of

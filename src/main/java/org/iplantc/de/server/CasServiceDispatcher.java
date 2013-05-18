@@ -9,6 +9,8 @@ package org.iplantc.de.server;
  */
 public class CasServiceDispatcher extends BaseDEServiceDispatcher {
 
+    private static final long serialVersionUID = -3212020774485886995L;
+
     /**
      * The default constructor.
      */

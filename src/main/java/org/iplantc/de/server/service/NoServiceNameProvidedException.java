@@ -7,6 +7,8 @@ package org.iplantc.de.server.service;
  */
 public class NoServiceNameProvidedException extends RuntimeException {
 
+    private static final long serialVersionUID = -2737020121564493519L;
+
     /**
      * The default constructor.
      */

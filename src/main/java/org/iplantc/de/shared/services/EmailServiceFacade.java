@@ -45,7 +45,7 @@ public class EmailServiceFacade {
      * @param callback called after the service call finishes
      */
     public void sendEmail(String subject, String message, String fromAddress, String toAddress,
-            AsyncCallback<String> callback) {
+            AsyncCallback<Void> callback) {
         proxy.sendEmail(subject, message, fromAddress, toAddress, callback);
     }
 }

@@ -1,18 +1,20 @@
 package org.iplantc.de.server;
 
+import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
-
-import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
 
 /**
  * A servlet used to initialize HTTP sessions for CAS-secured web applications.
@@ -20,6 +22,8 @@ import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletReques
  * @author Dennis Roberts
  */
 public class CasSessionInitializationServlet extends HttpServlet {
+
+    private static final long serialVersionUID = 9108716044066000369L;
 
     /**
      * Used to log debugging information.
