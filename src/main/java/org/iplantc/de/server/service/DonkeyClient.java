@@ -55,6 +55,20 @@ public class DonkeyClient {
     }
 
     /**
+     * Validates a base URL.
+     *
+     * @param baseUrl the base URL to validate.
+     */
+    private static void validateBaseUrl(String baseUrl) {
+        if (baseUrl == null) {
+            throw new NullPointerException("the base URL may not be null");
+        }
+        if (StringUtils.isEmpty(baseUrl)) {
+            throw new IllegalArgumentException("the base URL may not be empty");
+        }
+    }
+
+    /**
      * Creates a Donkey client using the provided URL connector and the base URL from a set of properties.
      *
      * @param urlConnector the connector used to obtain connections to Donkey.
@@ -81,13 +95,35 @@ public class DonkeyClient {
     }
 
     /**
-     * Creates a secured Donkey cleint using the base URL from a set of properties.
+     * Creates an unsecured Donkey client using an explicitly specified base URL.
+     *
+     * @param baseUrl the base URL.
+     * @return the Donkey client.
+     */
+    public static DonkeyClient unsecuredClient(String baseUrl) {
+        validateBaseUrl(baseUrl);
+        return new DonkeyClient(new UnauthenticatedUrlConnector(), baseUrl);
+    }
+
+    /**
+     * Creates a secured Donkey client using the base URL from a set of properties.
      *
      * @param props the properties.
      * @return the new Donkey client.
      */
     public static DonkeyClient securedClient(Properties props) {
         return createDonkeyClient(new CasUrlConnector(), SECURED_BASE_PROP, props);
+    }
+
+    /**
+     * Creates a secured Donkey client using an explicitly specified base URL.
+     *
+     * @param baseUrl the base URL.
+     * @return the Donkey client.
+     */
+    public static DonkeyClient securedClient(String baseUrl) {
+        validateBaseUrl(baseUrl);
+        return new DonkeyClient(new CasUrlConnector(), baseUrl);
     }
 
     /**
