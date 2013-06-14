@@ -2,12 +2,16 @@ package org.iplantc.de.server;
 
 import gwtupload.server.UploadAction;
 import gwtupload.server.exceptions.UploadActionException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+
 import net.sf.json.JSONObject;
+
 import org.apache.commons.fileupload.FileItem;
 import org.apache.log4j.Logger;
 import org.iplantc.de.shared.services.MultiPartServiceWrapper;
@@ -234,7 +238,7 @@ public class UploadServlet extends UploadAction {
     private MultiPartServiceWrapper createServiceWrapper(String path, String filename, long fileLength,
             String mimeType, InputStream fileContents) {
         // address key that is resolved by the service dispatcher
-        String addressKey = "org.iplantc.services.scruffian.fileupload";
+        String addressKey = "org.iplantc.services.file-io.file-upload";
 
         MultiPartServiceWrapper wrapper = new MultiPartServiceWrapper(MultiPartServiceWrapper.Type.POST,
                 addressKey);
@@ -247,7 +251,7 @@ public class UploadServlet extends UploadAction {
 
     private String getUserHomeDir(HttpServletRequest request) {
         ServiceCallWrapper wrapper = new ServiceCallWrapper(
-                "org.iplantc.services.nibblonian.getuserhomedir");
+                "org.iplantc.services.de-data-mgmt.getuserhomedir");
         String homeDir = null;
 
         try {
