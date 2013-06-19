@@ -26,7 +26,7 @@ public interface ConfluenceServiceAsync {
      * @param avgRating the new average rating score
      * @param callback called after the service call finishes
      */
-    void updatePage(String toolName, int avgRating, AsyncCallback<String> callback);
+    void updatePage(String toolName, int avgRating, AsyncCallback<Void> callback);
 
     /**
      * Adds a user comment to a tool description page.
@@ -47,7 +47,7 @@ public interface ConfluenceServiceAsync {
      * @param commentId the comment ID in Confluence
      * @param callback called after the service call finishes
      */
-    void removeComment(String toolName, Long commentId, AsyncCallback<String> callback);
+    void removeComment(String toolName, Long commentId, AsyncCallback<Void> callback);
 
     /**
      * Changes an existing user comment on a tool description page.
@@ -60,7 +60,7 @@ public interface ConfluenceServiceAsync {
      * @param callback called after the service call finishes
      */
     void editComment(String toolName, int score, String username, Long commentId, String newComment,
-            AsyncCallback<String> callback);
+            AsyncCallback<Void> callback);
 
     /**
      * Retrieves a user comment from a tool description page.
