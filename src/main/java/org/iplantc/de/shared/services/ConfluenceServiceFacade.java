@@ -1,8 +1,5 @@
 package org.iplantc.de.shared.services;
 
-import org.iplantc.de.shared.services.ConfluenceService;
-import org.iplantc.de.shared.services.ConfluenceServiceAsync;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
@@ -16,7 +13,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 public class ConfluenceServiceFacade {
     private static ConfluenceServiceFacade service;
 
-    private ConfluenceServiceAsync proxy;
+    private final ConfluenceServiceAsync proxy;
 
     private ConfluenceServiceFacade() {
         final String SESSION_SERVICE = "confluence"; //$NON-NLS-1$
@@ -57,7 +54,7 @@ public class ConfluenceServiceFacade {
      * @param avgRating the new average rating score
      * @param callback called after the service call finishes
      */
-    public void updateDocumentationPage(String toolName, int avgRating, AsyncCallback<String> callback) {
+    public void updateDocumentationPage(String toolName, int avgRating, AsyncCallback<Void> callback) {
         proxy.updatePage(toolName, avgRating, callback);
     }
 
@@ -82,7 +79,7 @@ public class ConfluenceServiceFacade {
      * @param commentId the comment ID in Confluence
      * @param callback called after the service call finishes
      */
-    public void removeComment(String toolName, Long commentId, AsyncCallback<String> callback) {
+    public void removeComment(String toolName, Long commentId, AsyncCallback<Void> callback) {
         proxy.removeComment(toolName, commentId, callback);
     }
 
@@ -97,8 +94,7 @@ public class ConfluenceServiceFacade {
      * @param callback called after the service call finishes
      */
     public void editComment(String toolName, int score, String username, long commentId,
-            String newComment,
-            AsyncCallback<String> callback) {
+            String newComment, AsyncCallback<Void> callback) {
         proxy.editComment(toolName, score, username, commentId, newComment, callback);
     }
 

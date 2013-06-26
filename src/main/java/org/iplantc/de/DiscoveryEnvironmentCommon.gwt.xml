@@ -20,4 +20,8 @@
 	
 	<source path="client"/>
 	<source path="shared"/>
+	
+	<replace-with class="org.iplantc.de.shared.DefaultTimeSource">
+		<when-type-is class="org.iplantc.de.shared.ProvidesTime"/>
+	</replace-with>
 </module>
