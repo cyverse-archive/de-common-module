@@ -1,7 +1,5 @@
 package org.iplantc.de.server;
 
-import static org.iplantc.de.server.util.UrlUtils.addQueryParameters;
-
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -18,7 +16,7 @@ import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletReques
  * 
  * @author Dennis Roberts
  */
-public class CasUrlConnector implements UrlConnector {
+public class CasUrlConnector extends BaseUrlConnector {
 
 	/**
 	 * {@inheritDoc}
@@ -46,9 +44,10 @@ public class CasUrlConnector implements UrlConnector {
 	 * @throws IOException if an I/O error occurs.
 	 */
 	private URL addProxyTokenToUrl(String address, HttpServletRequest request) throws IOException {
-		URL originalUrl = new URL(address);
-		URL url = addQueryParameters(originalUrl, "proxyToken=" + getProxyTicket(request, originalUrl));
-		return url;
+        URL originalUrl = new URL(address);
+        address = addIpAddress(address, request);
+        address = addQueryParam(address, "proxyToken", getProxyTicket(request, originalUrl));
+		return new URL(address);
 	}
 
 	/**

@@ -14,7 +14,7 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
  * 
  * @author Dennis Roberts
  */
-public class AuthenticationValidatingUrlConnector implements UrlConnector {
+public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
     /**
      * {@inheritDoc}
      */
@@ -22,7 +22,7 @@ public class AuthenticationValidatingUrlConnector implements UrlConnector {
     public HttpURLConnection getUrlConnection(HttpServletRequest request, String address)
             throws IOException {
         validateAuthentication(request);
-        return (HttpURLConnection)new URL(address).openConnection();
+        return (HttpURLConnection)new URL(addIpAddress(address, request)).openConnection();
     }
 
     /**
