@@ -16,3 +16,6 @@ war
 # ignore directories related to GWT Unit Tests
 tomcat
 www-test
+# IntelliJ Idea files
+.idea
+*.iml
