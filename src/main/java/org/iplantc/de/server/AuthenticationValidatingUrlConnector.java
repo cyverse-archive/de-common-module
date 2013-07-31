@@ -7,6 +7,9 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+
+import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
 
 /**
  * A URL connector that verifies that the user has authenticated, but does not add authentication
@@ -31,7 +34,7 @@ public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
      * @throws IOException if the user is not authenticated.
      */
     private void validateAuthentication(HttpServletRequest request) throws IOException {
-        Object principal = request.getSession().getAttribute(DESecurityConstants.LOCAL_SHIB_EPPN);
+        AttributePrincipal principal = attributePrincipalFromServletRequest(request);
         if (principal == null) {
             throw new IOException("user is not authenticated");
         }
