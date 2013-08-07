@@ -1,18 +1,21 @@
 package org.iplantc.de.server;
 
-import org.apache.commons.lang.StringUtils;
-
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 /**
  * Performs actions common to most URL connectors.
  */
 public abstract class BaseUrlConnector implements UrlConnector {
-
+    
     /**
      * Adds a query string parameter to a URI.
      *
@@ -47,5 +50,30 @@ public abstract class BaseUrlConnector implements UrlConnector {
      */
     protected String addIpAddress(String uriString, HttpServletRequest request) throws IOException {
         return addQueryParam(uriString, "ip-address", request.getRemoteAddr());
+    }
+
+    /**
+     * Copies the User-Agent header from an incoming HTTP servlet request to an outgoing HTTP URL connection.
+     * 
+     * @param req the incoming servlet request.
+     * @param c the outgoing connection.
+     * @return the outgoing connection.
+     */
+    protected HttpURLConnection copyUserAgent(HttpServletRequest req, HttpURLConnection c) {
+        c.addRequestProperty("User-Agent", req.getHeader("User-Agent"));
+        return c;
+    }
+
+    /**
+     * Copies the User-Agent header from the incoming HTTP servlet request to an outgoing
+     * HttpEntityEnclosingRequestBase.
+     * 
+     * @param req the incoming servlet request.
+     * @param c the outgoing HttpEntityEnclosingRequestBase.
+     * @return the outgoing request.
+     */
+    protected HttpEntityEnclosingRequestBase copyUserAgent(HttpServletRequest req, HttpEntityEnclosingRequestBase c) {
+        c.addHeader("User-Agent", req.getHeader("User-Agent"));
+        return c;
     }
 }

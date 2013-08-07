@@ -18,6 +18,7 @@ import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletReques
  * @author Dennis Roberts
  */
 public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
+
     /**
      * {@inheritDoc}
      */
@@ -25,7 +26,7 @@ public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
     public HttpURLConnection getUrlConnection(HttpServletRequest request, String address)
             throws IOException {
         validateAuthentication(request);
-        return (HttpURLConnection)new URL(addIpAddress(address, request)).openConnection();
+        return copyUserAgent(request, (HttpURLConnection) new URL(addIpAddress(address, request)).openConnection());
     }
 
     /**
@@ -47,6 +48,6 @@ public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
     public HttpEntityEnclosingRequestBase getRequest(HttpServletRequest request, String address,
             String method) throws IOException {
         validateAuthentication(request);
-        return RequestFactory.buildRequest(method, address);
+        return copyUserAgent(request, RequestFactory.buildRequest(method, address));
     }
 }
