@@ -24,7 +24,7 @@ public class CasUrlConnector extends BaseUrlConnector {
      */
     @Override
     public HttpURLConnection getUrlConnection(HttpServletRequest request, String address) throws IOException {
-        return (HttpURLConnection) addProxyTokenToUrl(address, request).openConnection();
+        return copyUserAgent(request, (HttpURLConnection) addProxyTokenToUrl(address, request).openConnection());
     }
 
     /**
@@ -33,7 +33,8 @@ public class CasUrlConnector extends BaseUrlConnector {
     @Override
     public HttpEntityEnclosingRequestBase getRequest(HttpServletRequest request, String address, String method) throws
             IOException {
-        return RequestFactory.buildRequest(method, addProxyTokenToUrl(address, request).toString());
+        String authenticatedUrl = addProxyTokenToUrl(address, request).toString();
+        return copyUserAgent(request, RequestFactory.buildRequest(method, authenticatedUrl));
     }
 
     /**
