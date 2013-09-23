@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.StatusCodeException;
+import org.iplantc.de.server.AuthenticationException;
 
 /**
  * Detects when the user is not logged in to the application and redirects the user to the login page.  Under normal
@@ -32,6 +33,15 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
     }
 
     /**
+     * Redirects the user to the DE landing page.
+     */
+    private void redirectToLandingPage() {
+        String contextPath = Window.Location.getPath();
+        Window.Location.replace(contextPath + GWT.getModuleName() + LANDING_PAGE);
+        return;
+    }
+
+    /**
      * Called whenever a call to the server fails. If the call failed because of an HTTP status code and
      * that status code represents a redirect request or wasn't recorded then we assume that the user isn't
      * logged in and redirect the user to the login page. The callback that we're wrapping deals with all
@@ -41,12 +51,13 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
      */
     @Override
     public void onFailure(Throwable error) {
+        if (error instanceof AuthenticationException) {
+            redirectToLandingPage();
+        }
         if (error instanceof StatusCodeException) {
             int statusCode = ((StatusCodeException)error).getStatusCode();
             if (statusCode == 302 || statusCode == 0) {
-                String contextPath = Window.Location.getPath();
-                Window.Location.replace(contextPath + GWT.getModuleName() + LANDING_PAGE);
-                return;
+                redirectToLandingPage();
             }
         }
         callback.onFailure(error);
