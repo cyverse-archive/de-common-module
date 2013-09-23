@@ -37,7 +37,7 @@ public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
     private void validateAuthentication(HttpServletRequest request) throws IOException {
         AttributePrincipal principal = attributePrincipalFromServletRequest(request);
         if (principal == null) {
-            throw new IOException("user is not authenticated");
+            throw new AuthenticationException();
         }
     }
 

@@ -65,7 +65,7 @@ public class CasUrlConnector extends BaseUrlConnector {
         AttributePrincipal principal = attributePrincipalFromServletRequest(request);
         String ticket = principal.getProxyTicketFor(extractServiceName(url));
         if (ticket == null) {
-            throw new IOException("unable to obtain a proxy ticket; please check the security settings");
+            throw new AuthenticationException("unable to obtain a proxy ticket");
         }
         return ticket;
     }

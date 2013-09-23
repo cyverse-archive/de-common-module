@@ -1,5 +1,6 @@
 package org.iplantc.de.shared;
 
+import org.iplantc.de.server.AuthenticationException;
 import org.iplantc.de.shared.services.MultiPartServiceWrapper;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
 
@@ -52,7 +53,8 @@ public class SharedServiceFacade extends BaseSharedServiceFacade {
      * @param callback the callback to use to notify the caller of the results.
      */
     @Override
-    public void getServiceData(ServiceCallWrapper wrapper, AsyncCallback<String> callback) {
+    public void getServiceData(ServiceCallWrapper wrapper, AsyncCallback<String> callback)
+            throws AuthenticationException {
         super.getServiceData(wrapper, new AsyncCallbackWrapper<String>(callback));
     }
 
@@ -63,7 +65,8 @@ public class SharedServiceFacade extends BaseSharedServiceFacade {
      * @param callback the callback to use to notify the caller of the results.
      */
     @Override
-    public void getServiceData(MultiPartServiceWrapper wrapper, AsyncCallback<String> callback) {
+    public void getServiceData(MultiPartServiceWrapper wrapper, AsyncCallback<String> callback)
+            throws AuthenticationException {
         super.getServiceData(wrapper, new AsyncCallbackWrapper<String>(callback));
     }
 }
