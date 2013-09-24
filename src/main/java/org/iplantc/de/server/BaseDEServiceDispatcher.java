@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
+import org.iplantc.de.shared.AuthenticationException;
 import org.iplantc.de.shared.DEService;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
 import org.iplantc.de.shared.services.HTTPPart;
@@ -395,10 +396,11 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
      *
      * @param wrapper the service call wrapper.
      * @return the response from the service call.
-     * @throws SerializationException if an error occurs.
+     * @throws AuthenticationException if the user isn't authenticated.
+     * @throws SerializationException if any other error occurs.
      */
     @Override
-    public String getServiceData(ServiceCallWrapper wrapper) throws SerializationException {
+    public String getServiceData(ServiceCallWrapper wrapper) throws SerializationException, AuthenticationException {
         String json = null;
         URLConnection urlc = null;
 
@@ -429,6 +431,8 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
                 }
 
                 json = retrieveResult(urlc);
+            } catch (AuthenticationException ex) {
+                throw ex;
             } catch (Exception ex) {
                 LOGGER.error(ex.toString(), ex);
                 // because the GWT compiler will issue a warning if we simply
@@ -461,6 +465,7 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
      *
      * @param wrapper the service call wrapper.
      * @return an input stream that can be used to retrieve the response from the service call.
+     * @throws AuthenticationException if the user isn't authenticated.
      * @throws IOException if an I/O error occurs.
      * @throws SerializationException if any other error occurs.
      */
@@ -494,6 +499,8 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
                     default:
                         break;
                 }
+            } catch (AuthenticationException ex) {
+                throw ex;
             } catch (Exception ex) {
                 // because the GWT compiler will issue a warning if we simply
                 // throw exception, we'll
@@ -515,7 +522,8 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
      * @throws SerializationException if an error occurs.
      */
     @Override
-    public String getServiceData(MultiPartServiceWrapper wrapper) throws SerializationException {
+    public String getServiceData(MultiPartServiceWrapper wrapper)
+            throws SerializationException, AuthenticationException {
         String json = null;
 
         if (isValidServiceCall(wrapper)) {
@@ -535,6 +543,8 @@ public abstract class BaseDEServiceDispatcher extends RemoteServiceServlet imple
                     default:
                         break;
                 }
+            } catch (AuthenticationException ex) {
+                throw ex;
             } catch (Exception ex) {
                 // because the GWT compiler will issue a warning if we simply
                 // throw exception, we'll
