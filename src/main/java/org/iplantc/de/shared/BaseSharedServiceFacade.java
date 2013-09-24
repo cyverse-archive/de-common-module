@@ -1,12 +1,10 @@
 package org.iplantc.de.shared;
 
-import org.iplantc.de.server.AuthenticationException;
-import org.iplantc.de.shared.services.MultiPartServiceWrapper;
-import org.iplantc.de.shared.services.ServiceCallWrapper;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import org.iplantc.de.shared.services.MultiPartServiceWrapper;
+import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 /**
  * Base class for a singleton service that provides an asynchronous proxy to data services.
@@ -30,8 +28,7 @@ public class BaseSharedServiceFacade {
      * @param wrapper the service call wrapper.
      * @param callback the callback to use to notify the caller of the results.
      */
-    public void getServiceData(ServiceCallWrapper wrapper, AsyncCallback<String> callback)
-            throws AuthenticationException {
+    public void getServiceData(ServiceCallWrapper wrapper, AsyncCallback<String> callback) {
         proxy.getServiceData(wrapper, callback);
     }
 
@@ -41,8 +38,7 @@ public class BaseSharedServiceFacade {
      * @param wrapper the service call wrapper.
      * @param callback the callback to use to notify the caller of the results.
      */
-    public void getServiceData(MultiPartServiceWrapper wrapper, AsyncCallback<String> callback)
-            throws AuthenticationException {
+    public void getServiceData(MultiPartServiceWrapper wrapper, AsyncCallback<String> callback) {
         proxy.getServiceData(wrapper, callback);
     }
 }

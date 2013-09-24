@@ -4,7 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.StatusCodeException;
-import org.iplantc.de.server.AuthenticationException;
+import org.iplantc.de.shared.AuthenticationException;
 
 /**
  * Detects when the user is not logged in to the application and redirects the user to the login page.  Under normal

@@ -1,4 +1,6 @@
-package org.iplantc.de.server;
+package org.iplantc.de.shared;
+
+import com.google.gwt.user.client.rpc.SerializationException;
 
 import java.io.IOException;
 
