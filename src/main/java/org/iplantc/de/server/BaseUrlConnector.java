@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +30,8 @@ public abstract class BaseUrlConnector implements UrlConnector {
         String param = name + "=" + URLEncoder.encode(value, "UTF-8");
         try {
             URI uri = new URI(uriString);
-            String query = uri.getQuery();
-            query = StringUtils.isEmpty(query) ? param : query + "&" + param;
+            String query = uri.getRawQuery();
+            query = StringUtils.isEmpty(query) ? param : URLDecoder.decode(query, "UTF-8") + "&" + param;
             return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(), query,
                     uri.getFragment()).toString();
         }
