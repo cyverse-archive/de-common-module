@@ -1,10 +1,10 @@
 package org.iplantc.de.shared;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.StatusCodeException;
-import org.iplantc.de.shared.AuthenticationException;
 
 /**
  * Detects when the user is not logged in to the application and redirects the user to the login page.  Under normal
@@ -16,7 +16,7 @@ import org.iplantc.de.shared.AuthenticationException;
  * @param <T> the type of the result we're expecting to get from the server.
  */
 public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
-    private static final String LANDING_PAGE = "/login";
+    private static final String LANDING_PAGE = "login";
 
     /**
      * The callback that we're wrapping.
@@ -36,9 +36,7 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
      * Redirects the user to the DE landing page.
      */
     private void redirectToLandingPage() {
-        String contextPath = Window.Location.getPath();
-        Window.Location.replace(contextPath + GWT.getModuleName() + LANDING_PAGE);
-        return;
+        Window.Location.replace(GWT.getModuleBaseURL() + LANDING_PAGE);
     }
 
     /**
