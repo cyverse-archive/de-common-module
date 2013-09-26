@@ -6,6 +6,7 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.iplantc.de.shared.AuthenticationException;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 
 import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
@@ -65,7 +66,8 @@ public class CasUrlConnector extends BaseUrlConnector {
         AttributePrincipal principal = attributePrincipalFromServletRequest(request);
         String ticket = principal.getProxyTicketFor(extractServiceName(url));
         if (ticket == null) {
-            throw new IOException("unable to obtain a proxy ticket; please check the security settings");
+            request.getSession().invalidate();
+            throw new AuthenticationException("unable to obtain a proxy ticket");
         }
         return ticket;
     }

@@ -1,11 +1,10 @@
 package org.iplantc.de.shared;
 
-import org.iplantc.de.shared.services.MultiPartServiceWrapper;
-import org.iplantc.de.shared.services.ServiceCallWrapper;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import org.iplantc.de.shared.services.MultiPartServiceWrapper;
+import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 /**
  * Base class for a singleton service that provides an asynchronous proxy to data services.

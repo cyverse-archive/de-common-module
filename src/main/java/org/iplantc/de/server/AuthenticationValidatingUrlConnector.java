@@ -7,6 +7,7 @@ import java.net.URL;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.iplantc.de.shared.AuthenticationException;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 
 import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
@@ -37,7 +38,7 @@ public class AuthenticationValidatingUrlConnector extends BaseUrlConnector {
     private void validateAuthentication(HttpServletRequest request) throws IOException {
         AttributePrincipal principal = attributePrincipalFromServletRequest(request);
         if (principal == null) {
-            throw new IOException("user is not authenticated");
+            throw new AuthenticationException();
         }
     }
 

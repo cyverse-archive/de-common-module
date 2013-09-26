@@ -1,5 +1,6 @@
 package org.iplantc.de.shared;
 
+import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -15,7 +16,7 @@ import com.google.gwt.user.client.rpc.StatusCodeException;
  * @param <T> the type of the result we're expecting to get from the server.
  */
 public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
-    private static final String LANDING_PAGE = "/login";
+    private static final String LANDING_PAGE = "login";
 
     /**
      * The callback that we're wrapping.
@@ -32,6 +33,13 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
     }
 
     /**
+     * Redirects the user to the DE landing page.
+     */
+    private void redirectToLandingPage() {
+        Window.Location.replace(GWT.getModuleBaseURL() + LANDING_PAGE);
+    }
+
+    /**
      * Called whenever a call to the server fails. If the call failed because of an HTTP status code and
      * that status code represents a redirect request or wasn't recorded then we assume that the user isn't
      * logged in and redirect the user to the login page. The callback that we're wrapping deals with all
@@ -41,12 +49,13 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
      */
     @Override
     public void onFailure(Throwable error) {
+        if (error instanceof AuthenticationException) {
+            redirectToLandingPage();
+        }
         if (error instanceof StatusCodeException) {
             int statusCode = ((StatusCodeException)error).getStatusCode();
             if (statusCode == 302 || statusCode == 0) {
-                String contextPath = Window.Location.getPath();
-                Window.Location.replace(contextPath + GWT.getModuleName() + LANDING_PAGE);
-                return;
+                redirectToLandingPage();
             }
         }
         callback.onFailure(error);
