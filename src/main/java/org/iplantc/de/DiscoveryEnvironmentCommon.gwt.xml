@@ -9,7 +9,6 @@
 	<inherits name="com.google.gwt.user.User" />
 	<!-- Require support for I18N -->
 	<inherits name="com.google.gwt.i18n.I18N"/>
-	<inherits name='com.google.gwt.junit.JUnit'/>
 	<inherits name="gwtupload.GWTUpload" />
 	
 	<inherits name="com.google.gwt.json.JSON" />
