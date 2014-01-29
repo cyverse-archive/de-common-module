@@ -10,13 +10,13 @@ import com.google.gwt.user.client.rpc.StatusCodeException;
  * Detects when the user is not logged in to the application and redirects the user to the login page.  Under normal
  * circumstances, we'll receive a 302 status code if the user is not authenticated, but we also have to check for a
  * status code of 0 because GWT doesn't currently return the correct status code.
- * 
+ *
  * @author Dennis Roberts
- * 
+ *
  * @param <T> the type of the result we're expecting to get from the server.
  */
 public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
-    private static final String LANDING_PAGE = "login";
+    private static final String LANDING_PAGE = "logged-out";
 
     /**
      * The callback that we're wrapping.
@@ -25,7 +25,7 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
 
     /**
      * Creates a new callback wrapper.
-     * 
+     *
      * @param callback the callback that we're wrapping.
      */
     public AsyncCallbackWrapper(AsyncCallback<T> callback) {
@@ -44,7 +44,7 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
      * that status code represents a redirect request or wasn't recorded then we assume that the user isn't
      * logged in and redirect the user to the login page. The callback that we're wrapping deals with all
      * other errors.
-     * 
+     *
      * @param error the exception or error that indicates why the call failed.
      */
     @Override
@@ -64,7 +64,7 @@ public class AsyncCallbackWrapper<T> implements AsyncCallback<T> {
     /**
      * Called whenever a call to the server succeeds. The callback that we're wrapping deals with all
      * successful calls.
-     * 
+     *
      * @param response the response from the server.
      */
     @Override
