@@ -13,7 +13,7 @@
 	
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="org.iplantc.core.JsonUtil"/>
-	<inherits name="org.iplantc.core.resources.ui-resources"/>
+	<inherits name="org.iplantc.de.resources.ui-resources"/>
 	
 	<inherits name="com.google.gwt.rpc.RPC" />
 	
