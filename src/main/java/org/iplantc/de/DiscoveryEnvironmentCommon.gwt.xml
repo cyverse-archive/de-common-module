@@ -12,7 +12,6 @@
 	<!-- <inherits name="gwtupload.GWTUpload" /> -->
 	
 	<inherits name="com.google.gwt.json.JSON" />
-	<inherits name="org.iplantc.de.jsonutil.JsonUtil"/>
 	<inherits name="org.iplantc.de.resources.ui-resources"/>
 	
 	<inherits name="com.google.gwt.rpc.RPC" />
