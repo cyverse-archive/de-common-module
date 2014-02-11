@@ -1,6 +1,5 @@
 package org.iplantc.de.shared;
 
-import com.google.common.base.Strings;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;

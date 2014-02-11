@@ -1,12 +1,12 @@
 package org.iplantc.de.server;
 
-import java.util.List;
-import java.util.UUID;
-
 import org.iplantc.de.client.UUIDService;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import java.util.List;
+import java.util.UUID;
 
 @SuppressWarnings("serial")
 public class UUIDServiceImpl extends RemoteServiceServlet implements UUIDService {

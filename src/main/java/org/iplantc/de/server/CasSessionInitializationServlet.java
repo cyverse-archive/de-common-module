@@ -2,6 +2,10 @@ package org.iplantc.de.server;
 
 import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,10 +15,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.jasig.cas.client.authentication.AttributePrincipal;
 
 /**
  * A servlet used to initialize HTTP sessions for CAS-secured web applications.

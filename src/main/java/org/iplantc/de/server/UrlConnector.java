@@ -1,11 +1,11 @@
 package org.iplantc.de.server;
 
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 /**
  * Used to establish connections to URLs.

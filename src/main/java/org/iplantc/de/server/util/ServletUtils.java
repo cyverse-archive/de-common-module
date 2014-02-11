@@ -1,12 +1,14 @@
 package org.iplantc.de.server.util;
 
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * Some utility methods for use within servlets.

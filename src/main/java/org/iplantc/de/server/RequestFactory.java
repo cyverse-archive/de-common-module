@@ -1,11 +1,11 @@
 package org.iplantc.de.server;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
+
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Used to build Apache HTTP Client request objects.

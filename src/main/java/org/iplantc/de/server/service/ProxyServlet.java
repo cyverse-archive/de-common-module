@@ -1,16 +1,7 @@
 package org.iplantc.de.server.service;
 
-import java.io.IOException;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import org.iplantc.de.server.ServiceCallResolver;
+import org.iplantc.de.server.UnresolvableServiceNameException;
 
 import net.sf.json.JSONObject;
 
@@ -29,8 +20,18 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.client.methods.HttpTrace;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.iplantc.de.server.ServiceCallResolver;
-import org.iplantc.de.server.UnresolvableServiceNameException;
+
+import java.io.IOException;
+import java.io.PrintStream;
+import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * A secured servlet that forwards requests directly to other services.

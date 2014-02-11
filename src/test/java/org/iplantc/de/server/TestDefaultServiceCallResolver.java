@@ -1,19 +1,17 @@
 package org.iplantc.de.server;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import org.iplantc.de.shared.services.BaseServiceCallWrapper;
+import org.iplantc.de.shared.services.ServiceCallWrapper;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Properties;
-
-import org.iplantc.de.shared.services.BaseServiceCallWrapper;
-import org.iplantc.de.shared.services.ServiceCallWrapper;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 
 public class TestDefaultServiceCallResolver {
     /**

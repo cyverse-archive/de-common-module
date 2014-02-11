@@ -1,10 +1,11 @@
 package org.iplantc.de.server;
 
-import java.io.IOException;
+import org.iplantc.de.shared.services.HTTPPart;
 
 import org.apache.http.entity.mime.content.AbstractContentBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.iplantc.de.shared.services.HTTPPart;
+
+import java.io.IOException;
 
 /**
  * Used to build the content bodies for multipart HTTP requests.

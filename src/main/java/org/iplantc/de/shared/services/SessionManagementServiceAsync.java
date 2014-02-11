@@ -1,8 +1,8 @@
 package org.iplantc.de.shared.services;
 
-import java.util.Map;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import java.util.Map;
 
 /**
  * Provides an asynchronous service contract for the SessionManagementService.

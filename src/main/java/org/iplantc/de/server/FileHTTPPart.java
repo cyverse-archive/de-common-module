@@ -1,8 +1,8 @@
 package org.iplantc.de.server;
 
-import java.io.InputStream;
-
 import org.iplantc.de.shared.services.HTTPPart;
+
+import java.io.InputStream;
 
 public class FileHTTPPart extends HTTPPart {
     private static final long serialVersionUID = -2662589032061446564L;

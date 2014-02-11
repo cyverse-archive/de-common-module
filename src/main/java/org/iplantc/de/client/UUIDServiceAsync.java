@@ -1,8 +1,8 @@
 package org.iplantc.de.client;
 
-import java.util.List;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import java.util.List;
 
 /**
  * Async counterpart of <code>UUIDService</code>

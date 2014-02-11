@@ -1,9 +1,9 @@
 package org.iplantc.de.shared.services;
 
-import java.util.Map;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.SerializationException;
+
+import java.util.Map;
 
 /**
  * Contract specifying what client session management services shall support.

@@ -1,10 +1,10 @@
 package org.iplantc.de.server.util;
 
+import org.iplantc.de.server.DESecurityConstants;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.regex.Pattern;
-
-import org.iplantc.de.server.DESecurityConstants;
 
 /**
  * A simple utility class for dealing with URLs.

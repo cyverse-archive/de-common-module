@@ -1,21 +1,5 @@
 package org.iplantc.de.server;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URLConnection;
-import java.util.List;
-
-import javax.servlet.ServletContext;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.apache.http.entity.mime.MultipartEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.log4j.Logger;
 import org.iplantc.de.shared.AuthenticationException;
 import org.iplantc.de.shared.DEService;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
@@ -25,7 +9,24 @@ import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.log4j.Logger;
+
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URLConnection;
+import java.util.List;
+
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Dispatches HTTP requests to other services.

@@ -1,8 +1,8 @@
 package org.iplantc.de.server;
 
-import java.io.InputStream;
-
 import org.apache.http.entity.mime.content.InputStreamBody;
+
+import java.io.InputStream;
 
 /**
  * An input stream body that is aware of the content length.

@@ -1,9 +1,11 @@
 package org.iplantc.de.server;
 
-import javax.servlet.ServletContext;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper;
+
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import javax.servlet.ServletContext;
 
 /**
  * Resolves service calls from the client usage of a service key to the actual service address, or URL.

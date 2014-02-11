@@ -1,17 +1,21 @@
 package org.iplantc.de.server.service;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.Properties;
-import javax.servlet.ServletContext;
+import org.iplantc.clavin.spring.ConfigAliasResolver;
+
 import net.sf.json.JSONObject;
+
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.log4j.Logger;
-import org.iplantc.clavin.spring.ConfigAliasResolver;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.Properties;
+
+import javax.servlet.ServletContext;
 
 /**
  * A client for the iPlant e-mail service.

@@ -1,15 +1,17 @@
 package org.iplantc.de.server;
 
+import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
+
+import org.iplantc.de.shared.AuthenticationException;
+
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
-import org.iplantc.de.shared.AuthenticationException;
-import org.jasig.cas.client.authentication.AttributePrincipal;
-
-import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
 
 /**
  * Used to establish connections to a services that are secured by CAS.  The service must be configured to accept

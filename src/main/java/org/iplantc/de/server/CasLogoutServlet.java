@@ -5,6 +5,10 @@ import static org.iplantc.de.server.util.ServletUtils.getRequiredProp;
 import static org.iplantc.de.server.util.ServletUtils.loadResource;
 import static org.iplantc.de.server.util.UrlUtils.convertRelativeUrl;
 
+import org.iplantc.clavin.spring.ConfigAliasResolver;
+
+import org.stringtemplate.v4.ST;
+
 import java.io.IOException;
 import java.util.Properties;
 
@@ -12,9 +16,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.iplantc.clavin.spring.ConfigAliasResolver;
-import org.stringtemplate.v4.ST;
 
 /**
  * A shared servlet for handling CAS logout.

@@ -1,13 +1,16 @@
 package org.iplantc.de.server;
 
+import org.iplantc.clavin.spring.ConfigAliasResolver;
+import org.iplantc.de.shared.services.PropertyService;
+
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+
 import javax.servlet.ServletException;
-import org.iplantc.clavin.spring.ConfigAliasResolver;
-import org.iplantc.de.shared.services.PropertyService;
 
 public class PropertyServlet extends RemoteServiceServlet implements PropertyService{
 

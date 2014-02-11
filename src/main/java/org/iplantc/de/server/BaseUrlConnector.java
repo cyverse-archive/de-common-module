@@ -1,5 +1,8 @@
 package org.iplantc.de.server;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
@@ -8,9 +11,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
-
-import org.apache.commons.lang.StringUtils;
-import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 
 /**
  * Performs actions common to most URL connectors.

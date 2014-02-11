@@ -1,12 +1,12 @@
 package org.iplantc.de.server;
 
-import javax.servlet.ServletException;
-
 import org.iplantc.de.server.service.IplantEmailClient;
 import org.iplantc.de.server.service.IplantEmailClient.MessageRequest;
 import org.iplantc.de.shared.services.EmailService;
 
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
+import javax.servlet.ServletException;
 
 /**
  * A servlet for sending simple emails. The server address is read from the mail.smtp.host property.

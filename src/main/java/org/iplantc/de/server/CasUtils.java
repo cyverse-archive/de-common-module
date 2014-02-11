@@ -1,9 +1,10 @@
 package org.iplantc.de.server;
 
-import javax.servlet.http.HttpServletRequest;
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.springframework.security.cas.authentication.CasAuthenticationToken;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Utility methods for dealing with CAS.

@@ -1,12 +1,12 @@
 package org.iplantc.de.shared.services;
 
-import java.util.Map;
-
 import org.iplantc.de.shared.AsyncCallbackWrapper;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+
+import java.util.Map;
 
 /**
  * Provides a singleton service facade for Session Management.

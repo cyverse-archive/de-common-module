@@ -7,19 +7,14 @@
   "http://google-web-toolkit.googlecode.com/svn/tags/2.5.0/distro-source/core/src/gwt-module.dtd">
 <module>
 	<inherits name="com.google.gwt.user.User" />
-	<!-- Require support for I18N -->
-	<inherits name="com.google.gwt.i18n.I18N"/>
-	<!-- <inherits name="gwtupload.GWTUpload" /> -->
-	
 	<inherits name="com.google.gwt.json.JSON" />
-	<inherits name="org.iplantc.de.resources.ui-resources"/>
-	
 	<inherits name="com.google.gwt.rpc.RPC" />
-	
-	<source path="client"/>
-	<source path="shared"/>
-	
+	<inherits name="com.google.gwt.resources.Resources" />
+
 	<replace-with class="org.iplantc.de.shared.DefaultTimeSource">
 		<when-type-is class="org.iplantc.de.shared.ProvidesTime"/>
 	</replace-with>
+
+	<source path="client"/>
+	<source path="shared"/>
 </module>

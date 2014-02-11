@@ -1,15 +1,15 @@
 package org.iplantc.de.server;
 
+import org.iplantc.de.shared.services.SessionManagementService;
+
+import com.google.gwt.user.client.rpc.SerializationException;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
-
-import org.iplantc.de.shared.services.SessionManagementService;
-
-import com.google.gwt.user.client.rpc.SerializationException;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
  * Provides management of client session data.

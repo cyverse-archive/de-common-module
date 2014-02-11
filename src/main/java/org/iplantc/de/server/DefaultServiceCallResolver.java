@@ -1,13 +1,15 @@
 package org.iplantc.de.server;
 
+import org.iplantc.clavin.spring.ConfigAliasResolver;
+import org.iplantc.de.shared.services.BaseServiceCallWrapper;
+
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
 import java.util.Properties;
 import java.util.TreeSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import org.iplantc.clavin.spring.ConfigAliasResolver;
-import org.iplantc.de.shared.services.BaseServiceCallWrapper;
 
 public class DefaultServiceCallResolver extends ServiceCallResolver {
     private static final Logger LOG = Logger.getLogger(DefaultServiceCallResolver.class);
