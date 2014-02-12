@@ -10,11 +10,12 @@
 	<inherits name="com.google.gwt.json.JSON" />
 	<inherits name="com.google.gwt.rpc.RPC" />
 	<inherits name="com.google.gwt.resources.Resources" />
+	<inherits name="org.iplantc.de.client.Services" />
 
 	<replace-with class="org.iplantc.de.shared.DefaultTimeSource">
 		<when-type-is class="org.iplantc.de.shared.ProvidesTime"/>
 	</replace-with>
-
+    
 	<source path="client"/>
 	<source path="shared"/>
 </module>
