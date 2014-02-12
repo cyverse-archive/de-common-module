@@ -1,6 +1,6 @@
 package org.iplantc.de.server;
 
-import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
+import static org.iplantc.de.server.util.CasUtils.attributePrincipalFromServletRequest;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;

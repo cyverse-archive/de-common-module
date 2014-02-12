@@ -1,4 +1,4 @@
-package org.iplantc.de.server;
+package org.iplantc.de.server.util;
 
 import org.apache.log4j.Logger;
 import org.jasig.cas.client.authentication.AttributePrincipal;

@@ -1,6 +1,6 @@
 package org.iplantc.de.server;
 
-import static org.iplantc.de.server.CasUtils.attributePrincipalFromServletRequest;
+import static org.iplantc.de.server.util.CasUtils.attributePrincipalFromServletRequest;
 
 import org.iplantc.de.shared.AuthenticationException;
 

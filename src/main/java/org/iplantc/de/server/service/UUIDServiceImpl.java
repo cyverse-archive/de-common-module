@@ -1,6 +1,6 @@
-package org.iplantc.de.server;
+package org.iplantc.de.server.service;
 
-import org.iplantc.de.client.UUIDService;
+import org.iplantc.de.client.services.UUIDService;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
