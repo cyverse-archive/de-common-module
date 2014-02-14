@@ -59,7 +59,7 @@ public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
 
             @Override
             public String getKey(Folder item) {
-                return item.getId();
+                return item == null ? null : item.getId();
             }
         });
 
@@ -458,7 +458,7 @@ public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
 
     @Override
     public void onRefresh(DiskResourceRefreshEvent event) {
-        Folder folder = findModelWithKey(event.getCurrentFolderId());
+        Folder folder = findModel(event.getFolder());
         if (folder == null) {
             return;
         }
