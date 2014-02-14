@@ -90,8 +90,7 @@ public class SearchServiceFacadeImpl implements SearchServiceFacade {
         }
 
         File decodeFileIntoQueryTemplate(Splittable entity, DiskResourceQueryTemplate queryTemplate, DiskResourceAutoBeanFactory factory) {
-            // Re-map JSON keys
-            GWT.log("Re-mapping JSON keys!  'fileSize' -> 'file-size'");
+            // KLUDGE Re-map JSON keys until service JSON is unified.
             entity.get("fileSize").assign(entity, "file-size");
             final AutoBean<File> decodeFile = AutoBeanCodex.decode(factory, File.class, entity);
             queryTemplate.getFiles().add(decodeFile.as());
@@ -104,22 +103,26 @@ public class SearchServiceFacadeImpl implements SearchServiceFacade {
             return decodeFolder.as();
         }
 
+        /**
+         * KLUDGE Re-map JSON keys until service JSON is unified.
+         */
         void reMapDateKeys(Splittable entity) {
-            // Re-map JSON keys
-            GWT.log("Re-mapping JSON keys!  'dateModified' -> 'date-modified'");
             final long dateModifiedInSec = Double.valueOf(entity.get("dateModified").asNumber()).longValue();
-            StringQuoter.create(dateModifiedInSec * 1000).assign(entity, "date-modified");
-            // Re-map JSON keys
-            GWT.log("Re-mapping JSON keys!  'dateCreated' -> 'date-created'");
+            StringQuoter.create(dateModifiedInSec).assign(entity, "date-modified");
             final long dateCreatedInSec = Double.valueOf(entity.get("dateCreated").asNumber()).longValue();
-            StringQuoter.create(dateCreatedInSec * 1000).assign(entity, "date-created");
+            StringQuoter.create(dateCreatedInSec).assign(entity, "date-created");
         }
 
+        /**
+         * KLUDGE Re-map JSON keys until service JSON is unified.
+         */
         void reMapFileSize(Splittable entity) {
-            GWT.log("Re-mapping JSON keys!  'fileSize' -> 'file-size'");
             entity.get("fileSize").assign(entity, "file-size");
         }
 
+        /**
+         * KLUDGE Re-map JSON keys until service JSON is unified.
+         */
         void reMapPath(Splittable entity) {
             final String id = entity.get("id").asString();
             // StringQuoter.create(DiskResourceUtil.parseParent(id)).assign(entity, "path");

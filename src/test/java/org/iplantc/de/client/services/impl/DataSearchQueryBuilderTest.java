@@ -205,8 +205,8 @@ public class DataSearchQueryBuilderTest {
 
         when(dsf.getCreatedWithin()).thenReturn(di);
 
-        return "{\"range\":{\"dateCreated\":{\"gte\":\"" + fromDate.getTime() / 1000 + "\",\"lte\":\""
-                + toDate.getTime() / 1000 + "\"}}}";
+        return "{\"range\":{\"dateCreated\":{\"gte\":\"" + fromDate.getTime() + "\",\"lte\":\""
+                + toDate.getTime() + "\"}}}";
     }
 
     /**
@@ -269,8 +269,8 @@ public class DataSearchQueryBuilderTest {
         when(di.getTo()).thenReturn(to);
 
         when(dsf.getModifiedWithin()).thenReturn(di);
-        return "{\"range\":{\"dateModified\":{\"gte\":\"" + from.getTime() / 1000 + "\",\"lte\":\""
-                + to.getTime() / 1000 + "\"}}}";
+        return "{\"range\":{\"dateModified\":{\"gte\":\"" + from.getTime() + "\",\"lte\":\""
+                + to.getTime() + "\"}}}";
     }
 
     /**

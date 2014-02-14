@@ -63,17 +63,16 @@ public class DataSearchQueryBuilder {
             Date dateFrom = dsf.getCreatedWithin().getFrom();
             Date dateTo = dsf.getCreatedWithin().getTo();
             if ((dateFrom != null) && (dateTo != null)) {
-                // {"range": {"dateCreated": {"gte":"1380559151","lte":"1390511909"}}}
-                Splittable range = createRangeQuery("dateCreated", dateFrom.getTime() / 1000,
-                        dateTo.getTime() / 1000);
+                // {"range": {"dateCreated": {"gte":"1380559151000","lte":"1390511909000"}}}
+                Splittable range = createRangeQuery("dateCreated", dateFrom.getTime(), dateTo.getTime());
                 appendArrayItem(queryList, range);
             } else if (dateFrom != null) {
-                // {"range": {"dateModified": {"gte":"1380559151"}}}
-                Splittable range = createMinRangeQuery("dateCreated", dateFrom.getTime() / 1000);
+                // {"range": {"dateModified": {"gte":"1380559151000"}}}
+                Splittable range = createMinRangeQuery("dateCreated", dateFrom.getTime());
                 appendArrayItem(queryList, range);
             } else if (dateTo != null) {
-                // {"range": {"dateModified": {"lte":"1390511909"}}}
-                Splittable range = createMaxRangeQuery("dateCreated", dateTo.getTime() / 1000);
+                // {"range": {"dateModified": {"lte":"1390511909000"}}}
+                Splittable range = createMaxRangeQuery("dateCreated", dateTo.getTime());
                 appendArrayItem(queryList, range);
             }
         }
@@ -179,17 +178,16 @@ public class DataSearchQueryBuilder {
             Date dateTo = dsf.getModifiedWithin().getTo();
 
             if ((dateFrom != null) && (dateTo != null)) {
-                // {"range": {"dateModified": {"gte":"1380559151","lte":"1390511909"}}}
-                Splittable range = createRangeQuery("dateModified", dateFrom.getTime() / 1000,
-                        dateTo.getTime() / 1000);
+                // {"range": {"dateModified": {"gte":"1380559151000","lte":"1390511909000"}}}
+                Splittable range = createRangeQuery("dateModified", dateFrom.getTime(), dateTo.getTime());
                 appendArrayItem(queryList, range);
             } else if (dateFrom != null) {
-                // {"range": {"dateModified": {"gte":"1380559151"}}}
-                Splittable range = createMinRangeQuery("dateModified", dateFrom.getTime() / 1000);
+                // {"range": {"dateModified": {"gte":"1380559151000"}}}
+                Splittable range = createMinRangeQuery("dateModified", dateFrom.getTime());
                 appendArrayItem(queryList, range);
             } else if (dateTo != null) {
-                // {"range": {"dateModified": {"lte":"1390511909"}}}
-                Splittable range = createMaxRangeQuery("dateModified", dateTo.getTime() / 1000);
+                // {"range": {"dateModified": {"lte":"1390511909000"}}}
+                Splittable range = createMaxRangeQuery("dateModified", dateTo.getTime());
                 appendArrayItem(queryList, range);
             }
         }
