@@ -1,6 +1,8 @@
-package org.iplantc.de.client.models.search;
+package org.iplantc.de.client.util;
 
+import org.iplantc.de.client.models.search.DiskResourceQueryTemplate;
 import org.iplantc.de.client.models.search.FileSizeRange.FileSizeUnit;
+import org.iplantc.de.client.models.search.SearchAutoBeanFactory;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.core.client.GWT;
