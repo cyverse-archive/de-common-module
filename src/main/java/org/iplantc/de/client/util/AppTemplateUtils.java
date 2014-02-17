@@ -1,12 +1,12 @@
 package org.iplantc.de.client.util;
 
-import org.iplantc.de.client.models.apps.AppTemplate;
-import org.iplantc.de.client.models.apps.AppTemplateAutoBeanFactory;
-import org.iplantc.de.client.models.apps.Argument;
-import org.iplantc.de.client.models.apps.ArgumentGroup;
-import org.iplantc.de.client.models.apps.ArgumentType;
-import org.iplantc.de.client.models.apps.SelectionItem;
-import org.iplantc.de.client.models.apps.SelectionItemGroup;
+import org.iplantc.de.client.models.apps.integration.AppTemplate;
+import org.iplantc.de.client.models.apps.integration.AppTemplateAutoBeanFactory;
+import org.iplantc.de.client.models.apps.integration.Argument;
+import org.iplantc.de.client.models.apps.integration.ArgumentGroup;
+import org.iplantc.de.client.models.apps.integration.ArgumentType;
+import org.iplantc.de.client.models.apps.integration.SelectionItem;
+import org.iplantc.de.client.models.apps.integration.SelectionItemGroup;
 import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.resources.client.uiapps.widgets.AppsWidgetsDisplayMessages;
 

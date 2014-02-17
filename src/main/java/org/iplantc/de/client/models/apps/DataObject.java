@@ -1,36 +1,49 @@
 package org.iplantc.de.client.models.apps;
 
+import org.iplantc.de.client.models.HasDescription;
+import org.iplantc.de.client.models.HasId;
+
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 
-public interface DataObject {
+/**
+ * An Input/Output DataObject AutoBean.
+ * 
+ * @author psarando
+ * 
+ */
+public interface DataObject extends HasId, HasDescription {
 
-    @PropertyName("file_info_type")
-    FileInfoTypeEnum getFileInfoType();
-    
-    @PropertyName("file_info_type")
-    void setFileInfoType(FileInfoTypeEnum fileInfoType);
-    
-    @PropertyName("data_source")
-    DataSourceEnum getDataSource();
+    String getName();
 
-    @PropertyName("data_source")
-    void setDataSource(DataSourceEnum dataSource);
+    void setName(String name);
 
-    boolean isRetain();
+    boolean getRequired();
 
-    void setRetain(boolean retain);
+    void setRequired(boolean required);
 
     String getFormat();
 
     void setFormat(String format);
 
-    @PropertyName("is_implicit")
-    boolean isImplicit();
+    int getOrder();
 
-    @PropertyName("is_implicit")
-    void setImplicit(boolean implicit);
+    void setOrder(int order);
 
-    void setCmdSwitch(String string);
+    @PropertyName("file_info_type")
+    String getFileInfoType();
+
+    @PropertyName("file_info_type")
+    void setFileInfoType(String file_info_type);
+
+    boolean getRetain();
+
+    void setRetain(boolean retain);
+
+    String getMultiplicity();
+
+    void setMultiplicity(String multiplicity);
 
     String getCmdSwitch();
+
+    void setCmdSwitch(String cmdSwitch);
 }

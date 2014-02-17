@@ -1,4 +1,4 @@
-package org.iplantc.de.client.models.apps;
+package org.iplantc.de.client.models.apps.integration;
 
 import com.google.web.bindery.autobean.shared.AutoBean.PropertyName;
 

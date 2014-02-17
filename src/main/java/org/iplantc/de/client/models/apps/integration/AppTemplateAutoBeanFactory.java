@@ -1,4 +1,4 @@
-package org.iplantc.de.client.models.apps;
+package org.iplantc.de.client.models.apps.integration;
 
 import org.iplantc.de.client.models.errorHandling.SimpleServiceError;
 

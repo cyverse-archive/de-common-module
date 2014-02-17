@@ -1,8 +1,8 @@
 package org.iplantc.de.client.services;
 
-import org.iplantc.de.client.models.apps.DataSource;
-import org.iplantc.de.client.models.apps.FileInfoType;
-import org.iplantc.de.client.models.apps.ReferenceGenome;
+import org.iplantc.de.client.models.apps.integration.DataSource;
+import org.iplantc.de.client.models.apps.integration.FileInfoType;
+import org.iplantc.de.client.models.apps.integration.ReferenceGenome;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 

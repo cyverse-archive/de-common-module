@@ -1,9 +1,9 @@
 package org.iplantc.de.client.services;
 
 import org.iplantc.de.client.models.HasId;
-import org.iplantc.de.client.models.apps.AppTemplate;
-import org.iplantc.de.client.models.apps.AppTemplateAutoBeanFactory;
-import org.iplantc.de.client.models.apps.JobExecution;
+import org.iplantc.de.client.models.apps.integration.AppTemplate;
+import org.iplantc.de.client.models.apps.integration.AppTemplateAutoBeanFactory;
+import org.iplantc.de.client.models.apps.integration.JobExecution;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
