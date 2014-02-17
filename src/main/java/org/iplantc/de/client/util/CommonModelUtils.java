@@ -1,4 +1,7 @@
-package org.iplantc.de.client.models;
+package org.iplantc.de.client.util;
+
+import org.iplantc.de.client.models.CommonModelAutoBeanFactory;
+import org.iplantc.de.client.models.HasId;
 
 import com.google.common.base.Strings;
 import com.google.gwt.core.shared.GWT;

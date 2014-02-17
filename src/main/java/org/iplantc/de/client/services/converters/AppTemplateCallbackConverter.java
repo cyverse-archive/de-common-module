@@ -1,6 +1,5 @@
 package org.iplantc.de.client.services.converters;
 
-import org.iplantc.de.client.models.CommonModelUtils;
 import org.iplantc.de.client.models.HasId;
 import org.iplantc.de.client.models.apps.integration.AppTemplate;
 import org.iplantc.de.client.models.apps.integration.AppTemplateAutoBeanFactory;
@@ -12,6 +11,7 @@ import org.iplantc.de.client.models.apps.integration.SelectionItemGroup;
 import org.iplantc.de.client.models.deployedComps.DeployedComponent;
 import org.iplantc.de.client.services.AsyncCallbackConverter;
 import org.iplantc.de.client.services.DeployedComponentServices;
+import org.iplantc.de.client.util.CommonModelUtils;
 
 import com.google.common.collect.Lists;
 import com.google.gwt.user.client.rpc.AsyncCallback;
