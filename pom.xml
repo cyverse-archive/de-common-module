@@ -14,10 +14,21 @@
 		<jdk.version>1.6</jdk.version>
 		<!-- Current GWT Version -->
 		<gwt.version>2.5.0</gwt.version>
+		<gxt.version>3.0.6</gxt.version>
 		<!-- Define OS/Platform Independent Character Encoding -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 	<dependencies>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpmime</artifactId>
+			<version>4.2.1</version>
+		</dependency>
 		<!-- GWT deps (from central repo) -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -32,20 +43,27 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>gwtupload</groupId>
-			<artifactId>gwtupload</artifactId>
-			<version>0.5.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.2.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpmime</artifactId>
-			<version>4.2.1</version>
-		</dependency>
+            <groupId>com.google.gwt.inject</groupId>
+            <artifactId>gin</artifactId>
+            <version>2.0.0</version>
+            <classifier/>
+        </dependency>
+        
+        <!-- GXT Dependencies -->
+        <dependency>
+            <groupId>com.sencha.gxt</groupId>
+            <artifactId>gxt</artifactId>
+            <version>${gxt.version}</version>
+        </dependency>
+        
+        <!-- Testing Dependencies -->
+        <dependency>
+            <groupId>com.google.gwt.gwtmockito</groupId>
+            <artifactId>gwtmockito</artifactId>
+            <version>1.1.2</version>
+            <scope>test</scope>
+        </dependency>
+        
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
@@ -82,17 +100,6 @@
 			<artifactId>junit</artifactId>
 			<version>4.5</version>
 			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.jmock</groupId>
-			<artifactId>jmock-junit4</artifactId>
-			<version>2.5.1</version>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.iplantc.core</groupId>
-			<artifactId>jsonutil</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
             <groupId>org.iplantc.core</groupId>
