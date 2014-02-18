@@ -26,5 +26,12 @@
 	<replace-with class="org.iplantc.de.client.services.impl.AppTemplateServicesImpl">
 		<when-type-is class="org.iplantc.de.client.services.AppMetadataServiceFacade" />
 	</replace-with>
+	
+    <replace-with class="org.iplantc.de.client.services.impl.AppUserServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.AppUserServiceFacade"/>
+   </replace-with>
+   <replace-with class="org.iplantc.de.client.services.impl.AppUserServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.AppServiceFacade"/>
+   </replace-with>
 
 </module>
