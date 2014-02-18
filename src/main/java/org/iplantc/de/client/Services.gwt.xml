@@ -33,5 +33,29 @@
    <replace-with class="org.iplantc.de.client.services.impl.AppUserServiceFacadeImpl">
       <when-type-is class="org.iplantc.de.client.services.AppServiceFacade"/>
    </replace-with>
+   
+   <replace-with class="org.iplantc.de.client.services.impl.UserSessionServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.UserSessionServiceFacade" />
+   </replace-with>
+   
+   <replace-with class="org.iplantc.de.client.services.impl.MessageServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.MessageServiceFacade" />
+   </replace-with>
+   
+   <replace-with class="org.iplantc.de.client.services.impl.FileEditorServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.FileEditorServiceFacade" />
+   </replace-with>
+   
+   <replace-with class="org.iplantc.de.client.services.impl.DEFeedbackServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.DEFeedbackServiceFacade" />
+   </replace-with>
+   
+   <replace-with class="org.iplantc.de.client.services.impl.AnalysisServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.AnalysisServiceFacade" />
+   </replace-with>
+
+   <replace-with class="org.iplantc.de.client.services.impl.SystemMessageServiceFacadeImpl">
+      <when-type-is class="org.iplantc.de.client.services.SystemMessageServiceFacade" />
+   </replace-with>
 
 </module>
