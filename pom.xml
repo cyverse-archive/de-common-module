@@ -102,7 +102,7 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-            <groupId>org.iplantc.core</groupId>
+            <groupId>org.iplantc.de</groupId>
             <artifactId>ui-resources</artifactId>
             <version>${project.version}</version>
       </dependency>
@@ -240,5 +240,10 @@
 			<name>The iPlant Collaborative local repository</name>
 			<url>http://projects.iplantcollaborative.org/archiva/repository/internal/</url>
 		</repository>
+        <repository>
+            <id>sencha-commercial-release</id>
+            <name>Commercially licensed Sencha artifacts</name>
+            <url>https://maven.sencha.com/repo/support-commercial-release/</url>
+        </repository>
 	</repositories>
 </project>
