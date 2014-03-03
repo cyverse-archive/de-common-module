@@ -180,7 +180,7 @@ public class AppTemplateUtils {
     }
 
     public static boolean isDiskResourceArgumentType(ArgumentType type) {
-        return type.equals(ArgumentType.FileInput) || type.equals(ArgumentType.FolderInput) || type.equals(ArgumentType.MultiFileSelector) || isDiskResourceOutputType(type);
+        return type.equals(ArgumentType.FileInput) || type.equals(ArgumentType.FolderInput) || type.equals(ArgumentType.MultiFileSelector);
     }
 
     public static boolean isDiskResourceOutputType(ArgumentType type) {
