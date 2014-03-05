@@ -25,7 +25,6 @@ import org.iplantc.de.shared.services.ServiceCallWrapper;
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONArray;
@@ -583,7 +582,7 @@ public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
         // Create request consisting of metadata to update and delete.
         DiskResourceMetadataBatchRequest request = FACTORY.metadataBatchRequest().as();
         request.setAdd(buildMetadataToAddRequest(mdToUpdate));
-        request.setDelete(buildMetadataToDeleteRequest(mdToDelete));
+        request.setDelete(mdToDelete);
 
         ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.POST, fullAddress,
                 encode(request));
@@ -595,14 +594,6 @@ public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
             md.setId(null);
         }
         return metadata;
-    }
-
-    private Set<String> buildMetadataToDeleteRequest(Set<DiskResourceMetadata> metadataToDelete) {
-        Set<String> deleteRequest = Sets.newHashSet();
-        for (DiskResourceMetadata md : metadataToDelete) {
-            deleteRequest.add(md.getAttribute());
-        }
-        return deleteRequest;
     }
 
     @Override

@@ -10,8 +10,8 @@ public interface DiskResourceMetadataBatchRequest {
 
     void setAdd(Set<DiskResourceMetadata> add);
 
-    Set<String> getDelete();
+    Set<DiskResourceMetadata> getDelete();
 
-    void setDelete(Set<String> delete);
+    void setDelete(Set<DiskResourceMetadata> delete);
 
 }
