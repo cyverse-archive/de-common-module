@@ -7,6 +7,7 @@ import org.iplantc.de.client.services.AppUserServiceFacade;
 import org.iplantc.de.client.services.DEServiceFacade;
 import org.iplantc.de.client.services.converters.AppGroupListCallbackConverter;
 import org.iplantc.de.client.util.JsonUtil;
+import org.iplantc.de.resources.client.messages.I18N;
 import org.iplantc.de.shared.ConfluenceException;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 import org.iplantc.de.shared.services.EmailServiceFacade;
@@ -41,7 +42,7 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
 				.getUnproctedMuleServiceBaseUrl()
 				+ "public-app-groups"; //$NON-NLS-1$
 		ServiceCallWrapper wrapper = new ServiceCallWrapper(address);
-        DEServiceFacade.getInstance().getServiceData(wrapper, new AppGroupListCallbackConverter(callback));
+        DEServiceFacade.getInstance().getServiceData(wrapper, new AppGroupListCallbackConverter(callback, I18N.ERROR));
 	}
 
     @Override
@@ -49,7 +50,7 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
         String address = DEProperties.getInstance().getMuleServiceBaseUrl()
                 + "app-groups"; //$NON-NLS-1$
         ServiceCallWrapper wrapper = new ServiceCallWrapper(address);
-        DEServiceFacade.getInstance().getServiceData(wrapper, new AppGroupListCallbackConverter(callback));
+        DEServiceFacade.getInstance().getServiceData(wrapper, new AppGroupListCallbackConverter(callback, I18N.ERROR));
     }
 
     /**
