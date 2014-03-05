@@ -24,7 +24,7 @@ import java.util.List;
  * @author jstroot
  *
  */
-public class NotificationCallback implements AsyncCallback<String> {
+public abstract class NotificationCallback implements AsyncCallback<String> {
 
     private final NotificationAutoBeanFactory notFactory = GWT.create(NotificationAutoBeanFactory.class);
     private List<Notification> notifications;
@@ -108,12 +108,6 @@ public class NotificationCallback implements AsyncCallback<String> {
         } else {
             return notifications;
         }
-    }
-
-    @Override
-    public void onFailure(Throwable caught) {
-        // FIXME JDS Need to handle Errors in a different way
-        // ErrorHandler.post(caught);
     }
 
 }
