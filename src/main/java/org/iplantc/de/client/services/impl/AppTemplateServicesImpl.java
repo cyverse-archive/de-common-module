@@ -252,15 +252,14 @@ public class AppTemplateServicesImpl implements AppTemplateServices, AppMetadata
         return copy;
             }
 
-    private void enqueueDataSourceCallback(AsyncCallback<List<DataSource>> callback) {
+    private void enqueueDataSourceCallback(final AsyncCallback<List<DataSource>> callback) {
         if (dataSourceQueue.isEmpty()) {
             String address = DEProperties.getInstance().getUnproctedMuleServiceBaseUrl() + "get-workflow-elements/data-sources"; //$NON-NLS-1$
             ServiceCallWrapper wrapper = new ServiceCallWrapper(address);
             DEServiceFacade.getInstance().getServiceData(wrapper, new AsyncCallback<String>() {
                 @Override
                 public void onFailure(Throwable caught) {
-                    // FIXME This error needs to be thrown from somewhere else
-                    // REMOVE_THIS_ErrorHandler.post(caught);
+                    callback.onFailure(caught);
                 }
 
                 @Override
@@ -279,7 +278,7 @@ public class AppTemplateServicesImpl implements AppTemplateServices, AppMetadata
         dataSourceQueue.add(callback);
     }
 
-    private void enqueueFileInfoTypeCallback(AsyncCallback<List<FileInfoType>> callback) {
+    private void enqueueFileInfoTypeCallback(final AsyncCallback<List<FileInfoType>> callback) {
         if (fileInfoTypeQueue.isEmpty()) {
             String address = DEProperties.getInstance().getUnproctedMuleServiceBaseUrl() + "get-workflow-elements/info-types";//$NON-NLS-1$
             ServiceCallWrapper wrapper = new ServiceCallWrapper(address);
@@ -288,8 +287,7 @@ public class AppTemplateServicesImpl implements AppTemplateServices, AppMetadata
 
                 @Override
                 public void onFailure(Throwable caught) {
-                    // FIXME This error needs to be thrown from somewhere else
-                    // REMOVE_THIS_ErrorHandler.post(caught);
+                    callback.onFailure(caught);
                 }
 
                 @Override
@@ -309,15 +307,14 @@ public class AppTemplateServicesImpl implements AppTemplateServices, AppMetadata
 
     }
 
-    private void enqueueRefGenomeCallback(AsyncCallback<List<ReferenceGenome>> callback) {
+    private void enqueueRefGenomeCallback(final AsyncCallback<List<ReferenceGenome>> callback) {
         if (refGenQueue.isEmpty()) {
             String address = DEProperties.getInstance().getMuleServiceBaseUrl() + "reference-genomes"; //$NON-NLS-1$
             ServiceCallWrapper wrapper = new ServiceCallWrapper(address);
             DEServiceFacade.getInstance().getServiceData(wrapper, new AsyncCallback<String>() {
                 @Override
                 public void onFailure(Throwable caught) {
-                    // FIXME This error needs to be thrown from somewhere else
-                    // REMOVE_THIS_ErrorHandler.post(caught);
+                    callback.onFailure(caught);
                 }
 
                 @Override
