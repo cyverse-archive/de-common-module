@@ -7,6 +7,7 @@ import org.iplantc.de.client.services.AppUserServiceFacade;
 import org.iplantc.de.client.services.DEServiceFacade;
 import org.iplantc.de.client.services.converters.AppGroupListCallbackConverter;
 import org.iplantc.de.client.util.JsonUtil;
+import org.iplantc.de.shared.ConfluenceException;
 import org.iplantc.de.shared.services.ConfluenceServiceFacade;
 import org.iplantc.de.shared.services.EmailServiceFacade;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
@@ -190,7 +191,7 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
 					@Override
 					public void onSuccess(String result) {
 						sendRatingEmail(appName, authorEmail);
-						updateDocumentationPage(appName, result);
+						updateDocumentationPage(appName, result, this);
 						callback.onSuccess(result);
 					}
 
@@ -218,7 +219,7 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
 				});
 	}
 
-	private void updateDocumentationPage(String appName, String avgJson) {
+    private void updateDocumentationPage(String appName, String avgJson, final AsyncCallback<?> callback) {
 		JSONObject json = JSONParser.parseStrict(avgJson).isObject();
 		if (json != null) {
 			Number avg = JsonUtil.getNumber(json, "avg"); //$NON-NLS-1$
@@ -228,9 +229,7 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
 
                         @Override
                         public void onFailure(Throwable caught) {
-                    // FIXME JDS Need to move error handling down
-                    // ErrorHandler.post(org.iplantc.de.resources.client.messages.I18N.ERROR.confluenceError(),
-                    // caught);
+                            callback.onFailure(new ConfluenceException(caught));
                         }
 
                         @Override
@@ -279,10 +278,10 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
 				new AsyncCallback<String>() {
 					@Override
 					public void onSuccess(String result) {
-						updateDocumentationPage(toolName, result);
+					    updateDocumentationPage(toolName, result, this);
 						if (commentId != null) {
 							try {
-								removeComment(toolName, commentId);
+								removeComment(toolName, commentId, this);
 							} catch (Exception e) {
 								onFailure(e);
 							}
@@ -299,15 +298,13 @@ public class AppUserServiceFacadeImpl implements AppUserServiceFacade {
 				});
 	}
 
-	private void removeComment(String toolName, long commentId) {
+    private void removeComment(String toolName, long commentId, final AsyncCallback<?> callback) {
         ConfluenceServiceFacade.getInstance().removeComment(toolName, commentId,
                 new AsyncCallback<Void>() {
 
                     @Override
                     public void onFailure(Throwable caught) {
-                // FIXME Need to move error handling down
-                // ErrorHandler.post(org.iplantc.de.resources.client.messages.I18N.ERROR.confluenceError(),
-                // caught);
+                        callback.onFailure(new ConfluenceException(caught));
                     }
 
                     @Override
