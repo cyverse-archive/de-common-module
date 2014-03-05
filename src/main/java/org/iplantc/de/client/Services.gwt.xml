@@ -1,15 +1,4 @@
 <module>
-	<replace-with class="org.iplantc.de.client.services.DiskResourceServiceFacadeImpl">
-		<when-type-is class="org.iplantc.de.client.services.DiskResourceServiceFacade" />
-	</replace-with>
-
-	<replace-with class="org.iplantc.de.client.services.DefaultToolRequestProvider">
-		<when-type-is class="org.iplantc.de.client.services.ToolRequestProvider" />
-	</replace-with>
-
-	<replace-with class="org.iplantc.de.client.services.impl.SearchServiceFacadeImpl">
-		<when-type-is class="org.iplantc.de.client.services.SearchServiceFacade" />
-	</replace-with>
 
 	<replace-with class="org.iplantc.de.client.services.impl.CollaboratorsServiceFacadeImpl">
 		<when-type-is class="org.iplantc.de.client.services.CollaboratorsServiceFacade" />
