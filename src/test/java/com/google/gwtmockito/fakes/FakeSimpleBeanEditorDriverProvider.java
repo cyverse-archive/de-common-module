@@ -12,11 +12,6 @@ import java.lang.reflect.Type;
 /**
  * Provides fake implementations of {@link SimpleBeanEditorDriver}.
  * 
- * TODO JDS Later it would be useful to dynamically create an instance variable which is set by
- * {@link SimpleBeanEditorDriver#edit(Object)} and retrieved by {@link SimpleBeanEditorDriver#flush()}
- * 
- * TODO JDS Possibly use a captor to capture the edited type and return it on flush.
- * 
  * @author jstroot
  * 
  */

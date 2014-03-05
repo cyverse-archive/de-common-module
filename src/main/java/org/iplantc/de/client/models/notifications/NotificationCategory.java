@@ -3,8 +3,6 @@ package org.iplantc.de.client.models.notifications;
 /**
  * Represents a notification category.
  *
- * XXX JDS If these enum fields were the same name as what comes in (e.g. ANALYSIS could be
- * Analysis), then they could be deserialized directly into the autobean.
  */
 public enum NotificationCategory {
     /** All notification categories */

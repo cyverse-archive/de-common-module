@@ -6,9 +6,6 @@ import org.iplantc.de.client.models.diskResources.Folder;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
-/**
- * FIXME this event and its handler should be renamed to FolderRefreshEvent.
- */
 public class DiskResourceRefreshEvent extends GwtEvent<DiskResourceRefreshEventHandler> {
 
     public interface DiskResourceRefreshEventHandler extends EventHandler {
