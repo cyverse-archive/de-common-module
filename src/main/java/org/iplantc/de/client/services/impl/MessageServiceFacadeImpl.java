@@ -1,5 +1,9 @@
 package org.iplantc.de.client.services.impl;
 
+import static org.iplantc.de.shared.services.BaseServiceCallWrapper.Type.DELETE;
+import static org.iplantc.de.shared.services.BaseServiceCallWrapper.Type.GET;
+import static org.iplantc.de.shared.services.BaseServiceCallWrapper.Type.POST;
+
 import org.iplantc.de.client.models.DEProperties;
 import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.client.models.notifications.Counts;
@@ -11,10 +15,10 @@ import org.iplantc.de.client.services.callbacks.NotificationCallback;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper.Type;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
 
-import com.google.gwt.core.shared.GWT;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.json.client.JSONObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
 /**
@@ -26,24 +30,38 @@ import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 public class MessageServiceFacadeImpl implements MessageServiceFacade {
 
     private static final class CountsCB extends AsyncCallbackConverter<String, Counts> {
-        public CountsCB(final AsyncCallback<Counts> callback) {
+        private final NotificationAutoBeanFactory factory;
+
+        public CountsCB(final AsyncCallback<Counts> callback, final NotificationAutoBeanFactory factory) {
             super(callback);
+            this.factory = factory;
         }
 
         @Override
         protected Counts convertFrom(final String json) {
-            return AutoBeanCodex.decode(notesFactory, Counts.class, json).as();
+            return AutoBeanCodex.decode(factory, Counts.class, json).as();
         }
     }
 
-    private static final NotificationAutoBeanFactory notesFactory = GWT.create(NotificationAutoBeanFactory.class);
+    private final NotificationAutoBeanFactory notesFactory;
+    private final DEProperties deProperties;
+    private final DEServiceFacade deServiceFacade;
+    private final UserInfo userInfo;
+
+    @Inject
+    public MessageServiceFacadeImpl(final DEServiceFacade deServiceFacade, final DEProperties deProperties, final NotificationAutoBeanFactory notesFactory, final UserInfo userInfo) {
+        this.deServiceFacade = deServiceFacade;
+        this.deProperties = deProperties;
+        this.notesFactory = notesFactory;
+        this.userInfo = userInfo;
+    }
 
     /* (non-Javadoc)
      * @see org.iplantc.de.client.services.impl.MessageServiceFacade#getNotifications(int, int, java.lang.String, java.lang.String, C)
      */
     @Override
     public <C extends NotificationCallback> void getNotifications(int limit, int offset, String filter, String sortDir, C callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl(); //$NON-NLS-1$
+        String address = deProperties.getMuleServiceBaseUrl();
 
         StringBuilder builder = new StringBuilder("notifications/messages?limit=" + limit + "&offset="
                 + offset);
@@ -56,8 +74,8 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
         }
 
         address = address + builder.toString();
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.GET, address);
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(GET, address);
+        deServiceFacade.getServiceData(wrapper, callback);
     }
 
     /* (non-Javadoc)
@@ -65,11 +83,11 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public void getRecentMessages(AsyncCallback<String> callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl()
+        String address = deProperties.getMuleServiceBaseUrl()
                 + "notifications/last-ten-messages"; //$NON-NLS-1$
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.GET, address);
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(GET, address);
 
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        deServiceFacade.getServiceData(wrapper, callback);
     }
 
     /* (non-Javadoc)
@@ -77,11 +95,11 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public void markAsSeen(final JSONObject seenIds, AsyncCallback<String> callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl() + "notifications/seen"; //$NON-NLS-1$
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.POST, address,
+        String address = deProperties.getMuleServiceBaseUrl() + "notifications/seen"; //$NON-NLS-1$
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(POST, address,
                 seenIds.toString());
 
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        deServiceFacade.getServiceData(wrapper, callback);
     }
 
     /* (non-Javadoc)
@@ -89,11 +107,11 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public void deleteMessages(final JSONObject deleteIds, AsyncCallback<String> callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl() + "notifications/delete"; //$NON-NLS-1$
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.POST, address,
+        String address = deProperties.getMuleServiceBaseUrl() + "notifications/delete"; //$NON-NLS-1$
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(POST, address,
                 deleteIds.toString());
 
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        deServiceFacade.getServiceData(wrapper, callback);
     }
 
     /* (non-Javadoc)
@@ -101,10 +119,10 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public <C extends NotificationCallback> void getRecentMessages(C callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl()
+        String address = deProperties.getMuleServiceBaseUrl()
                 + "notifications/last-ten-messages"; //$NON-NLS-1$
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.GET, address);
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(GET, address);
+        deServiceFacade.getServiceData(wrapper, callback);
 
     }
 
@@ -113,11 +131,11 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public void getMessageCounts(final AsyncCallback<Counts> callback) {
-        final String addr = DEProperties.getInstance().getMuleServiceBaseUrl()
+        final String addr = deProperties.getMuleServiceBaseUrl()
                 + "notifications/count-messages?seen=false"; //$NON-NLS-1$
         final ServiceCallWrapper wrapper = new ServiceCallWrapper(Type.GET, addr);
-        final AsyncCallback<String> convCB = new CountsCB(callback);
-        DEServiceFacade.getInstance().getServiceData(wrapper, convCB);
+        final AsyncCallback<String> convCB = new CountsCB(callback, notesFactory);
+        deServiceFacade.getServiceData(wrapper, convCB);
     }
 
     /* (non-Javadoc)
@@ -125,11 +143,11 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public void deleteAll(AsyncCallback<String> callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl() + "notifications/delete-all"; //$NON-NLS-1$
+        String address = deProperties.getMuleServiceBaseUrl() + "notifications/delete-all"; //$NON-NLS-1$
 
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.DELETE, address);
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(DELETE, address);
 
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        deServiceFacade.getServiceData(wrapper, callback);
     }
 
     /* (non-Javadoc)
@@ -137,13 +155,13 @@ public class MessageServiceFacadeImpl implements MessageServiceFacade {
      */
     @Override
     public void acknowledgeAll(AsyncCallback<String> callback) {
-        String address = DEProperties.getInstance().getMuleServiceBaseUrl()
+        String address = deProperties.getMuleServiceBaseUrl()
                 + "notifications/mark-all-seen"; //$NON-NLS-1$
 
-        ServiceCallWrapper wrapper = new ServiceCallWrapper(ServiceCallWrapper.Type.POST, address,
-                UserInfo.getInstance().getUsername());
+        ServiceCallWrapper wrapper = new ServiceCallWrapper(POST, address,
+ userInfo.getUsername());
 
-        DEServiceFacade.getInstance().getServiceData(wrapper, callback);
+        deServiceFacade.getServiceData(wrapper, callback);
     }
     
 }

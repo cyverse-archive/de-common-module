@@ -25,35 +25,35 @@ public interface ServicesInjector extends Ginjector {
 
     final ServicesInjector INSTANCE = GWT.create(ServicesInjector.class);
 
-    DiskResourceServiceFacade getDiskResourceServiceFacade();
-
-    ToolRequestProvider getToolRequestServiceProvider();
-
-    SearchServiceFacade getSearchServiceFacade();
+    AnalysisServiceFacade getAnalysisServiceFacade();
 
     AppServiceFacade getAppServiceFacade();
 
+    AppTemplateServices getAppTemplateServices();
+
     AppUserServiceFacade getAppUserServiceFacade();
-
-    UserSessionServiceFacade getUserSessionServiceFacade();
-
-    MessageServiceFacade getMessageServiceFacade();
-
-    FileEditorServiceFacade getFileEditorServiceFacade();
-
-    DEFeedbackServiceFacade getDeFeedbackServiceFacade();
-
-    AnalysisServiceFacade getAnalysisServiceFacade();
 
     CollaboratorsServiceFacade getCollaboratorsServiceFacade();
 
+    DEFeedbackServiceFacade getDeFeedbackServiceFacade();
+
     DeployedComponentServices getDeployedComponentServices();
 
-    AppTemplateServices getAppTemplateServices();
+    DiskResourceServiceFacade getDiskResourceServiceFacade();
 
-    UUIDServiceAsync getUUIDService();
+    FileEditorServiceFacade getFileEditorServiceFacade();
+
+    MessageServiceFacade getMessageServiceFacade();
+
+    SearchServiceFacade getSearchServiceFacade();
 
     SystemMessageServiceFacade getSystemMessageServiceFacade();
+
+    ToolRequestProvider getToolRequestServiceProvider();
+
+    UserSessionServiceFacade getUserSessionServiceFacade();
+
+    UUIDServiceAsync getUUIDService();
 
 
 }
