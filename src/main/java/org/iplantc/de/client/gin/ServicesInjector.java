@@ -1,6 +1,7 @@
 package org.iplantc.de.client.gin;
 
 import org.iplantc.de.client.services.AnalysisServiceFacade;
+import org.iplantc.de.client.services.AppMetadataServiceFacade;
 import org.iplantc.de.client.services.AppServiceFacade;
 import org.iplantc.de.client.services.AppTemplateServices;
 import org.iplantc.de.client.services.AppUserServiceFacade;
@@ -30,6 +31,8 @@ public interface ServicesInjector extends Ginjector {
     AppServiceFacade getAppServiceFacade();
 
     AppTemplateServices getAppTemplateServices();
+
+    AppMetadataServiceFacade getAppMetadataService();
 
     AppUserServiceFacade getAppUserServiceFacade();
 
