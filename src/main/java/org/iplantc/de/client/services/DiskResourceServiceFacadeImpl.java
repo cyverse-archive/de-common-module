@@ -2,8 +2,8 @@ package org.iplantc.de.client.services;
 
 import org.iplantc.de.client.DEClientConstants;
 import org.iplantc.de.client.events.EventBus;
-import org.iplantc.de.client.events.diskResources.DiskResourceRefreshEvent;
-import org.iplantc.de.client.events.diskResources.DiskResourceRefreshEvent.DiskResourceRefreshEventHandler;
+import org.iplantc.de.client.events.diskResources.FolderRefreshEvent;
+import org.iplantc.de.client.events.diskResources.FolderRefreshEvent.FolderRefreshEventHandler;
 import org.iplantc.de.client.models.DEProperties;
 import org.iplantc.de.client.models.HasPaths;
 import org.iplantc.de.client.models.UserInfo;
@@ -51,7 +51,7 @@ import java.util.Set;
  *
  */
 public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
-        DiskResourceServiceFacade, DiskResourceRefreshEventHandler {
+ DiskResourceServiceFacade, FolderRefreshEventHandler {
 
     public DiskResourceServiceFacadeImpl() {
         super(new ModelKeyProvider<Folder>() {
@@ -62,7 +62,7 @@ public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
             }
         });
 
-        EventBus.getInstance().addHandler(DiskResourceRefreshEvent.TYPE, this);
+        EventBus.getInstance().addHandler(FolderRefreshEvent.TYPE, this);
     }
 
     private static final DiskResourceServiceAutoBeanFactory FACTORY = GWT.create(DiskResourceServiceAutoBeanFactory.class);
@@ -456,7 +456,7 @@ public class DiskResourceServiceFacadeImpl extends TreeStore<Folder> implements
     }
 
     @Override
-    public void onRefresh(DiskResourceRefreshEvent event) {
+    public void onRefresh(FolderRefreshEvent event) {
         Folder folder = findModel(event.getFolder());
         if (folder == null) {
             return;
