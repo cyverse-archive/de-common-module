@@ -378,6 +378,7 @@ public class JsonUtil {
      * @return true if string is valid JSON.
      */
     public static boolean isValidJson(String json) {
+        // TODO: make robust
         return (json != null && json.trim().length() > 0);
     }
 
@@ -468,6 +469,7 @@ public class JsonUtil {
             md.update(json.getBytes());
             return md.digest();
         } catch (NoSuchAlgorithmException e) {
+            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

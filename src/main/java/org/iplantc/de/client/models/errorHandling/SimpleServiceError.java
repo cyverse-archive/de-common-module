@@ -23,6 +23,7 @@ public interface SimpleServiceError {
     int getLimit();
 
     /**
+     * XXX JDS This key is only used in one or two error codes and should not be relied upon.
      * TODO CORE-3581 Request consistent error message JSON response format from backend services.
      * 
      * @return
