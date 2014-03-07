@@ -4,6 +4,7 @@ import org.iplantc.de.client.models.DEProperties;
 import org.iplantc.de.client.models.toolRequests.NewToolRequest;
 import org.iplantc.de.client.models.toolRequests.RequestedToolDetails;
 import org.iplantc.de.client.models.toolRequests.ToolRequestFactory;
+import org.iplantc.de.client.services.converters.AsyncCallbackConverter;
 import org.iplantc.de.shared.services.BaseServiceCallWrapper.Type;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
 

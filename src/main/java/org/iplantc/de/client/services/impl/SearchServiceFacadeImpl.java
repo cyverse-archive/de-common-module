@@ -12,11 +12,11 @@ import org.iplantc.de.client.models.diskResources.Folder;
 import org.iplantc.de.client.models.search.DiskResourceQueryTemplate;
 import org.iplantc.de.client.models.search.DiskResourceQueryTemplateList;
 import org.iplantc.de.client.models.search.SearchAutoBeanFactory;
-import org.iplantc.de.client.services.AsyncCallbackConverter;
 import org.iplantc.de.client.services.DEServiceFacade;
 import org.iplantc.de.client.services.Endpoints;
 import org.iplantc.de.client.services.ReservedBuckets;
 import org.iplantc.de.client.services.SearchServiceFacade;
+import org.iplantc.de.client.services.converters.AsyncCallbackConverter;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 import com.google.common.base.Splitter;

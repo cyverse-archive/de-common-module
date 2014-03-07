@@ -3,7 +3,6 @@ package org.iplantc.de.client.services.converters;
 import org.iplantc.de.client.models.apps.AppAutoBeanFactory;
 import org.iplantc.de.client.models.apps.AppGroup;
 import org.iplantc.de.client.models.apps.AppGroupList;
-import org.iplantc.de.client.services.AsyncCallbackConverter;
 import org.iplantc.de.resources.client.messages.IplantErrorStrings;
 
 import com.google.gwt.core.client.GWT;

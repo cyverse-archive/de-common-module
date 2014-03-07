@@ -9,10 +9,10 @@ import org.iplantc.de.client.models.sysMsgs.IdList;
 import org.iplantc.de.client.models.sysMsgs.MessageFactory;
 import org.iplantc.de.client.models.sysMsgs.MessageList;
 import org.iplantc.de.client.models.sysMsgs.User;
-import org.iplantc.de.client.services.AsyncCallbackConverter;
 import org.iplantc.de.client.services.DEServiceFacade;
-import org.iplantc.de.client.services.StringToVoidCallbackConverter;
 import org.iplantc.de.client.services.SystemMessageServiceFacade;
+import org.iplantc.de.client.services.converters.AsyncCallbackConverter;
+import org.iplantc.de.client.services.converters.StringToVoidCallbackConverter;
 import org.iplantc.de.shared.services.ServiceCallWrapper;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;

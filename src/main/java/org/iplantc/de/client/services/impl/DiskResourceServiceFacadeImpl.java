@@ -1,4 +1,4 @@
-package org.iplantc.de.client.services;
+package org.iplantc.de.client.services.impl;
 
 import static org.iplantc.de.shared.services.BaseServiceCallWrapper.Type.DELETE;
 import static org.iplantc.de.shared.services.BaseServiceCallWrapper.Type.GET;
@@ -21,6 +21,9 @@ import org.iplantc.de.client.models.diskResources.Folder;
 import org.iplantc.de.client.models.diskResources.RootFolders;
 import org.iplantc.de.client.models.services.DiskResourceMove;
 import org.iplantc.de.client.models.services.DiskResourceRename;
+import org.iplantc.de.client.services.DEServiceFacade;
+import org.iplantc.de.client.services.DiskResourceServiceFacade;
+import org.iplantc.de.client.services.converters.AsyncCallbackConverter;
 import org.iplantc.de.client.services.impl.models.DiskResourceMetadataBatchRequest;
 import org.iplantc.de.client.services.impl.models.DiskResourceServiceAutoBeanFactory;
 import org.iplantc.de.client.util.DiskResourceUtil;

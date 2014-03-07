@@ -9,7 +9,6 @@ import org.iplantc.de.client.models.apps.integration.ArgumentType;
 import org.iplantc.de.client.models.apps.integration.SelectionItem;
 import org.iplantc.de.client.models.apps.integration.SelectionItemGroup;
 import org.iplantc.de.client.models.deployedComps.DeployedComponent;
-import org.iplantc.de.client.services.AsyncCallbackConverter;
 import org.iplantc.de.client.services.DeployedComponentServices;
 import org.iplantc.de.client.util.CommonModelUtils;
 
