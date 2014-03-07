@@ -1,5 +1,6 @@
 package org.iplantc.de.client.services.impl;
 
+import org.iplantc.de.client.models.DEProperties;
 import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.client.models.diskResources.DiskResourceAutoBeanFactory;
 import org.iplantc.de.client.models.search.DiskResourceQueryTemplate;
@@ -41,6 +42,7 @@ import java.util.List;
 public class SearchServiceFacadeImplTest {
     
     @Mock DEServiceFacade deServiceFacadeMock;
+    @Mock DEProperties deProperties;
     @Mock SearchAutoBeanFactory searchAbFactoryMock;
     @Mock DiskResourceAutoBeanFactory drFactoryMock;
     @Mock Endpoints endpointMock;
@@ -57,7 +59,7 @@ public class SearchServiceFacadeImplTest {
     private SearchServiceFacade unitUnderTest;
 
     @Before public void setUp() {
-        unitUnderTest = new SearchServiceFacadeImpl(deServiceFacadeMock, searchAbFactoryMock, drFactoryMock, endpointMock, bucketsMock, userInfoMock);
+        unitUnderTest = new SearchServiceFacadeImpl(deServiceFacadeMock, deProperties, searchAbFactoryMock, drFactoryMock, endpointMock, bucketsMock, userInfoMock);
     }
 
     /**
