@@ -54,6 +54,11 @@ public interface DiskResourceQueryTemplate extends Folder {
     String getSharedWith();
 
     /**
+     * @return true if the results of this query should include items from users' Trash, false otherwise.
+     */
+    boolean isIncludeTrashItems();
+
+    /**
      * @return true if this template has unsaved changes, false otherwise.
      */
     boolean isDirty();
@@ -84,6 +89,13 @@ public interface DiskResourceQueryTemplate extends Folder {
     @Override
     @PropertyName("label")
     void setId(String id);
+
+    /**
+     * Sets whether the results of this query should include items from any users' Trash.
+     * 
+     * @param include
+     */
+    void setIncludeTrashItems(boolean include);
 
     void setMetadataAttributeQuery(String attributeValues);
 

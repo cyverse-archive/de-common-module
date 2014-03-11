@@ -284,6 +284,15 @@ public class DataSearchQueryBuilder {
         Splittable query = StringQuoter.createSplittable();
         Splittable bool = addChild(query, "bool");
         queryList.assign(bool, "must");
+
+        // CORE-5182 exclude Trash items by default
+        // TODO get Trash path from service or config.
+        if (!dsf.isIncludeTrashItems()) {
+            Splittable negatedQueryList = StringQuoter.createIndexed();
+            negatedQueryList.assign(bool, "must_not");
+            appendArrayItem(negatedQueryList, createWildcard("path", "/iplant/trash/*"));
+        }
+
         return query.getPayload();
     }
 
