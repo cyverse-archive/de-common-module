@@ -1,13 +1,11 @@
 package org.iplantc.de.server;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.client.utils.URIBuilder;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import javax.servlet.http.HttpServletRequest;
@@ -27,16 +25,13 @@ public abstract class BaseUrlConnector implements UrlConnector {
      * @throws IOException if a URI representation is invalid or an encoding error occurs.
      */
     protected String addQueryParam(String uriString, String name, String value) throws IOException {
-        String param = name + "=" + URLEncoder.encode(value, "UTF-8");
         try {
-            URI uri = new URI(uriString);
-            String query = uri.getRawQuery();
-            query = StringUtils.isEmpty(query) ? param : URLDecoder.decode(query, "UTF-8") + "&" + param;
-            return new URI(uri.getScheme(), uri.getUserInfo(), uri.getHost(), uri.getPort(), uri.getPath(), query,
-                    uri.getFragment()).toString();
+            return new URIBuilder(uriString).addParameter(name, value).build().toString();
         }
         catch (URISyntaxException e) {
-            throw new IOException("unable to add query string parameter " + param, e);
+            String msg = "unable to add query string parameter " + name + "="
+                    + URLEncoder.encode(value, "UTF-8");
+            throw new IOException(msg, e);
         }
     }
 
