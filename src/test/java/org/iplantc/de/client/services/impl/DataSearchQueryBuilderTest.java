@@ -39,8 +39,8 @@ public class DataSearchQueryBuilderTest {
     @Mock DiskResourceQueryTemplate dsf;
 
     @Before public void setUp() {
-        
-    } 
+        when(dsf.isIncludeTrashItems()).thenReturn(true);
+    }
 
     /**
      * when asterisks needed
@@ -181,6 +181,15 @@ public class DataSearchQueryBuilderTest {
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
+    @Test public void testFileExcludingTrash() {
+        when(dsf.isIncludeTrashItems()).thenReturn(false);
+
+        final String expectedValue = setFileQuery("*query*", dsf);
+
+        String result = new DataSearchQueryBuilder(dsf).file().toString();
+        assertEquals(wrappedQueryExcludingTrash(expectedValue), result);
+    }
+
     /**
      * @param givenValue
      * @param drqt
@@ -299,4 +308,9 @@ public class DataSearchQueryBuilderTest {
         return Format.substitute("{\"bool\":{\"must\":[{0}]}}", query);
     }
 
+    private String wrappedQueryExcludingTrash(String query) {
+        return Format.substitute(
+                "{\"bool\":{\"must_not\":[{\"wildcard\":{\"path\":\"/iplant/trash/*\"}}],\"must\":[{0}]}}",
+                query);
+    }
 }
