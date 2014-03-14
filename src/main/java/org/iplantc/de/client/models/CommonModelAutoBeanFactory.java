@@ -7,4 +7,5 @@ public interface CommonModelAutoBeanFactory extends AutoBeanFactory {
 
     AutoBean<HasId> hasId();
 
+    AutoBean<UserBootstrap> bootstrap();
 }

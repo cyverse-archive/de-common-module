@@ -1,5 +1,6 @@
 package org.iplantc.de.client.services.impl;
 
+import org.iplantc.de.client.models.UserInfo;
 import org.iplantc.de.client.models.search.DateInterval;
 import org.iplantc.de.client.models.search.DiskResourceQueryTemplate;
 import org.iplantc.de.client.models.search.FileSizeRange;
@@ -37,16 +38,19 @@ import java.util.List;
 public class DataSearchQueryBuilderTest {
     
     @Mock DiskResourceQueryTemplate dsf;
+    @Mock UserInfo userInfoMock;
 
     @Before public void setUp() {
         when(dsf.isIncludeTrashItems()).thenReturn(true);
+        when(userInfoMock.getBaseTrashPath()).thenReturn("/iplant/trash");
+        when(userInfoMock.getUsername()).thenReturn("test_user");
     }
 
     /**
      * when asterisks needed
      */
     @Test public void testApplyImplicitAsteriskSearchText_Case1() {
-        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf);
+        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf, userInfoMock);
         String searchText = "one two three";
         final String applyImplicitAsteriskSearchText = uut.applyImplicitAsteriskSearchText(searchText);
         final String expected = "*one* *two* *three*";
@@ -57,7 +61,7 @@ public class DataSearchQueryBuilderTest {
      * when string contains '*'
      */
     @Test public void testApplyImplicitAsteriskSearchText_Case2() {
-        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf);
+        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf, userInfoMock);
         String searchText = "one* two three";
         final String applyImplicitAsteriskSearchText = uut.applyImplicitAsteriskSearchText(searchText);
         assertEquals("Verify that implicit asterisk NOT applied", searchText, applyImplicitAsteriskSearchText);
@@ -67,7 +71,7 @@ public class DataSearchQueryBuilderTest {
      * when string contains '?'
      */
     @Test public void testApplyImplicitAsteriskSearchText_Case3() {
-        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf);
+        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf, userInfoMock);
         String searchText = "one ?two three";
         final String applyImplicitAsteriskSearchText = uut.applyImplicitAsteriskSearchText(searchText);
         assertEquals("Verify that implicit asterisk NOT applied", searchText, applyImplicitAsteriskSearchText);
@@ -77,7 +81,7 @@ public class DataSearchQueryBuilderTest {
      * when string contains '\'
      */
     @Test public void testApplyImplicitAsteriskSearchText_Case4() {
-        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf);
+        DataSearchQueryBuilder uut = new DataSearchQueryBuilder(dsf, userInfoMock);
         String searchText = "one two \\three";
         final String applyImplicitAsteriskSearchText = uut.applyImplicitAsteriskSearchText(searchText);
         assertEquals("Verify that implicit asterisk NOT applied", searchText, applyImplicitAsteriskSearchText);
@@ -98,7 +102,7 @@ public class DataSearchQueryBuilderTest {
         final String expectedFileSizeRange = setFileSizeRange(0.1, 100.78763, dsf);
         final String expectedSharedWith = setSharedWith("some users who were shared with", dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).buildFullQuery();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).buildFullQuery();
 
         assertTrue(result.contains(expectedFileQuery));
         assertTrue(result.contains(expectedModifiedWithin));
@@ -114,42 +118,42 @@ public class DataSearchQueryBuilderTest {
     @Test public void testOwnedBy() {
 		final String expectedValue = setOwnedBy("someuser", dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).ownedBy().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).ownedBy().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
     @Test public void testCreatedWithin() {
         final String expectedValue = setCreatedWithin(new Date(), new DateWrapper().addDays(1).asDate(), dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).createdWithin().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).createdWithin().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
     
     @Test public void testFile() {
         final String expectedValue = setFileQuery("some* words* in* query*", dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).file().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).file().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
     @Test public void testFileSizeRange() {
         final String expectedValue = setFileSizeRange(1.0, 100.0, dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).fileSizeRange().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).fileSizeRange().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
     @Test public void testMetadataAttribute() {
         final String expectedValue = setMetadataAttributeQuery("some* metadata* to* search* for*", dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).metadataAttribute().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).metadataAttribute().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
     @Test public void testMetadataValue() {
         final String expectedValue = setMetadataValueQuery("some* metadata* to* search* for*", dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).metadataValue().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).metadataValue().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
@@ -158,7 +162,7 @@ public class DataSearchQueryBuilderTest {
         final Date toDate = new DateWrapper(fromDate).addDays(2).asDate();
         final String expectedValue = setModifiedWithin(fromDate, toDate, dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).modifiedWithin().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).modifiedWithin().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
@@ -169,7 +173,7 @@ public class DataSearchQueryBuilderTest {
         final ArrayList<String> newArrayList = Lists.newArrayList(term1, term2, term3);
         final String expectedValue = setNegatedFileQuery(newArrayList, dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).negatedFile().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).negatedFile().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
@@ -177,7 +181,7 @@ public class DataSearchQueryBuilderTest {
         final String retVal = "user that are shared with";
         final String expectedValue = setSharedWith(retVal, dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).sharedWith().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).sharedWith().toString();
         assertEquals(wrappedQuery(expectedValue), result);
     }
 
@@ -186,7 +190,7 @@ public class DataSearchQueryBuilderTest {
 
         final String expectedValue = setFileQuery("*query*", dsf);
 
-        String result = new DataSearchQueryBuilder(dsf).file().toString();
+        String result = new DataSearchQueryBuilder(dsf, userInfoMock).file().toString();
         assertEquals(wrappedQueryExcludingTrash(expectedValue), result);
     }
 
@@ -300,7 +304,9 @@ public class DataSearchQueryBuilderTest {
      */
     private String setSharedWith(final String givenValue, final DiskResourceQueryTemplate drqt) {
         when(dsf.getSharedWith()).thenReturn(givenValue);
-        return "{\"bool\":{\"must\":[{\"nested\":{\"query\":{\"bool\":{\"must\":[{\"term\":{\"permission\":\"own\"}},{\"wildcard\":{\"user\":\"\"}}]}},\"path\":\"userPermissions\"}},{\"nested\":{\"query\":{\"wildcard\":{\"user\":\""
+        return "{\"bool\":{\"must\":[{\"nested\":{\"query\":{\"bool\":{\"must\":[{\"term\":{\"permission\":\"own\"}},{\"wildcard\":{\"user\":\""
+                + userInfoMock.getUsername()
+                + "#*\"}}]}},\"path\":\"userPermissions\"}},{\"nested\":{\"query\":{\"wildcard\":{\"user\":\""
                 + givenValue + "#*\"}},\"path\":\"userPermissions\"}}]}}";
     }
 

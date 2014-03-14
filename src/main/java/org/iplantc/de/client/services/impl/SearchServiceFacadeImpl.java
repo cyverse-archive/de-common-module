@@ -314,7 +314,8 @@ public class SearchServiceFacadeImpl implements SearchServiceFacade {
 
     @Override
     public void submitSearchFromQueryTemplate(DiskResourceQueryTemplate queryTemplate, FilterPagingLoadConfigBean loadConfig, SearchType searchType, AsyncCallback<List<DiskResource>> callback) {
-        String queryParameter = "q=" + URL.encodeQueryString(new DataSearchQueryBuilder(queryTemplate).buildFullQuery());
+        DataSearchQueryBuilder builder = new DataSearchQueryBuilder(queryTemplate, userInfo);
+        String queryParameter = "q=" + URL.encodeQueryString(builder.buildFullQuery());
         String limitParameter = "&limit=" + loadConfig.getLimit();
         String offsetParameter = "&offset=" + loadConfig.getOffset();
         String typeParameter = "&type=" + ((searchType == null) ? SearchType.ANY.toString() : searchType.toString());

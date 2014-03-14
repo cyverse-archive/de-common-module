@@ -28,10 +28,12 @@ import java.util.Date;
 public class DataSearchQueryBuilder {
 
     private final DiskResourceQueryTemplate dsf;
+    private final UserInfo userinfo;
     private final Splittable queryList;
 
-    public DataSearchQueryBuilder(DiskResourceQueryTemplate dsf) {
+    public DataSearchQueryBuilder(DiskResourceQueryTemplate dsf, UserInfo userinfo) {
         this.dsf = dsf;
+        this.userinfo = userinfo;
         queryList = StringQuoter.createIndexed();
     }
 
@@ -227,7 +229,7 @@ public class DataSearchQueryBuilder {
             Splittable bool = addChild(query, "bool");
             Splittable must = addArray(bool, "must");
 
-            appendArrayItem(must, createOwnerQuery(UserInfo.getInstance().getUsername()));
+            appendArrayItem(must, createOwnerQuery(userinfo.getUsername()));
 
             Splittable sharedWith = StringQuoter.createSplittable();
 
@@ -286,11 +288,11 @@ public class DataSearchQueryBuilder {
         queryList.assign(bool, "must");
 
         // CORE-5182 exclude Trash items by default
-        // TODO get Trash path from service or config.
-        if (!dsf.isIncludeTrashItems()) {
+        String baseTrashPath = userinfo.getBaseTrashPath();
+        if (!dsf.isIncludeTrashItems() && !Strings.isNullOrEmpty(baseTrashPath)) {
             Splittable negatedQueryList = StringQuoter.createIndexed();
             negatedQueryList.assign(bool, "must_not");
-            appendArrayItem(negatedQueryList, createWildcard("path", "/iplant/trash/*"));
+            appendArrayItem(negatedQueryList, createWildcard("path", baseTrashPath + "/*"));
         }
 
         return query.getPayload();

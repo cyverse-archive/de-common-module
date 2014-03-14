@@ -1,7 +1,7 @@
 package org.iplantc.de.client.models;
 
-import com.google.web.bindery.autobean.shared.Splittable;
-import com.google.web.bindery.autobean.shared.impl.StringQuoter;
+import com.google.gwt.core.shared.GWT;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 
 import java.util.List;
 
@@ -13,45 +13,7 @@ import java.util.List;
  * @author sriram
  *
  */
-@SuppressWarnings("nls")
 public class UserInfo {
-
-    /**
-     * Defines an attribute for User Email
-     */
-    public static String ATTR_EMAIL = "email";
-
-    /**
-     * Defines an attribute for the User's First Name.
-     */
-    public static String ATTR_FIRSTNAME = "firstName";
-
-    /**
-     * Defines an attribute for the User's Last Name.
-     */
-    public static String ATTR_LASTNAME = "lastName";
-
-    /**
-     * Defines an attribute for the short username.
-     */
-    public static String ATTR_USERNAME = "username";
-
-    /**
-     * Defines an attribute for a users login Time
-     *
-     */
-    public static String LOGIN_TIME = "loginTime";
-
-    /**
-     * Defines an attribute for new user identification
-     */
-    public static String NEW_USER ="newWorkspace";
-
-    /**
-     * Defines an attribute for the fully qualified username.
-     */
-    private static final String ATTR_FULL_USERNAME = "full_username";
-
 
     private static UserInfo instance;
 
@@ -67,25 +29,15 @@ public class UserInfo {
 
         return instance;
     }
-    private String email;
-    private String firstName;
-    private String fullUsername;
-    private String homePath;
-    private String lastName;
-    private String loginTime;
-    private Boolean newUser;
-    private List<WindowState> savedOrderedWindowStates;
-    private String trashPath;
-    private String username;
 
-    private String workspaceId;
+    private final CommonModelAutoBeanFactory factory = GWT.create(CommonModelAutoBeanFactory.class);
+    private UserBootstrap userInfo;
+    private List<WindowState> savedOrderedWindowStates;
 
     /**
      * Constructs a default instance of the object with all fields being set to null.
      */
     public UserInfo() {
-        workspaceId = null;
-        email = null;
     }
 
     /**
@@ -96,17 +48,7 @@ public class UserInfo {
      * @param userInfoJson json to initialize user info.
      */
     public void init(String userInfoJson) {
-        if (userInfoJson != null && !userInfoJson.equals("")) {
-            Splittable split = StringQuoter.split(userInfoJson);
-            workspaceId = split.get("workspaceId").asString();
-            newUser = split.get(NEW_USER).asBoolean();
-            loginTime = split.get(LOGIN_TIME).asString();
-            setUsername(split.get(ATTR_USERNAME).asString());
-            setEmail(split.get(ATTR_EMAIL).asString());
-            setFullUsername(split.get(ATTR_FULL_USERNAME).asString());
-            setFirstName(split.get(ATTR_FIRSTNAME).asString());
-            setLastName(split.get(ATTR_LASTNAME).asString());
-        }
+        userInfo = AutoBeanCodex.decode(factory, UserBootstrap.class, userInfoJson).as();
     }
 
     /**
@@ -115,14 +57,14 @@ public class UserInfo {
      * @return email address.
      */
     public String getEmail() {
-        return email;
+        return userInfo == null ? null : userInfo.getEmail();
     }
 
     /**
      * @return the firstName
      */
     public String getFirstName() {
-        return firstName;
+        return userInfo == null ? null : userInfo.getFirstName();
     }
 
     /**
@@ -131,26 +73,26 @@ public class UserInfo {
      * @return the fully qualified username.
      */
     public String getFullUsername() {
-        return fullUsername;
+        return userInfo == null ? null : userInfo.getFullUsername();
     }
 
     /**
      * @return the path to the user's home directory.
      */
     public String getHomePath() {
-        return homePath;
+        return userInfo == null ? null : userInfo.getHomePath();
     }
 
     /**
      * @return the lastName
      */
     public String getLastName() {
-        return lastName;
+        return userInfo == null ? null : userInfo.getLastName();
     }
 
     public String getLoginTime() {
-		return loginTime;
-	}
+        return userInfo == null ? null : userInfo.getLoginTime();
+    }
 
     /**
      * @return the savedOrderedWindowStates
@@ -160,10 +102,17 @@ public class UserInfo {
     }
 
     /**
-     * @return the trashPath
+     * @return the path to the user's trash.
      */
     public String getTrashPath() {
-        return trashPath;
+        return userInfo == null ? null : userInfo.getTrashPath();
+    }
+
+    /**
+     * @return the base trash path of the data store for all users.
+     */
+    public String getBaseTrashPath() {
+        return userInfo == null ? null : userInfo.getBaseTrashPath();
     }
 
     /**
@@ -174,7 +123,7 @@ public class UserInfo {
      * @return a string representing the username for the user.
      */
     public String getUsername() {
-        return username;
+        return userInfo == null ? null : userInfo.getUsername();
     }
 
     /**
@@ -183,64 +132,14 @@ public class UserInfo {
      * @return a string representing the identifier for workspace.
      */
     public String getWorkspaceId() {
-        return workspaceId;
+        return userInfo == null ? null : userInfo.getWorkspaceId();
     }
 
     /**
      * @return the newUser
      */
-    public Boolean isNewUser() {
-        return newUser;
-    }
-
-    /**
-     * Set user's email address.
-     *
-     * @param email email address.
-     */
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    /**
-     * @param firstName the firstName to set
-     */
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    /**
-     * Sets the full username.
-     *
-     * @param fullUsername the fully qualified username.
-     */
-    public void setFullUsername(String fullUsername) {
-        this.fullUsername = fullUsername;
-    }
-
-    /**
-     * @param homePath the path to the user's home directory.
-     */
-    public void setHomePath(String homePath) {
-        this.homePath = trim(homePath);
-    }
-
-    /**
-     * @param lastName the lastName to set
-     */
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public void setLoginTime(String loginTime) {
-		this.loginTime = loginTime;
-	}
-
-    /**
-     * @param newUser the newUser to set
-     */
-    public void setNewUser(Boolean newUser) {
-        this.newUser = newUser;
+    public boolean isNewUser() {
+        return userInfo == null ? false : userInfo.isNewUser();
     }
 
     /**
@@ -248,43 +147,6 @@ public class UserInfo {
      */
     public void setSavedOrderedWindowStates(List<WindowState> savedOrderedWindowStates) {
         this.savedOrderedWindowStates = savedOrderedWindowStates;
-    }
-
-    /**
-     * @param trashPath the trashPath to set
-     */
-    public void setTrashPath(String trashPath) {
-        this.trashPath = trim(trashPath);
-    }
-
-	/**
-     * Sets the username for the user.
-     *
-     * @param usr a string representing the username
-     */
-    public void setUsername(String usr) {
-        this.username = usr;
-    }
-
-	private String trim(String value) {
-        StringBuilder temp = null;
-        if (value != null && !value.isEmpty()) {
-            final String QUOTE = "\"";
-
-            temp = new StringBuilder(value);
-
-            if (value.startsWith(QUOTE)) {
-                temp.deleteCharAt(0);
-            }
-
-            if (value.endsWith(QUOTE)) {
-                temp.deleteCharAt(temp.length() - 1);
-            }
-
-            return temp.toString();
-        } else {
-            return value;
-        }
     }
 }
 
