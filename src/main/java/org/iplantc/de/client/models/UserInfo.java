@@ -37,7 +37,7 @@ public class UserInfo {
     /**
      * Constructs a default instance of the object with all fields being set to null.
      */
-    public UserInfo() {
+    private UserInfo() {
     }
 
     /**
